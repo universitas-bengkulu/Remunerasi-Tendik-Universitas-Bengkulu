@@ -9,6 +9,11 @@ use Illuminate\Support\Str;
 
 class PeriodeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth','isKepegawaian']);
+    }
+
     public function index(){
         $periodes = Periode::orderBy('id','desc')->get();
         return view('kepegawaian/periode.index',compact('periodes'));

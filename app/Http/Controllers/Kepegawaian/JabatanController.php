@@ -8,10 +8,10 @@ use App\Models\Jabatan;
 
 class JabatanController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    public function __construct()
+    {
+        $this->middleware(['auth','isKepegawaian']);
+    }
     
     public function index(){
         $jabatans = Jabatan::orderBy('id','desc')->get();

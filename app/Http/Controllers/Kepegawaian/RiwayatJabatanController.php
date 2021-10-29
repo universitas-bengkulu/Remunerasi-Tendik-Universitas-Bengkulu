@@ -12,10 +12,10 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
 }
 class RiwayatJabatanController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    public function __construct()
+    {
+        $this->middleware(['auth','isKepegawaian']);
+    }
 
     public function index(){
         $riwayats = RiwayatJabatan::join('periodes','periodes.id','riwayat_jabatans.periode_id')

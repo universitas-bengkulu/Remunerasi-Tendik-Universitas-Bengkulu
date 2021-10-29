@@ -3,12 +3,12 @@
 @section('login_as', 'Kepegawaian')
 @section('user-login')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->nama_lengkap }}
     @endif
 @endsection
 @section('user-login2')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->nama_lengkap }}
     @endif
 @endsection
 @section('sidebar-menu')
@@ -63,13 +63,10 @@
                     </div>
                 </div>
                 <div class="col-md-12" >
-                    @php
-                        $periode_id = $periode_aktif->id;
-                    @endphp
                     <nav aria-label="...">
                         <ul class="pagination">
                             <li class="page-item">
-                                <a class="page-link" href="{{ route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id]) }}">Next</a>
+                                <a class="page-link" href="{{ route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id]) }}">Previous</a>
                             </li>
                           <li class="page-item">
                           <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.r_integritas',[$periode_id]) }}">1</a></li>

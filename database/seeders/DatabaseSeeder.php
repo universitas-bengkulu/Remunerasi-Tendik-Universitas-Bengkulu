@@ -16,7 +16,9 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
         $this->call([
             JabatanTableSeeder::class,
-            TendikTableSeeder::class
+            TendikTableSeeder::class,
+            UnitTableSeeder::class,
+            UserTableSeeder::class
         ]);
         
     }

@@ -4851,12 +4851,12 @@ a.badge-dark:focus, a.badge-dark.focus {
   color: inherit;
 }
 
-.alert-primary {
+.alert-info {
   color: #1b4b72;
   background-color: #d6e9f8;
   border-color: #c6e0f5;
 }
-.alert-primary hr {
+.alert-info hr {
   border-top-color: #b0d4f1;
 }
 .alert-primary .alert-link {

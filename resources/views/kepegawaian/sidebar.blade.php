@@ -49,7 +49,7 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
         @if (Route::current()->getName() == "kepegawaian.capaian_skp")
                 class="current-page"
         @endif
-        ><a href=" {{ route('kepegawaian.r_skp') }} ">Rubrik Capaian SKP</a></li>
+        ><a href=" {{ route('kepegawaian.r_skp',[count($periode_aktif)> 0 ? $periode_aktif->id : '']) }} ">Rubrik Capaian SKP</a></li>
         <li
             @if(Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_1" || Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_2"||
             Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_3"||Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_4"||
@@ -77,8 +77,12 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
                 @elseif(Route::current()->getName() == "kepegawaian.r_integritas.total_integritas")
                 class="current-page"
             @endif
-        ><a href=" {{ route('kepegawaian.r_integritas',[$periode_aktif->id]) }} ">Rubrik Integritas</a></li> 
+        ><a href=" {{ route('kepegawaian.r_integritas',[count($periode_aktif)> 0 ? $periode_aktif->id : '']) }} ">Rubrik Integritas</a></li> 
     </ul>
+</li>
+
+<li>
+    <a href=" {{ route('kepegawaian.rekapitulasi',[count($periode_aktif)> 0 ? $periode_aktif->id : '']) }} "><i class="fa fa-bar-chart"></i>Rekapitulasi P1, P2</a>
 </li>
 
 <li style="padding-left:2px;">
@@ -91,7 +95,6 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         @csrf
     </form>
-
 </li>
 
 @push('styles')

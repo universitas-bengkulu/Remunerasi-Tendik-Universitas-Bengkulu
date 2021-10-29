@@ -1,14 +1,14 @@
 @extends('layouts.layout')
-@section('title', 'Manajemen Rubrik Absensi')
+@section('title', 'Manajemen Rubrik Integritas')
 @section('login_as', 'Kepegawaian')
 @section('user-login')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->nama_lengkap }}
     @endif
 @endsection
 @section('user-login2')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->nama_lengkap }}
     @endif
 @endsection
 @section('sidebar-menu')
@@ -50,54 +50,48 @@
                             @else
                                 @if ($a == "sudah")
                                     <div class="alert alert-success alert-block">
-                                        <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Rubrik Absensi <b style="text-transform:uppercase">{{ $periode_aktif->nm_periode }}</b> sudah digenerate, silahkan lanjutkan dengan klik tombol next hingga selesai !!
+                                        <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Rubrik Integritas <b style="text-transform:uppercase">{{ $periode_aktif->nm_periode }}</b> sudah digenerate, silahkan lanjutkan dengan klik tombol next hingga selesai !!
                                     </div>
                                     @else
                                     <div class="alert alert-danger alert-block" id="alert-generate">
-                                        <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Silahkan Generate Rubrik Absensi Terlebih Dahulu !!
+                                        <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Silahkan Generate Rubrik Integritas Terlebih Dahulu !!
                                     </div>
                                 @endif
                     @endif
                     <div class="alert alert-warning alert-block" id="alert-proses-generate" style="display:none;">
-                        <strong><i class="fa fa-info-circle"></i>&nbsp;Harap Tunggu: </strong> Proses Generate Rubrik Absensi Sedang Berlangsung !!
+                        <strong><i class="fa fa-info-circle"></i>&nbsp;Harap Tunggu: </strong> Proses Generate Rubrik Integritas Sedang Berlangsung !!
                     </div>
                 </div>
                 <div class="col-md-12" >
-                    @php
-                        $periode_id = $periode_aktif->id;
-                    @endphp
                     <nav aria-label="...">
                         <ul class="pagination">
                             <li class="page-item">
-                                <a class="page-link" href="{{ route('kepegawaian.remunerasi',[$periode_id]) }}">Previous</a>
+                                <a class="page-link" href="{{ route('kepegawaian.rekapitulasi',[$periode_id]) }}">Previous</a>
                             </li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi',[$periode_id]) }}">1</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">2</a></li>
+                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi',[$periode_id]) }}">1</a></li>
+                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi.data_tendik',[$periode_id]) }}">2</a></li>
+                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi.total_remun',[$periode_id]) }}">3</a></li>
+
                           <li class="page-item active">
                             <span class="page-link">
-                                3
+                                4
                                 <span class="sr-only">(current)</span>
                               </span>
                           </li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.skp',[$periode_id]) }}">4</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.persentase_absen',[$periode_id]) }}">3</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">4</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">5</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">6</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">7</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">8</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">9</a></li>
+                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi.skp',[$periode_id]) }}">5</a></li>
+                          <li class="page-item disabled"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi.persentase_absen',[$periode_id]) }}">6</a></li>
+                          <li class="page-item disabled"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi.total_remun',[$periode_id]) }}">7</a></li>
                           <li class="page-item">
-                            <a class="page-link" href="{{ route('kepegawaian.remunerasi.persentase_absen',[$periode_id]) }}">Next</a>
+                            <a class="page-link" href="{{ route('kepegawaian.rekapitulasi.skp',[$periode_id]) }}">Next</a>
                           </li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-md-12">
                     @if ($a == "sudah")
-                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Rubrik Absensi</button>
+                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Rubrik Integritas</button>
                         @else
-                        <a href="{{ route('kepegawaian.remunerasi.generate_integritas',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Rubrik Integritas</a>
+                        <a href="{{ route('kepegawaian.rekapitulasi.generate_integritas',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Rubrik Integritas</a>
                     @endif
                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Rubrik Integritas</button>
                 </div>

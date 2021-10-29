@@ -3,12 +3,12 @@
 @section('login_as', 'Kepegawaian')
 @section('user-login')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->nama_lengkap }}
     @endif
 @endsection
 @section('user-login2')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->nama_lengkap }}
     @endif
 @endsection
 @section('sidebar-menu')
@@ -50,6 +50,7 @@
                             @else
                                 @if ($a == "sudah")
                                     <div class="alert alert-success alert-block">
+                                        
                                         <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Data Potongan LHKAPN/LHKASN <b style="text-transform:uppercase">{{ $periode_aktif->nm_periode }}</b> sudah digenerate, silahkan lanjutkan dengan klik tombol next hingga selesai !!
                                     </div>
                                     @else
@@ -63,9 +64,6 @@
                     </div>
                 </div>
                 <div class="col-md-12" >
-                    @php
-                        $periode_id = $periode_aktif->id;
-                    @endphp
                     <nav aria-label="...">
                         <ul class="pagination">
                             <li class="page-item">
@@ -85,8 +83,8 @@
                           </li>
                           </li>
                           <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id]) }}">7</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.r_integritas.integritas_satu_bulan',[$periode_id]) }}">8</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.r_integritas.total_integritas',[$periode_id]) }}">9</a></li>
+                          <li class="page-item disabled"><a class="page-link" href="{{ route('kepegawaian.r_integritas.integritas_satu_bulan',[$periode_id]) }}">8</a></li>
+                          <li class="page-item disabled"><a class="page-link" href="{{ route('kepegawaian.r_integritas.total_integritas',[$periode_id]) }}">9</a></li>
                           <li class="page-item">
                             <a class="page-link" href="{{ route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id]) }}">Next</a>
                           </li>
@@ -123,19 +121,24 @@
                                 <tr>
                                     <td> {{ $no++ }} </td>
                                     <td> {{ $data->nm_lengkap }} </td>
-                                    <form action="{{ route('kepegawaian.r_integritas.update_data_lhkpn_lhkasn',[$data->id]) }}" method="POST">
+                                    <form action="{{ route('kepegawaian.r_integritas.update_data_lhkpn_lhkasn',[$data->id,$periode_id]) }}" method="POST">
                                         {{ csrf_field() }} {{ method_field('PATCH') }}
-                                        <input type="hidden" name="periode_id" value="{{ $periode_id_update }}">
                                         <td>
-                                            <select name="laporan_lhkpn_lhkasn" class="form-control" style="width:100px;">
-                                                <option value="sudah"
+                                            <select name="laporan_lhkpn_lhkasn" class="form-control" 
+                                                @if ($data->laporan_lhkpn_lhkasn == "sudah")
+                                                    style="color:green"
+                                                    @else
+                                                    style="color:red"
+                                                @endif
+                                            >
+                                                <option value="sudah" style="color: green"
                                                     @if ($data->laporan_lhkpn_lhkasn == "sudah")
                                                         selected
                                                     @endif
                                                 >Sudah</option>
-                                                <option value="belum"
+                                                <option value="belum" 
                                                     @if ($data->laporan_lhkpn_lhkasn == "belum")
-                                                        selected
+                                                        selected 
                                                     @endif
                                                 >Belum</option>
                                             </select>

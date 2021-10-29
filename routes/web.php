@@ -6,7 +6,11 @@ use App\Http\Controllers\Kepegawaian\DashboardController;
 use App\Http\Controllers\Kepegawaian\IntegritasController;
 use App\Http\Controllers\Kepegawaian\JabatanController;
 use App\Http\Controllers\Kepegawaian\PeriodeController;
+use App\Http\Controllers\Kepegawaian\RekapitulasiController;
 use App\Http\Controllers\Kepegawaian\TendikController;
+use App\Http\Controllers\Operator\DataInsentifController;
+use App\Http\Controllers\Operator\DashboardOperatorController;
+use App\Http\Controllers\Operator\DetailRubrikController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 Auth::routes();
@@ -78,12 +82,14 @@ Route::group(['prefix' => 'kepegawaian/manajemen_rubrik_absensi'], function () {
 });
 
 Route::group(['prefix' => 'kepegawaian/manajemen_rubrik_capaian_skp'], function () {
-    Route::get('/',[CapaianSkpController::class, 'index'])->name('kepegawaian.r_skp');
+    Route::get('/{periode_id}',[CapaianSkpController::class, 'index'])->name('kepegawaian.r_skp');
+    Route::get('/generate_tendik/{periode_id}',[CapaianSkpController::class, 'generateTendik'])->name('kepegawaian.r_skp.generate_tendik');
+    Route::patch('/{id}/update_nilai/{periode_id}',[CapaianSkpController::class, 'updateNilai'])->name('kepegawaian.r_skp.update_nilai');
     Route::patch('/verifikasi',[CapaianSkpController::class, 'verifikasi'])->name('kepegawaian.r_skp.verifikasi');
     Route::get('/{id}/download_file_skp',[CapaianSkpController::class, 'downloadSkp'])->name('kepegawaian.r_skp.download_skp');
-    Route::get('/generate_potongan',[CapaianSkpController::class, 'generate'])->name('kepegawaian.r_skp.generate');
+    Route::get('/generate_potongan/{periode_id}',[CapaianSkpController::class, 'generate'])->name('kepegawaian.r_skp.generate');
     Route::get('/{periode_id}/generate_submit',[CapaianSkpController::class, 'generateSubmit'])->name('kepegawaian.r_skp.generate_submit');
-    Route::get('/generate_nominal',[CapaianSkpController::class, 'generateNominal'])->name('kepegawaian.r_skp.generate_nominal');
+    Route::get('/generate_nominal/{periode_id}',[CapaianSkpController::class, 'generateNominal'])->name('kepegawaian.r_skp.generate_nominal');
     Route::get('/{periode_id}/generate_nominal_submit',[CapaianSkpController::class, 'generateNominalSubmit'])->name('kepegawaian.r_skp.generate_nominal_submit');
 });
 
@@ -99,10 +105,10 @@ Route::group(['prefix' => 'kepegawaian/manajemen_rubrik_integritas'], function (
     Route::get('/{periode_id}/pajak_pph',[IntegritasController::class, 'pajakPph'])->name('kepegawaian.r_integritas.pajak_pph');
     Route::get('/{periode_id}/generate_pph',[IntegritasController::class, 'generatePph'])->name('kepegawaian.r_integritas.generate_pph');
     Route::get('/{periode_id}/lhkpn_lhkasn',[IntegritasController::class, 'lhkpnLhkasn'])->name('kepegawaian.r_integritas.lhkpn_lhkasn');
-    Route::patch('/{id}/update_data_lhkpn_lhkasn',[IntegritasController::class, 'updateDataLhkpnLhkasn'])->name('kepegawaian.r_integritas.update_data_lhkpn_lhkasn');
+    Route::patch('/{id}/{periode_id}/update_data_lhkpn_lhkasn',[IntegritasController::class, 'updateDataLhkpnLhkasn'])->name('kepegawaian.r_integritas.update_data_lhkpn_lhkasn');
     Route::get('/{periode_id}/generate_lhkpn_lhkasn',[IntegritasController::class, 'generateLhkpnLhkasn'])->name('kepegawaian.r_integritas.generate_lhkpn_lhkasn');
     Route::get('/{periode_id}/sanksi_disiplin',[IntegritasController::class, 'sanksiDisiplin'])->name('kepegawaian.r_integritas.sanksi_disiplin');
-    Route::patch('/{id}/update_data_sanksi_disiplin',[IntegritasController::class, 'updateDataSanksiDisiplin'])->name('kepegawaian.r_integritas.update_data_sanksi_disiplin');
+    Route::patch('/{id}/{periode_id}/update_data_sanksi_disiplin',[IntegritasController::class, 'updateDataSanksiDisiplin'])->name('kepegawaian.r_integritas.update_data_sanksi_disiplin');
     Route::get('/{periode_id}/generate_sanksi_disiplin',[IntegritasController::class, 'generateSanksiDisiplin'])->name('kepegawaian.r_integritas.generate_sanksi_disiplin');
     Route::get('/{periode_id}/integritas_satu_bulan',[IntegritasController::class, 'integritasSatuBulan'])->name('kepegawaian.r_integritas.integritas_satu_bulan');
     Route::get('/{periode_id}/generate_integritas_satu_bulan',[IntegritasController::class, 'generateIntegritasSatuBulan'])->name('kepegawaian.r_integritas.generate_integritas_satu_bulan');
@@ -111,17 +117,21 @@ Route::group(['prefix' => 'kepegawaian/manajemen_rubrik_integritas'], function (
 });
 
 
-Route::group(['prefix' => 'kepegawaian/generate_remunerasi'], function () {
-    Route::get('/','kepegawaian\GenerateRemunerasiController@index')->name('kepegawaian.remunerasi');
-    Route::get('/{periode_id}/generate_data_tendik','kepegawaian\GenerateRemunerasiController@generateDataTendik')->name('kepegawaian.remunerasi.generate_data_tendik');
-    Route::get('/{periode_id}/total_remun','kepegawaian\GenerateRemunerasiController@totalRemun')->name('kepegawaian.remunerasi.total_remun');
-    Route::get('/{periode_id}/generate_total_remun','kepegawaian\GenerateRemunerasiController@generateTotalRemun')->name('kepegawaian.remunerasi.generate_total_remun');
-    Route::get('/{periode_id}/integritas','kepegawaian\GenerateRemunerasiController@integritas')->name('kepegawaian.remunerasi.integritas');
-    Route::get('/{periode_id}/generate_integritas','kepegawaian\GenerateRemunerasiController@generateIntegritas')->name('kepegawaian.remunerasi.generate_integritas');
-    Route::get('/{periode_id}/skp','kepegawaian\GenerateRemunerasiController@skp')->name('kepegawaian.remunerasi.skp');
-    Route::get('/{periode_id}/generate_skp','kepegawaian\GenerateRemunerasiController@generateSkp')->name('kepegawaian.remunerasi.generate_skp');
-    Route::get('/{periode_id}/persentase_absen','kepegawaian\GenerateRemunerasiController@persentaseAbsen')->name('kepegawaian.remunerasi.persentase_absen');
-    Route::get('/{periode_id}/generate_persentase_absen','kepegawaian\GenerateRemunerasiController@generatePersentaseAbsen')->name('kepegawaian.remunerasi.generate_persentase_absen');
+Route::group(['prefix' => 'kepegawaian/rekapitulasi'], function () {
+    Route::get('/{periode_id}',[RekapitulasiController::class, 'index'])->name('kepegawaian.rekapitulasi');
+    Route::get('/{periode_id}/generate_table',[RekapitulasiController::class, 'generateTable'])->name('kepegawaian.rekapitulasi.generate_table');
+    Route::get('/{periode_id}/data_tendik',[RekapitulasiController::class, 'dataTendik'])->name('kepegawaian.rekapitulasi.data_tendik');
+    Route::get('/{periode_id}/generate_data_tendik',[RekapitulasiController::class, 'generateDataTendik'])->name('kepegawaian.rekapitulasi.generate_data_tendik');
+    Route::get('/{periode_id}/total_remun',[RekapitulasiController::class, 'totalRemun'])->name('kepegawaian.rekapitulasi.total_remun');
+    Route::get('/{periode_id}/generate_total_remun',[RekapitulasiController::class, 'generateTotalRemun'])->name('kepegawaian.rekapitulasi.generate_total_remun');
+    Route::get('/{periode_id}/integritas',[RekapitulasiController::class, 'integritas'])->name('kepegawaian.rekapitulasi.integritas');
+    Route::get('/{periode_id}/generate_integritas',[RekapitulasiController::class, 'generateIntegritas'])->name('kepegawaian.rekapitulasi.generate_integritas');
+    Route::get('/{periode_id}/skp',[RekapitulasiController::class, 'skp'])->name('kepegawaian.rekapitulasi.skp');
+    Route::get('/{periode_id}/generate_skp',[RekapitulasiController::class, 'generateSkp'])->name('kepegawaian.rekapitulasi.generate_skp');
+    Route::get('/{periode_id}/persentase_absen',[RekapitulasiController::class, 'persentaseAbsen'])->name('kepegawaian.rekapitulasi.persentase_absen');
+    Route::get('/{periode_id}/generate_absensi',[RekapitulasiController::class, 'generateAbsensi'])->name('kepegawaian.rekapitulasi.generate_absensi');
+    Route::get('/{periode_id}/total_akhir',[RekapitulasiController::class, 'totalAkhir'])->name('kepegawaian.rekapitulasi.total_akhir_remun');
+    Route::get('/{periode_id}/generate_total_akhir',[RekapitulasiController::class, 'generateTotalAkhir'])->name('kepegawaian.rekapitulasi.generate_total_akhir');
     
 });
 
@@ -134,4 +144,29 @@ Route::group(['prefix'  => 'kepegawaian/manajemen_data_kepegawaianistrator'],fun
     Route::get('/{id}/edit','kepegawaian\kepegawaianController@edit')->name('kepegawaian.kepegawaian.edit');
     Route::patch('/','kepegawaian\kepegawaianController@update')->name('kepegawaian.kepegawaian.update');
     Route::delete('/','kepegawaian\kepegawaianController@delete')->name('kepegawaian.kepegawaian.delete');
+});
+
+//Route Operator
+Route::group(['prefix'  => 'operator'], function () {
+    Route::get('/dashboard', [DashboardOperatorController::class, 'dashboard'])->name('operator.dashboard');
+    Route::group(['prefix'=>'data_insentif'],function(){
+        route::get('/',[DataInsentifController::class, 'index'])->name('operator.datainsentif');
+    });
+
+    Route::group(['prefix'=>'detail_rubrik'],function(){
+        route::get('/{id}',[DetailRubrikController::class, 'index'])->name('operator.dataremun');
+        route::get('/{id}/kolum_rubrik',[DetailRubrikController::class, 'kolom_rubrik'])->name('operator.dataremun.kolom_rubrik');
+        route::post('/store',[DetailRubrikController::class, 'store'])->name('operator.dataremun.store');
+        route::get('/{fileid}/download',[DetailRubrikController::class, 'download'])->name('operator.dataremun.download');
+        route::get('/{id}/edit',[DetailRubrikController::class, 'edit'])->name('operator.dataremun.edit');
+        route::put('/{id}}/update',[DetailRubrikController::class, 'update'])->name('operator.dataremun.update');
+        route::put('/tambah_isian/{id}',[DetailRubrikController::class, 'tambah_isian'])->name('operator.dataremun.tambah_isian');
+        route::delete('/{id}/delete',[DetailRubrikController::class, 'destroy'])->name('operator.dataremun.destroy');
+    });
+
+    Route::prefix('rekap_data')->group(function () {
+        route::get('/','operator\RekapController@index')->name('operator.rekapdata');
+    });
+
+    
 });

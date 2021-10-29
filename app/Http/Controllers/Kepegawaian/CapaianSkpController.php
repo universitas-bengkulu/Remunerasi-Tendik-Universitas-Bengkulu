@@ -14,26 +14,27 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
 }
 class CapaianSkpController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    public function __construct()
+    {
+        $this->middleware(['auth','isKepegawaian']);
+    }
 
-    public function index(){
+    public function index($periode_id){
         $skps = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
                                 ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
                                 ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','file_skp','nm_periode')
-                                ->where('r_capaian_skps.status','1')
+                                ->where('r_capaian_skps.status','terkirim')
+                                ->where('periode_id',$periode_id)
                                 ->get();
         $verifieds = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
                                 ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
                                 ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','file_skp','nm_periode')
-                                ->where('r_capaian_skps.status','!=','terkirim')
-                                ->where('r_capaian_skps.status','!=','menunggu')
+                                ->where('r_capaian_skps.status','berhasil')
+                                ->where('periode_id',$periode_id)
                                 ->get();
-        $skps_2 = RCapaianSkp::where('r_capaian_skps.status','!=','menunggu')
-                                ->get();
+        $tendiks =RCapaianSkp::where('periode_id',$periode_id)->get();
         $jumlah = RCapaianSkp::where('r_capaian_skps.status','!=','menunggu')
+                    ->where('periode_id',$periode_id)
                     ->groupBy('tendik_id')
                     ->get();
         $jumlah_tendik = Count(Tendik::all());
@@ -46,7 +47,48 @@ class CapaianSkpController extends Controller
             );
             return \redirect()->back()->with($notification);
         }
-        return view('kepegawaian/skp.index', compact('skps','verifieds','jumlah_tendik','jumlah_skp','periode_aktif'));
+        return view('kepegawaian/skp.index', compact('skps','verifieds','tendiks','jumlah_tendik','jumlah_skp','periode_id'));
+    }
+
+    public function updateNilai($id,$periode_id, Request $request){
+        RCapaianSkp::where('id',$id)->where('periode_id',$periode_id)->update([
+            'nilai_skp' =>  $request->nilai_skp,
+        ]);
+        $notification = array(
+            'message' => 'Berhasil, nilai berhasil diubah!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kepegawaian.r_skp',[$periode_id])->with($notification);
+    }
+
+    public function generateTendik($periode_id){
+        $periode = Periode::select('id')->where('id',$periode_id)->first();
+        if (count($periode)>0) {
+            $tendiks = Tendik::select('id','nip','nm_lengkap')->get();
+            $array = [];
+            for ($i=0; $i <count($tendiks) ; $i++) { 
+                $array[]    =   [
+                    'periode_id'            =>  $periode->id,
+                    'tendik_id'             =>  $tendiks[$i]->id,
+                    'nilai_skp'  =>  100,
+                    'status'       =>  'berhasil',
+                ];
+            }
+
+            RCapaianSkp::insert($array);
+            $notification = array(
+                'message' => 'Berhasil, data tendik berhasil digenerate!',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('kepegawaian.r_skp',[$periode_id])->with($notification);
+        }
+        else{
+            $notification2 = array(
+                'message' => 'Gagal, silahkan aktifkan periode saat ini terlebih dahulu!',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('kepegawaian.r_integritas',[$periode_id])->with(['error'  =>  'Silahkan Aktifkan Periode Saat Ini Terlebih Dahulu !!']);
+        }
     }
 
     public function verifikasi(Request $request){
@@ -60,33 +102,31 @@ class CapaianSkpController extends Controller
         return redirect()->route('kepegawaian.r_skp')->with(['success'    =>  'Data rubrik skp berhasil di verifikasi !!']);
     }
 
-    public function generate(){
+    public function generate($periode_id){
         $datas = RCapaianSkp::leftJoin('tendiks','tendiks.id','r_capaian_skps.tendik_id')
                         ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                         ->select('r_capaian_skps.id','nip','nm_lengkap','remunerasi','potongan_skp','nilai_skp')
                         // ->where('r_capaian_skps.status','!=','gagal')
                         ->groupBy('r_capaian_skps.id')
+                        ->where('periode_id',$periode_id)
                         ->get();
-        $cek = RCapaianSkp::select('potongan_skp')->get();
+        $cek = RCapaianSkp::select('potongan_skp')->first();
         $periode_aktif = Periode::where('status','1')->select('id')->first();
-        for ($i=0; $i < count($cek); $i++) { 
-            if ($cek[$i]->potongan_skp != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        if ($cek->potongan_skp != null) {
+            $a = "sudah";
         }
-        return view('kepegawaian/skp.generate',compact('datas','periode_aktif','a'));
+        else{
+            $a = "belum";
+        }
+        return view('kepegawaian/skp.generate',compact('datas','periode_aktif','periode_id','a'));
     }
 
     public function generateSubmit($periode_id){
-        $periode_id = Crypt::decrypt($periode_id);
         $datas = RCapaianSkp::join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
                                 ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                                 ->select('r_capaian_skps.id','nilai_skp','remunerasi')
                                 ->where('periode_id',$periode_id)
-                                ->where('r_capaian_skps.status','2')
+                                ->where('r_capaian_skps.status','berhasil')
                                 ->groupBy('r_capaian_skps.id')
                                 ->get();
         for ($i=0; $i <count($datas) ; $i++) { 
@@ -120,30 +160,32 @@ class CapaianSkpController extends Controller
                 ]);
             }
         }
-        return redirect()->route('kepegawaian.r_skp.generate')->with(['success'    =>  'Potongan rubrik skp berhasil di generate !!']);
+        $notification = array(
+            'message' => 'Berhasil, persentase potongan skp berhasil digenerate!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kepegawaian.r_skp.generate',[$periode_id])->with($notification);
     }
 
-    public function generateNominal(){
+    public function generateNominal($periode_id){
         $datas = RCapaianSkp::rightJoin('tendiks','tendiks.id','r_capaian_skps.tendik_id')
                         ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                         ->leftJoin('periodes','periodes.id','r_capaian_skps.periode_id')
                         ->select('r_capaian_skps.id','nip','nm_lengkap','remunerasi','jumlah_bulan','potongan_skp','nominal_potongan')
+                        ->where('periode_id',$periode_id)
                         ->get();
-        $cek = RCapaianSkp::select('nominal_potongan')->get();
+        $cek = RCapaianSkp::select('nominal_potongan')->first();
         $periode_aktif = Periode::where('status','1')->select('id')->first();
-        for ($i=0; $i < count($cek); $i++) { 
-            if ($cek[$i]->nominal_potongan != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        if ($cek->nominal_potongan != null) {
+            $a = "sudah";
         }
-        return view('kepegawaian/skp.generate_nominal',compact('datas','periode_aktif','a'));
+        else{
+            $a = "belum";
+        }
+        return view('kepegawaian/skp.generate_nominal',compact('datas','periode_aktif','periode_id','a'));
     }
     
     public function generateNominalSubmit($periode_id){
-        $periode_id = Crypt::decrypt($periode_id);
         $datas = RCapaianSkp::join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
                                 ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                                 ->select('r_capaian_skps.id','nilai_skp','potongan_skp','remunerasi')
@@ -154,6 +196,10 @@ class CapaianSkpController extends Controller
                 'nominal_potongan'  =>  ($datas[$i]->potongan_skp/100) * (($datas[$i]->remunerasi * 40)/100),
             ]);
         }
-        return redirect()->route('kepegawaian.r_skp.generate_nominal')->with(['success'    =>  'Potongan Nominal rubrik skp berhasil di generate !!']);
+        $notification = array(
+            'message' => 'Berhasil, potongan nominal rubrik skp berhasil digenerate!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kepegawaian.r_skp.generate_nominal',[$periode_id])->with($notification);
     }
 }

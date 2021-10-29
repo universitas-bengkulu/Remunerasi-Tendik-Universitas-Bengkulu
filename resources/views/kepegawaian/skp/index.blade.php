@@ -3,12 +3,12 @@
 @section('login_as', 'Kepegawaian')
 @section('user-login')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->nama_lengkap }}
     @endif
 @endsection
 @section('user-login2')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->nama_lengkap }}
     @endif
 @endsection
 @section('sidebar-menu')
@@ -34,7 +34,7 @@
                             </div>
                             @else
                             @if ($jumlah_tendik == $jumlah_skp)
-                                <div class="alert alert-succwss alert-block" id="keterangan">
+                                <div class="alert alert-success alert-block" id="keterangan">
                                     <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Semua Tenaga Kependidikan Sudah Mengirimkan File dan Nilai SKP !!
                                 </div>
                                 @else
@@ -56,13 +56,10 @@
                                 <span class="sr-only">(current)</span>
                               </span>
                           </li>
-                            @php
-                                $periode_id = $periode_aktif->id;
-                            @endphp
                           <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.r_skp.generate',[$periode_id]) }}">2</a></li>
                           <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.r_skp.generate_nominal',[$periode_id]) }}">3</a></li>
                           <li class="page-item">
-                            <a class="page-link" href="{{ route('kepegawaian.r_skp.generate',[$periode_id],[$periode_id]) }}">Next</a>
+                            <a class="page-link" href="{{ route('kepegawaian.r_skp.generate',[$periode_id]) }}">Next</a>
                           </li>
                         </ul>
                     </nav>
@@ -78,6 +75,14 @@
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-skp" role="tabpanel" aria-labelledby="nav-honor-tab">
                             <div class="row">
+                                <div class="col-md-12">
+                                    @if (count($tendiks)>0)
+                                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
+                                        @else
+                                        <a href="{{ route('kepegawaian.r_skp.generate_tendik',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</a>
+                                    @endif
+                                    <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
+                                </div>
                                 <div class="col-md-12" style="margin-top:10px;">
                                     <table class="table table-striped table-bordered" id="table" style="width:100%;">
                                         <thead>
@@ -104,7 +109,12 @@
                                                     <td> {{ $skp->nilai_skp }} </td>
                                                     <td> {{ $skp->nm_periode }} </td>
                                                     <td>
-                                                        <a href="{{ asset('storage/'.$skp->path) }}" download="file_skp{{ $skp->nip }}"><i class="fa fa-download"></i>&nbsp; download file skp</a>
+                                                        @if (empty($skp->file_skp))
+                                                            <a style="color: red">file kosong</a>
+                                                            @else
+                                                            <a href="{{ asset('storage/'.$skp->path) }}" download="file_skp{{ $skp->nip }}"><i class="fa fa-download"></i>&nbsp; download file skp</a>
+                                                            
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         @if ($skp->status == "0")
@@ -131,6 +141,14 @@
                         </div>
                         <div class="tab-pane fade show" id="nav-verified" role="tabpanel" aria-labelledby="nav-honor-tab">
                             <div class="row">
+                                <div class="col-md-12">
+                                    @if (count($tendiks)>0)
+                                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
+                                        @else
+                                        <a href="{{ route('kepegawaian.r_skp.generate_tendik',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</a>
+                                    @endif
+                                    <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
+                                </div>
                                 <div class="col-md-12" style="margin-top:10px;">
                                     <table class="table table-striped table-bordered" id="table" style="width:100%;">
                                         <thead>
@@ -154,10 +172,21 @@
                                                     <td> {{ $no++ }} </td>
                                                     <td> {{ $skp->nip }} </td>
                                                     <td> {{ $skp->nm_lengkap }} </td>
-                                                    <td> {{ $skp->nilai_skp }} </td>
+                                                    <td>
+                                                        <form action="{{ route('kepegawaian.r_skp.update_nilai',[$skp->id,$periode_id]) }}" method="POST">
+                                                            {{ csrf_field() }} {{ method_field("PATCH") }}
+                                                            <input type="text" name="nilai_skp" class="form-control" value="{{ $skp->nilai_skp }}" style="margin-bottom: 5px !important;">
+                                                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>
+                                                        </form>
+                                                    </td>
                                                     <td> {{ $skp->nm_periode }} </td>
                                                     <td>
-                                                        <a href="{{ asset('storage/'.$skp->path) }}" download="{{ $skp->path }}"><i class="fa fa-download"></i>&nbsp; download file skp</a>
+                                                        @if (empty($skp->file_skp))
+                                                            <a style="color: red">file kosong</a>
+                                                            @else
+                                                            <a href="{{ asset('storage/'.$skp->path) }}" download="file_skp{{ $skp->nip }}"><i class="fa fa-download"></i>&nbsp; download file skp</a>
+                                                            
+                                                        @endif
                                                     </td>
                                                     <td>
                                                         @if ($skp->status == "0")

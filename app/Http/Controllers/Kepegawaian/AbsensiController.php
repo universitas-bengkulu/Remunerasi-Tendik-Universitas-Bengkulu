@@ -13,10 +13,10 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
 }
 class AbsensiController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    public function __construct()
+    {
+        $this->middleware(['auth','isKepegawaian']);
+    }
 
     public function index($periode_id){
         $periode_aktif = Periode::select('id','jumlah_bulan','nm_periode')->where('id',$periode_id)->first();

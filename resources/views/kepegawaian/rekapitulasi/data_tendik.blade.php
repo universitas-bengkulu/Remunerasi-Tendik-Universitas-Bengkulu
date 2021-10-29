@@ -3,12 +3,12 @@
 @section('login_as', 'Kepegawaian')
 @section('user-login')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->nama_lengkap }}
     @endif
 @endsection
 @section('user-login2')
     @if (Auth::check())
-    {{ Auth::user()->nm_user }}
+    {{ Auth::user()->nama_lengkap }}
     @endif
 @endsection
 @section('sidebar-menu')
@@ -48,7 +48,7 @@
                                 <strong>Gagal :</strong>{{ $message }}
                             </div>
                             @else
-                                @if ($a == "sudah")
+                                @if (count($datas)>0)
                                     <div class="alert alert-success alert-block">
                                         <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Data Tenaga Kependidikan <b style="text-transform:uppercase">{{ $periode_aktif->nm_periode }}</b> sudah digenerate, silahkan lanjutkan dengan klik tombol next hingga selesai !!
                                     </div>
@@ -65,41 +65,34 @@
                 <div class="col-md-12" >
                     <nav aria-label="...">
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="{{ route('kepegawaian.remunerasi',[$periode_id]) }}">Previous</a>
-                            </li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi',[$periode_id]) }}">1</a></li>
+                          <li class="page-item">
+                            <a class="page-link" href="{{ route('kepegawaian.rekapitulasi',[$periode_id]) }}">Previous</a>
+                          </li>
+                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi',[$periode_id]) }}">1</a></li>
                           <li class="page-item active">
                             <span class="page-link">
                                 2
                                 <span class="sr-only">(current)</span>
                               </span>
                           </li>
-                            @php
-                                $periode_id = $periode_aktif->id;
-                            @endphp
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.integritas',[$periode_id]) }}">2</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.skp',[$periode_id]) }}">4</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">3</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">4</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">5</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">6</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">7</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">8</a></li>
-                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.remunerasi.total_remun',[$periode_id]) }}">9</a></li>
+                          <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi.total_remun',[$periode_id]) }}">3</a></li>
+                          <li class="page-item disabled"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi.integritas',[$periode_id]) }}">4</a></li>
+                          <li class="page-item disabled"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi.skp',[$periode_id]) }}">5</a></li>
+                          <li class="page-item disabled"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi.persentase_absen',[$periode_id]) }}">6</a></li>
+                          <li class="page-item disabled"><a class="page-link" href="{{ route('kepegawaian.rekapitulasi.total_remun',[$periode_id]) }}">7</a></li>
                           <li class="page-item">
-                            <a class="page-link" href="{{ route('kepegawaian.remunerasi.integritas',[$periode_id],[$periode_id]) }}">Next</a>
+                            <a class="page-link" href="{{ route('kepegawaian.rekapitulasi.total_remun',[$periode_id]) }}">Next</a>
                           </li>
                         </ul>
                     </nav>
                 </div>
                 <div class="col-md-12">
-                    @if ($a == "sudah")
-                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Total Remunerasi</button>
+                    @if (count($datas)>0)
+                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tenaga Kependidikan</button>
                         @else
-                        <a href="{{ route('kepegawaian.remunerasi.generate_total_remun',[$periode_aktif->id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Total Remunerasi</a>
+                        <a href="{{ route('kepegawaian.rekapitulasi.generate_data_tendik',[$periode_aktif->id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tenaga Kependidikan</a>
                     @endif
-                    <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Total Remunerasi</button>
+                    <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tenaga Kependidikan</button>
                 </div>
                 <div class="col-md-12">
                     <table class="table table-striped table-bordered table-hover" id="table" style="width:100%;">
@@ -107,12 +100,14 @@
                             <tr>
                                 <th style="text-align:center;">No</th>
                                 <th style="text-align:center;">Nama Lengkap</th>
-                                <th style="text-align:center;">Remunerasi 30 %</th>
-                                <th style="text-align:center;">Remunerasi 70 %</th>
+                                <th style="text-align:center;">Nip</th>
+                                <th style="text-align:center;">Pangkat</th>
+                                <th style="text-align:center;">Golongan</th>
+                                <th style="text-align:center;">Kelas Jabatan</th>
+                                <th style="text-align:center;">Nama Jabatan</th>
+                                <th style="text-align:center;">Remunerasi Per Bulan</th>
                                 <th style="text-align:center;">Jumlah Bulan</th>
-                                <th style="text-align:center;">Jumlah Remun 30 %</th>
-                                <th style="text-align:center;">Jumlah Remun 70 %</th>
-                                <th style="text-align:center;">Total Remun</th>
+                                <th style="text-align:center;">No Rekening</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -123,46 +118,36 @@
                                 <tr>
                                     <td> {{ $no++ }} </td>
                                     <td> {{ $data->nm_lengkap }} </td>
+                                    <td> {{ $data->nip }} </td>
+                                    <td> {{ $data->pangkat }} </td>
+                                    <td> {{ $data->golongan }} </td>
                                     <td style="text-align:center;">
-                                        @if ($data->remunerasi_30 == null)
+                                        @if ($data->kelas_jabatan == null)
                                             <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
                                             @else
-                                            {{ $data->remunerasi_30 }}
+                                            {{ $data->kelas_jabatan }}
                                         @endif
                                     </td>
                                     <td style="text-align:center;">
-                                        @if ($data->remunerasi_70 == null)
+                                        @if ($data->nm_jabatan == null)
                                             <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
                                             @else
-                                            {{ $data->remunerasi_70 }}
+                                            {{ $data->nm_jabatan }}
                                         @endif
                                     </td>
                                     <td style="text-align:center;">
-                                        @if ($data->jumlah_bulan == null)
+                                        @if ($data->remunerasi_per_bulan == null)
                                             <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
                                             @else
-                                            {{ $data->jumlah_bulan }}
+                                            Rp.{{ number_format($data->remunerasi_per_bulan) }},-
                                         @endif
                                     </td>
+                                    <td> {{ $data->jumlah_bulan }} </td>
                                     <td style="text-align:center;">
-                                        @if ($data->jumlah_remun_30 == null)
+                                        @if ($data->no_rekening == null)
                                             <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
                                             @else
-                                            Rp.{{ number_format($data->jumlah_remun_30) }},-
-                                        @endif
-                                    </td>
-                                    <td style="text-align:center;">
-                                        @if ($data->jumlah_remun_70 == null)
-                                            <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
-                                            @else
-                                            Rp.{{ number_format($data->jumlah_remun_70) }},-
-                                        @endif
-                                    </td>
-                                    <td style="text-align:center;">
-                                        @if ($data->total_remun == null)
-                                            <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
-                                            @else
-                                            Rp.{{ number_format($data->total_remun) }},-
+                                            {{ $data->no_rekening }}
                                         @endif
                                     </td>
                                 </tr>

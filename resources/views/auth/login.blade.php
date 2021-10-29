@@ -7,6 +7,7 @@
         <link href="{{ asset('assets/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
         <link rel="stylesheet" href=" {{ asset('css/style_login.css') }} ">
         <link href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css">
 	</head>
 	<body>
 		<div id="particles-js">
@@ -35,9 +36,37 @@
             </div>
         </div>
     </body>
+    <script src="{{ asset('assets/vendors/jquery/dist/jquery.min.js') }}"></script>
     <script type="text/javascript" src=" {{ asset('assets/particles/particles.min.js') }} "></script>
     <script type="text/javascript" src=" {{ asset('assets/particles/app.js') }} "></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    {{-- <script>
+        document.addEventListener('contextmenu', event => event.preventDefault());
+    </script> --}}
     <script>
-        // document.addEventListener('contextmenu', event => event.preventDefault());
-    </script>
+        @if(Session::has('message'))
+          var type = "{{ Session::get('alert-type', 'info') }}";
+          switch(type){
+              case 'info':
+              toastr.options = {"closeButton": true,"debug": false,"progressBar": true,"positionClass": "toast-top-right","showDuration": "300","hideDuration": "1000","timeOut": "10000","extendedTimeOut": "1000","showEasing": "swing","hideEasing": "linear","showMethod": "fadeIn","hideMethod": "fadeOut"};
+                  toastr.info("{{ Session::get('message') }}");
+                  break;
+  
+              case 'warning':
+              toastr.options = {"closeButton": true,"debug": false,"progressBar": true,"positionClass": "toast-top-right","showDuration": "300","hideDuration": "1000","timeOut": "10000","extendedTimeOut": "1000","showEasing": "swing","hideEasing": "linear","showMethod": "fadeIn","hideMethod": "fadeOut"};
+                  toastr.warning("{{ Session::get('message') }}");
+                  break;
+  
+              case 'success':
+              toastr.options = {"closeButton": true,"progressBar": true,"positionClass": "toast-top-right","showDuration": "300","hideDuration": "1000","timeOut": "10000","showEasing": "swing","hideEasing": "linear","showMethod": "fadeIn","hideMethod": "fadeOut"};
+                  toastr.success("{{ Session::get('message') }}");
+                  break;
+  
+              case 'error':
+              toastr.options = {"closeButton": true,"progressBar": true,"positionClass": "toast-top-right","showDuration": "300","hideDuration": "1000","timeOut": "10000","showEasing": "swing","hideEasing": "linear","showMethod": "fadeIn","hideMethod": "fadeOut"};
+                  toastr.error("{{ Session::get('message') }}");
+                  break;
+          }
+        @endif
+      </script>
 </html>

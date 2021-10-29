@@ -13,10 +13,10 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
 }
 class IntegritasController extends Controller
 {
-    // public function __construct()
-    // {
-    //     $this->middleware('auth');
-    // }
+    public function __construct()
+    {
+        $this->middleware(['auth','isKepegawaian']);
+    }
 
     public function index($periode_id){
         $integritas = RIntegritas::join('periodes','periodes.id','r_integritas.periode_id')
@@ -51,9 +51,17 @@ class IntegritasController extends Controller
                 ];
             }
             RIntegritas::insert($array);
-            return redirect()->route('kepegawaian.r_integritas',[$periode_id])->with(['success'  =>  'Data Tendik Berhasil Di Generate !!']);
+            $notification = array(
+                'message' => 'Berhasil, data tendik berhasil digenerate!',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('kepegawaian.r_integritas',[$periode_id])->with($notification);
         }
         else{
+            $notification2 = array(
+                'message' => 'Gagal, silahkan aktifkan periode saat ini terlebih dahulu!',
+                'alert-type' => 'error'
+            );
             return redirect()->route('kepegawaian.r_integritas',[$periode_id])->with(['error'  =>  'Silahkan Aktifkan Periode Saat Ini Terlebih Dahulu !!']);
         }
     }
@@ -190,11 +198,11 @@ class IntegritasController extends Controller
             ]); 
         }
 
-        $notification = array(
+        $notification2 = array(
             'message' => 'Berhasil, Total Remunerasi 30% + 70% berhasil di generate!',
             'alert-type' => 'success'
         );
-        return redirect()->route('kepegawaian.r_integritas.total_remun',[$periode_id])->with(['success'  =>  'Total Remunerasi 30% + 70% berhasil di generate !!']);
+        return redirect()->route('kepegawaian.r_integritas.total_remun',[$periode_id])->with($notification2);
     }
 
     public function pajakPph($periode_id){
@@ -227,7 +235,6 @@ class IntegritasController extends Controller
         if (empty($data[0]->total_remun)) {
             return redirect()->route('kepegawaian.r_integritas.pajak_pph',[$periode_id])->with(['error'  =>  'Silahkan Kembali dan Generate Total Remunerasi Terlebih Dahulu !!']);
         }
-        return substr($data[0]->golongan,0,1);
         for ($i=0; $i <count($data) ; $i++) { 
             if (substr($data[$i]->golongan, 0 ,1) == 4) {
                 RIntegritas::where('id',$data[$i]->id)->update([
@@ -243,8 +250,11 @@ class IntegritasController extends Controller
                 ]);
             }
         }
-
-        return redirect()->route('kepegawaian.r_integritas.pajak_pph',[$periode_id])->with(['success'  =>  'Potongan pajak PPH berhasil di generate !!']);
+        $notification = array(
+            'message' => 'Berhasil, pajak PPH berhasil di generate!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kepegawaian.r_integritas.pajak_pph',[$periode_id])->with($notification);
     }
 
     public function lhkpnLhkasn($periode_id){
@@ -267,21 +277,27 @@ class IntegritasController extends Controller
         return view('kepegawaian/integritas.lhkpn_lhkasn',compact('datas','periode_aktif','a','periode_id'));
     }
 
-    public function updateDataLhkpnLhkasn(Request $request, $id){
-        $periode_id = Crypt::decrypt($request->periode_id);
+    public function updateDataLhkpnLhkasn(Request $request, $id,$periode_id){
         RIntegritas::where('id',$id)->where('periode_id',$periode_id)->update([
             'laporan_lhkpn_lhkasn'  =>  $request->laporan_lhkpn_lhkasn,
         ]);
-
-        return redirect()->route('kepegawaian.r_integritas.lhkpn_lhkasn',[$periode_id])->with(['success'  =>  'Data Laporan LHKPN/LHKASN Berhasil Di Update !!']);
+        $notification = array(
+            'message' => 'Berhasil, data laporan LHKPN/LHKASN berhasil di update!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kepegawaian.r_integritas.lhkpn_lhkasn',[$periode_id])->with($notification);
     }
 
     public function generateLhkpnLhkasn($periode_id){
         $datas = RIntegritas::select('r_integritas.id','periode_id','laporan_lhkpn_lhkasn','remun_30','pajak_pph')
-                            ->where('periodes.id',$periode_id)
+                            ->where('periode_id',$periode_id)
                             ->get();
-        if (empty($datas[0]->pajak_pph)) {
-            return redirect()->route('kepegawaian.r_integritas.lhkpn_lhkasn',[$periode_id])->with(['error'  =>  'Silahkan Kembali dan Generate Potongan pajak PPH Terlebih Dahulu !!']);
+        if ( $datas[0]->pajak_pph ==null) {
+            $notification = array(
+                'message' => 'Gagal, silahkan kembali dan generate potongan pajak PPH terlebih dahulu!',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('kepegawaian.r_integritas.lhkpn_lhkasn',[$periode_id])->with($notification);
         }
         for ($i=0; $i <count($datas) ; $i++) { 
             if ($datas[$i]->laporan_lhkpn_lhkasn == "sudah") {
@@ -295,10 +311,14 @@ class IntegritasController extends Controller
                 ]);
             }
         } 
-        return redirect()->route('kepegawaian.r_integritas.lhkpn_lhkasn',[$periode_id])->with(['success'  =>  'Potongan LHKPN/LHKASN Berhasil Di Generate !!']);
+        $notification = array(
+            'message' => 'Berhasil, potongan LHKPN/LHKASN berhasil di generate!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kepegawaian.r_integritas.lhkpn_lhkasn',[$periode_id])->with($notification);
     }
 
-    public function sanksiDisiplin(){
+    public function sanksiDisiplin($periode_id){
         $datas = RIntegritas::join('periodes','periodes.id','r_integritas.periode_id')
                             ->join('tendiks','tendiks.id','r_integritas.tendik_id')
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
@@ -315,24 +335,30 @@ class IntegritasController extends Controller
                 $a = "belum";
             }
         }
-        return view('kepegawaian/integritas.sanksi_disiplin',compact('datas','periode_aktif','a'));
+        return view('kepegawaian/integritas.sanksi_disiplin',compact('datas','periode_aktif','periode_id','a'));
     }
 
-    public function updateDataSanksiDisiplin(Request $request, $id){
-        $periode_id = Crypt::decrypt($request->periode_id);
+    public function updateDataSanksiDisiplin(Request $request, $id,$periode_id){
         RIntegritas::where('id',$id)->where('periode_id',$periode_id)->update([
             'sanksi_disiplin'  =>  $request->sanksi_disiplin,
         ]);
-
-        return redirect()->route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id])->with(['success'  =>  'Data Sanksi Disiplin Berhasil Di Update !!']);
+        $notification = array(
+            'message' => 'Berhasil, data sanksi disiplin berhasil di update!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id])->with($notification);
     }
 
     public function generateSanksiDisiplin($periode_id){
         $datas = RIntegritas::select('r_integritas.id','periode_id','sanksi_disiplin','remun_70','potongan_lhkpn_lhkasn')
-                            ->where('periodes.id',$periode_id)
+                            ->where('periode_id',$periode_id)
                             ->get();
         if ($datas[0]->potongan_lhkpn_lhkasn == null) {
-            return redirect()->route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id])->with(['error'  =>  'Silahkan Kembali dan Generate Potongan LHKPN/LHKASN Terlebih Dahulu !!']);
+            $notification = array(
+                'message' => 'Gagal, silahkan kembali dan generate potongan LHKPN/LHKASN terlebih dahulu!',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id])->with($notification);
         }
         for ($i=0; $i <count($datas) ; $i++) { 
             if ($datas[$i]->sanksi_disiplin == "tidak") {
@@ -346,10 +372,14 @@ class IntegritasController extends Controller
                 ]);
             }
         } 
-        return redirect()->route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id])->with(['success'  =>  'Potongan Sanksi Disiplin Berhasil Di Generate !!']);
+        $notification = array(
+            'message' => 'Berhasil, potongan sanksi disiplin berhasil digenerate!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id])->with($notification);
     }
 
-    public function integritasSatuBulan(){
+    public function integritasSatuBulan($periode_id){
         $datas = RIntegritas::join('periodes','periodes.id','r_integritas.periode_id')
                             ->join('tendiks','tendiks.id','r_integritas.tendik_id')
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
@@ -366,29 +396,37 @@ class IntegritasController extends Controller
                 $a = "belum";
             }
         }
-        return view('kepegawaian/integritas.integritas_satu_bulan',compact('datas','periode_aktif','a'));
+        return view('kepegawaian/integritas.integritas_satu_bulan',compact('datas','periode_aktif','periode_id','a'));
     }
 
     public function generateIntegritasSatuBulan($periode_id){
         $datas = RIntegritas::select('r_integritas.id','periode_id','potongan_lhkpn_lhkasn','potongan_sanksi_disiplin')
-                            ->where('periodes.id',$periode_id)
+                            ->where('periode_id',$periode_id)
                             ->get();
         if ($datas[0]->potongan_sanksi_disiplin == null) {
-            return redirect()->route('kepegawaian.r_integritas.integritas_satu_bulan',[$periode_id])->with(['error'  =>  'Silahkan Kembali dan Generate Potongan Sanksi Disiplin Terlebih Dahulu !!']);
+            $notification = array(
+                'message' => 'Gagal, Silahkan Kembali dan Generate Potongan Sanksi Disiplin Terlebih Dahulu!',
+                'alert-type' => 'error'
+            );
+            return redirect()->route('kepegawaian.r_integritas.integritas_satu_bulan',[$periode_id])->with($notification);
         }
         for ($i=0; $i <count($datas) ; $i++) { 
             RIntegritas::where('id',$datas[$i]->id)->update([
                 'integritas_satu_bulan' =>  ($datas[$i]->potongan_lhkpn_lhkasn)+ ($datas[$i]->potongan_sanksi_disiplin),
             ]);
         } 
-        return redirect()->route('kepegawaian.r_integritas.integritas_satu_bulan',[$periode_id])->with(['success'  =>  'Potongan Integritas Satu Bulan Berhasil Di Generate !!']);
+        $notification = array(
+            'message' => 'Berhasil, Potongan Integritas Satu Bulan Berhasil Di Generate!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kepegawaian.r_integritas.integritas_satu_bulan',[$periode_id])->with($notification);
     }
 
-    public function totalIntegritas(){
+    public function totalIntegritas($periode_id){
         $datas = RIntegritas::join('periodes','periodes.id','r_integritas.periode_id')
                             ->join('tendiks','tendiks.id','r_integritas.tendik_id')
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
-                            ->select('r_integritas.id','periode_id','nm_lengkap','integritas_satu_bulan','total_integritas'
+                            ->select('r_integritas.id','periode_id','nm_lengkap','integritas_satu_bulan','jumlah_bulan','total_integritas'
                                         )
                             ->where('periode_id',$periode_id)
                             ->get();
@@ -401,22 +439,31 @@ class IntegritasController extends Controller
                 $a = "belum";
             }
         }
-        return view('kepegawaian/integritas.total_integritas',compact('datas','periode_aktif','a'));
+        return view('kepegawaian/integritas.total_integritas',compact('datas','periode_id','periode_aktif','a'));
     }
 
     public function generateTotalIntegritas($periode_id){
-        $datas = RIntegritas::select('r_integritas.id','periode_id','integritas_satu_bulan')
-                            ->where('periodes.id',$periode_id)
+        $datas = RIntegritas::join('periodes','periodes.id','r_integritas.periode_id')
+                                ->select('r_integritas.id','periode_id','integritas_satu_bulan','jumlah_bulan')
+                            ->where('periode_id',$periode_id)
                             ->get();
         if ($datas[0]->integritas_satu_bulan == null) {
-            return redirect()->route('kepegawaian.r_integritas.total_integritas',[$periode_id])->with(['error'  =>  'Silahkan Kembali dan Generate Potongan Integritas Satu Bulan Terlebih Dahulu !!']);
+            $notification = array(
+                'message' => 'Berhasil, Silahkan Kembali dan Generate Potongan Integritas Satu Bulan Terlebih Dahulu!',
+                'alert-type' => 'success'
+            );
+            return redirect()->route('kepegawaian.r_integritas.total_integritas',[$periode_id])->with($notification);
         }
         for ($i=0; $i <count($datas) ; $i++) { 
             RIntegritas::where('id',$datas[$i]->id)->update([
                 'total_integritas' =>  (($datas[$i]->integritas_satu_bulan) * $datas[$i]->jumlah_bulan),
             ]);
         } 
-        return redirect()->route('kepegawaian.r_integritas.total_integritas',[$periode_id])->with(['success'  =>  'Potongan Integritas Tiga Bulan Berhasil Di Generate !!']);
+        $notification = array(
+            'message' => 'Berhasil, Potongan Integritas Tiga Bulan Berhasil Di Generate!',
+            'alert-type' => 'success'
+        );
+        return redirect()->route('kepegawaian.r_integritas.total_integritas',[$periode_id])->with($notification);
     }
 
 }

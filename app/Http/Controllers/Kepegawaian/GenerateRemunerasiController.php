@@ -14,6 +14,11 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
 }
 class GenerateRemunerasiController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth','isKepegawaian']);
+    }
+
     public function index(){
         $periode_aktif = Periode::where('status','1')->select('id')->first();
         $datas = Remunerasi::select('nm_lengkap','nip','pangkat','golongan','kelas_jabatan','nm_jabatan',

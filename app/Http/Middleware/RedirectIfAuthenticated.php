@@ -23,7 +23,32 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                if (auth()->user()->role == "kepegawaian") {
+                    $notification1 = array(
+                        'message' => 'Berhasil, akun login sebagai kepegawaian!',
+                        'alert-type' => 'success'
+                    );
+                    return redirect()->route('kepegawaian.dashboard')->with($notification1);
+                }elseif (auth()->user()->role == "operator") {
+                    $notification2 = array(
+                        'message' => 'Berhasil, anda login sebagai operator!',
+                        'alert-type' => 'success'
+                    );
+                    return redirect()->route('operator.dashboard')->with($notification2);;
+                }elseif (auth()->user()->role == "administrator") {
+                    $notification2 = array(
+                        'message' => 'Berhasil, anda login sebagai administrator!',
+                        'alert-type' => 'success'
+                    );
+                    return redirect()->route('administrator.dashboard')->with($notification2);;
+                } else {
+                    Auth::logout();
+                    $notification = array(
+                        'message' => 'Gagal, akun anda tidak dikenali!',
+                        'alert-type' => 'error'
+                    );
+                    return redirect()->route('login')->with($notification);
+                }
             }
         }
 
