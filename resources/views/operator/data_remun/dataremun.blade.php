@@ -1,3 +1,6 @@
+@php
+    use App\Models\DetailIsianRubrik;
+@endphp
 @extends('layouts.layout')
 @section('title', 'Manajemen Data Remunerasi')
 @section('login_as', 'Operator')
@@ -112,7 +115,7 @@
                 <div class="col-md-6 mt-2 form-group">
                     <label for="id_periode">Periode</label>
                     <select name="id_periode" id="id_periode" class="form-control @error('id_periode') is-invalid @enderror">
-                        <option value="{{ $periode->id }}"></option>
+                        <option value="{{ $periodes->id }}">{{ $periodes->masa_kinerja }}</option>
                     </select>
                     @error('id_periode')
                         <span class="invalid-feedback" role="alert">
@@ -157,10 +160,11 @@
                        <tr>
                            <th width="4%">no</th>
                            <th class="text-center">Nama Rubrik</th>
-                           <th class="text-center">Nomor SK</th>
-                           <th class="text-center">unit</th>
-                           <th class="text-center">File</th>
                            <th class="text-center">Periode</th>
+                           <th class="text-center">Nomor SK</th>
+                           <th class="text-center">Unit</th>
+                           <th class="text-center">Jumlah Anggota</th>
+                           <th class="text-center">File</th>
                            <th class="text-center">Status</th>
                            <th class="text-center">Ubah Status</th>
                            <th class="text-center">Aksi</th>
@@ -171,45 +175,52 @@
                            $no=1;
                        @endphp
                        @foreach ($rubriks as $rubrik)
-                            @foreach ($rubrik->isianrubrik as $isian_rubrik)
-                                    <tr>
-                                        <td>{{ $no++ }}</td>
-                                        <td>{{ $isian_rubrik->rubrik->nama_rubrik }}</td>
-                                        <td>{{ $isian_rubrik->nomor_sk }}</td>
-                                        <td class="text-center">{{ $isian_rubrik->nm_unit }}</td>
-                                        <td class="text-center"><a href="{{ route('operator.dataremun.download',$isian_rubrik->file_upload) }}"  class="btn btn-primary"><i class="fa fa-download"></i></a></td>
-                                        <td>{{ $isian_rubrik->periode->masa_kinerja }}</td>
-                                        <td class="text-center" width="10%">
-                                            @if ($isian_rubrik->status_validasi=='nonaktif')
-                                                <h6><span class="badge badge-warning"><i class="fa fa-exclamation-circle"></i> &nbsp; Belum dikirim</span></h6>
-                                            @elseif ($isian_rubrik->status_validasi=='aktif')
-                                                <h6><span class="badge badge-info"><i class="fa fa-clock-o"></i> &nbsp; Menunggu Verifikasi</span></h6>
-                                            @elseif($isian_rubrik->status_validasi=="terverifikasi")
-                                                <h6><span class="badge badge-success"><i class="fa fa-check"></i> &nbsp; Terverifikasi</span></h6>
-                                            @else
-                                                <h6><span class="badge badge-danger"><i class="fa fa-check"></i> &nbsp; Terverifikasi</span></h6>
-                                            @endif
-                                        </td>
-                                        <td class="text-center">
-                                            @if ($isian_rubrik->status_validasi=='nonaktif')
-                                                <form action="{{ route('operator.dataremun.status',$isian_rubrik->id) }}" class="selesai_form" method="POST">
-                                                    @csrf @method('PUT')
-                                                    <button type="submit" class="btn btn-success btn-sm data_selesai" data-detail="{{ $isian_rubrik->detailisianrubrik->count() }}"><i class="fa fa-check"></i>&nbsp; Selesai</button>
-                                                </form>
-                                            @else
-                                                <h6><span class="badge badge-success"><i class="fa fa-check-circle-o"></i></span></h6>
-                                            @endif
-                                        </td> 
-                                        <td class="text-center">
-                                            <form action="{{ route('operator.dataremun.destroy',$isian_rubrik->id) }}" class="hapus_form" method="POST">
-                                                <a href="{{ route('operator.detailrubrik',$isian_rubrik->id) }}"  class="btn btn-primary btn-sm text-center"><i class="fa fa-info-circle"></i></a>
-                                                <a href="{{ route('operator.dataremun.edit',$isian_rubrik->id) }}" class="btn btn-warning btn-sm @if ($isian_rubrik->status_validasi!='nonaktif') disabled @endif"><i class="fa fa-pencil-square-o"></i></a>
-                                                @csrf @method('delete')
-                                                <button type="submit" class="btn btn-danger btn-sm hapus_data"  @if ($isian_rubrik->status_validasi!='nonaktif') disabled @endif><i class="fa fa-trash"></i></button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                            @endforeach
+                            @php
+                                $jumlah = detailisianrubrik::select(DB::raw('count(nip) as jumlah_anggota'))
+                                        ->where('isian_rubrik_id',$rubrik->isian_id)->first();
+                            @endphp
+                            <tr>
+                                <td>{{ $no++ }}</td>
+                                <td>{{ $rubrik->nama_rubrik }}</td>
+                                <td>{{ $rubrik->masa_kinerja }}</td>
+                                <td>{{ $rubrik->nomor_sk }}</td>
+                                <td class="text-center">{{ $rubrik->nm_unit }}</td>
+                                <td>
+                                    {{ $jumlah->jumlah_anggota }} Anggota
+                                </td>
+                                <td class="text-center">
+                                    <a class="btn btn-primary btn-sm" href="{{ asset('upload/file_isian/'.Illuminate\Support\Str::slug($rubrik->nama_rubrik).'/'.$rubrik->file_upload) }}" download="{{ $rubrik->file_upload}}"><i class="fa fa-download"></i></a>
+                                </td>
+                                <td class="text-center" width="10%">
+                                    @if ($rubrik->status_validasi=='menunggu')
+                                        <h6><span class="badge badge-warning"><i class="fa fa-exclamation-circle"></i> &nbsp; Belum dikirim</span></h6>
+                                    @elseif ($rubrik->status_validasi=='terkirim')
+                                        <h6><span class="badge badge-info"><i class="fa fa-clock-o"></i> &nbsp; Menunggu Verifikasi</span></h6>
+                                    @elseif($rubrik->status_validasi=="diterima")
+                                        <h6><span class="badge badge-success"><i class="fa fa-check"></i> &nbsp; Diterima</span></h6>
+                                    @else
+                                        <h6><span class="badge badge-danger"><i class="fa fa-minus"></i> &nbsp; Ditolak</span></h6>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if ($rubrik->status_validasi=='menunggu')
+                                        <form action="{{ route('operator.dataremun.status',[$rubrik->id]) }}" class="selesai_form" method="POST">
+                                            @csrf @method('PUT')
+                                            <button type="submit" class="btn btn-success btn-sm data_selesai" data-detail="{{ $rubrik->detailisianrubrik->count() }}"><i class="fa fa-check"></i>&nbsp; Selesai</button>
+                                        </form>
+                                    @else
+                                        <h6><span class="badge badge-success"><i class="fa fa-check-circle-o"></i></span></h6>
+                                    @endif
+                                </td> 
+                                <td class="text-center">
+                                    <a href="{{ route('operator.detail_isian',[$rubrik->id,$rubrik->isian_id]) }}"  class="btn btn-primary btn-sm text-center"><i class="fa fa-info-circle"></i></a>
+                                    <a href="{{ route('operator.dataremun.edit',[$rubrik->id]) }}" class="btn btn-warning btn-sm @if ($rubrik->status_validasi!='nonaktif') disabled @endif"><i class="fa fa-pencil-square-o"></i></a>
+                                    <form action="{{ route('operator.dataremun.destroy',[$rubrik->id]) }}" class="hapus_form" method="POST">
+                                        {{-- @csrf @method('delete') --}}
+                                        <button type="submit" class="btn btn-danger btn-sm hapus_data"  @if ($rubrik->status_validasi!='nonaktif') disabled @endif><i class="fa fa-trash"></i></button>
+                                    </form>
+                                </td>
+                            </tr>
                        @endforeach
                    </tbody>
                </table>

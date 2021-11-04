@@ -10,7 +10,9 @@ use App\Http\Controllers\Kepegawaian\RekapitulasiController;
 use App\Http\Controllers\Kepegawaian\TendikController;
 use App\Http\Controllers\Operator\DataInsentifController;
 use App\Http\Controllers\Operator\DashboardOperatorController;
+use App\Http\Controllers\Operator\DetailIsianController;
 use App\Http\Controllers\Operator\DetailRubrikController;
+use App\Http\Controllers\Operator\LaporanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -162,11 +164,18 @@ Route::group(['prefix'  => 'operator'], function () {
         route::put('/{id}}/update',[DetailRubrikController::class, 'update'])->name('operator.dataremun.update');
         route::put('/tambah_isian/{id}',[DetailRubrikController::class, 'tambah_isian'])->name('operator.dataremun.tambah_isian');
         route::delete('/{id}/delete',[DetailRubrikController::class, 'destroy'])->name('operator.dataremun.destroy');
+
+        Route::group(['prefix'=>'detail_isian'],function(){
+            route::get('{rubrik_id}/{isian_id}',[DetailIsianController::class, 'index'])->name('operator.detail_isian');
+            route::post('/prodi',[DetailIsianController::class, 'prodi'])->name('operator.detail_isian.prodi');
+            route::post('/dosen',[DetailIsianController::class, 'dosen'])->name('operator.detail_isian.dosen');
+            route::post('/{rubrik_id}/store/{isian_id}',[DetailIsianController::class, 'store'])->name('operator.detail_isian.store');
+            route::delete('/{detail_id}/destroy/{isian_id}',[DetailIsianController::class, 'destroy'])->name('operator.detail_isian.destroy');
+            route::put('/{id}/update',[DetailIsianController::class, 'update'])->name('operator.detail_isian.update ');
+        });
     });
 
-    Route::prefix('rekap_data')->group(function () {
-        route::get('/','operator\RekapController@index')->name('operator.rekapdata');
+    Route::group(['prefix'=>'laporan'],function(){
+        route::get('/',[LaporanController::class, 'index'])->name('operator.laporan');
     });
-
-    
 });

@@ -9,7 +9,7 @@ class DetailIsianRubrik extends Model
 {
     use HasFactory;
     protected $fillable =[
-        'isian_rubrik_id','nip','keterangan','rate_remun'
+        'isian_rubrik_id','nip','keterangan','rate_remun','nama_dosen','prodi'
     ];
 
     public function isianrubrik()

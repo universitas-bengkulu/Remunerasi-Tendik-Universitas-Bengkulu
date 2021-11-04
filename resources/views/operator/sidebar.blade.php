@@ -6,11 +6,21 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
     $periode_aktif = PeriodeInsentif::where('status','aktif')->select('slug')->firstOrFail();
 @endphp
 <li>
-    <a class={{ count($periode_aktif)<1 ? "noclick"  : 'click'}} href=" {{ route('operator.dashboard',[$periode_aktif->slug]) }} "><i class="fa fa-home"></i>Dashboard</a>
+    <a  href=" {{ route('operator.dashboard') }} "><i class="fa fa-home"></i>Dashboard</a>
+</li>
+
+<li
+    @if (Route::current()->getName() == "operator.dataremun")
+    class="current-page"
+        @elseif(Route::current()->getName() == "operator.detail_isian")
+            class="current-page"
+    @endif
+>
+    <a href="{{ route('operator.datainsentif') }}"><i class="fa fa-clock-o"></i>Data Remunerasi</a>
 </li>
 
 <li>
-    <a href="{{ route('operator.datainsentif') }}"><i class="fa fa-clock-o"></i>Data Remunerasi</a>
+    <a href="{{ route('operator.laporan') }}"><i class="fa fa-file-pdf-o"></i>Laporan Remun</a>
 </li>
 
 

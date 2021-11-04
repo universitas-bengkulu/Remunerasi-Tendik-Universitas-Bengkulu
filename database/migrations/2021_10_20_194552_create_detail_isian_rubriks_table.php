@@ -17,6 +17,7 @@ class CreateDetailIsianRubriksTable extends Migration
             $table->id();
             $table->unsignedBigInteger('isian_rubrik_id')->constrained('isian_rubriks');
             $table->string('nip');
+            $table->string('nama_dosen');
             $table->string('keterangan');
             $table->integer('rate_remun');
             $table->timestamps();
