@@ -13,6 +13,6 @@ class Periode extends Model
         'tanggal_awal',
         'tanggal_akhir',
         'jumlah_bulan',
-        'slug',
+        'slug'
     ];
 }
