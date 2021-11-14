@@ -23,7 +23,7 @@ class DashboardOperatorController extends Controller
         $jumlah_rubrik = Rubrik::select(DB::raw('count(id) as total_isian'))->first();
         $periode_aktif = PeriodeInsentif::select('masa_kinerja')->where('status','aktif')->firstOrFail();
         $total_remun    = DetailIsianRubrik::select(DB::raw('sum(rate_remun) as total_remun'))->firstOrFail();
-        return $total_remun;
+        
         return view('operator/dashboard');
     }
 }
