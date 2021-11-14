@@ -9,7 +9,7 @@ class PeriodeInsentif extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'masa_kinerja','periode_pembayaran','status'
+        'masa_kinerja','periode_pembayaran','slug'
     ];
 
     public function isianrubrik()
