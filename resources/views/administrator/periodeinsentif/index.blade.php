@@ -1,14 +1,14 @@
 @extends('layouts.layout')
-@section('title', 'Manajemen Data Tendik')
-@section('login_as', 'Administrator')
+@section('title', 'Manajemen Data periode')
+@section('login_as', 'administrator')
 @section('user-login')
     @if (Auth::check())
-    {{ Auth::user()->nama_lengkap }}
+    {{ Auth::user()->nama_periode }}
     @endif
 @endsection
 @section('user-login2')
     @if (Auth::check())
-    {{ Auth::user()->nama_lengkap }}
+    {{ Auth::user()->nama_periode }}
     @endif
 @endsection
 @section('sidebar-menu')
@@ -16,25 +16,23 @@
 @endsection
 @push('styles')
     <style>
-        #detail:hover{
-            text-decoration: underline !important;
-            cursor: pointer !important;
-            color:teal;
+        .periode {
+            color: #007bff !important;
+            background: white;
         }
-        #selengkapnya{
-            color:#5A738E;
-            text-decoration:none;
-            cursor:pointer;
-        }
-        #selengkapnya:hover{
-            color:#007bff;
+
+        .periode:hover,
+        .periode:focus,
+        .periode:active {
+            background-color: white !important;
+            color: #007bff !important;
         }
     </style>
 @endpush
 @section('content')
     <section class="panel" style="margin-bottom:20px;">
         <header class="panel-heading" style="color: #ffffff;background-color: #074071;border-color: #fff000;border-image: none;border-style: solid solid none;border-width: 4px 0px 0;border-radius: 0;font-size: 14px;font-weight: 700;padding: 15px;">
-            <i class="fa fa-home"></i>&nbsp;Data Administrator Remunerasi Tendik Universitas Bengkulu
+            <i class="fa fa-home"></i>&nbsp;Remunerasi Tenaga Kependidikan Universitas Bengkulu
         </header>
         <div class="panel-body" style="border-top: 1px solid #eee; padding:15px; background:white;">
             <div class="row" style="margin-right:-15px; margin-left:-15px;">
@@ -44,46 +42,75 @@
                             <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong><i class="fa fa-info-circle"></i>&nbsp;Berhasil: </strong> {{ $message }}
                         </div>
-                            @elseif ($message   = Session::get('error'))
-                            <div class="alert alert-danger alert-block" >
-                                <button type="button" class="close" data-dismiss="alert">×</button>
-                                <strong><i class="fa fa-info-circle"></i>&nbsp;Gagal: </strong> {{ $message }}
-                            </div>
                         @else
-                            @if (count($periodeinsentifs)>0)
-                                <div class="alert alert-success alert-block" id="keterangan-berhasil">
-                                    <button type="button" class="close" data-dismiss="alert">×</button>
-                                    <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Berikut adalah data periode remunerasi, silahkan tambahkan dan aktifkan jika memasuki periode remunerasi yang baru !!
-                                </div>
-                                @else
-                                <div class="alert alert-danger alert-block" id="keterangan-gagal">
-                                    <button type="button" class="close" data-dismiss="alert">×</button>
-                                    <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Tidak ada periode aktif, silahkan tambahkan dan aktifkan jika memasuki periode remunerasi yang baru !!
-                                </div>
-                                
-                            @endif
+                        <div class="alert alert-success alert-block" id="keterangan">
+                            <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Berikut semua data periode yang tersedia, silahkan tambahkan manual jika diperlukan !!
+                        </div>
                     @endif
-                    
-
-                    <div class="alert alert-danger alert-block" style="display:none;" id="gagal">
-                        <button type="button" class="close" data-dismiss="alert">×</button>
-                        <i class="fa fa-success-circle"></i><strong>Gagal :</strong> Status administrator gagal diubah !!
-                    </div>
                 </div>
-                <div class="col-md-12">
-                    <a onclick="tambahPeriode()" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-user-plus"></i>&nbsp; Tambah Periode</a>
+                <div class="col-md-12" style="margin-bottom:10px;">
+                    <div class="btn-group">
+                        <button class="btn btn-primary btn-sm " onclick="tambahperiodeinsentif()">
+                          <i class="fa fa-plus"></i>&nbsp;Tambah Data periode Insentif
+                        </button>
+                    </div>
+
+                
+                </div>
+                <div class="col-md-12 form-tambah" id="form-tambah" style="display:none;">
+                    <hr style="width:50%;">
+                    <form action="{{ route('administrator.periodeinsentif.post') }}" method="POST">
+                        {{ csrf_field() }} {{ method_field('POST') }}
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label>Nama periode P3 :</label>
+                                <input type="text" name="masa_kinerja" value="{{ old('masa_kinerja') }}" class="form-control @error('masa_kinerja') is-invalid @enderror" placeholder=" masukan nama periodeinsentif">
+                                @error('masa_kinerja')
+                                    <small class="form-text text-danger">{{ $errors->first('masa_kinerja') }}</small>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>periode_pembayaran :</label>
+                                <input type="text" name="periode_pembayaran" value="{{ old('periode_pembayaran') }}" class="form-control  @error('periode_pembayaran') is-invalid @enderror" placeholder=" masukan periode_pembayaran">
+                                @error('periode_pembayaran')
+                                    <small class="form-text text-danger">{{ $errors->first('periode_pembayaran') }}</small>
+                                @enderror
+                            </div>
+           
+                            
+                            <div class="form-group col-md-4">
+                                <label>Status :</label>
+                                <select name="status" class="form-control  @error('status') is-invalid @enderror">
+                                    <option value="" selected disabled>-- pilih Status --</option>
+                                    <option {{ old('status') == "aktif" ? 'selected' : '' }} value="aktif">Aktif</option>
+                                    <option {{ old('status') == "nonaktif" ? 'selected' : '' }} value="nonaktif">Nonaktif</option>
+                                </select>                                
+                                @error('status')
+                                    <small class="form-text text-danger">{{ $errors->first('status') }}</small>
+                                @enderror
+                            </div>
+                        
+                        </div>
+                        <div class="col-md-12" style="text-align:center;">
+                            <a onclick="batalkan()" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-close"></i>&nbsp; Batalkan</a>
+                            <button type="reset" class="btn btn-warning btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-refresh"></i>&nbsp; Ulangi</button>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Simpan Data periodeinsentif</button>
+                        </div>
+                    </form>
+                    <hr style="width:50%;">
                 </div>
                 <div class="col-md-12">
                     <table class="table table-striped table-bordered" id="table" style="width:100%;">
                         <thead>
                             <tr>
-                                <th style="text-align:center">No</th>
-                                <th style="text-align:center">Masa Kinerja</th>
-                                <th style="text-align:center">Periode Pembayaran</th>
-                                
-                                <th style="text-align:center">Status Periode</th>
-                                <th style="text-align:center">Ubah Status</th>
-                                <th style="text-align:center" colspan="2">Aksi</th>
+                                <th>No</th>
+                                <th>Nama Periode P3</th>
+                                <th>Periode Pembayaran</th>
+                          
+                                <th>Status</th>
+                                <th>Ubah Status</th>
+
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,10 +119,10 @@
                             @endphp
                             @foreach ($periodeinsentifs as $periodeinsentif)
                                 <tr>
-                                    <td style="text-align:center;"> {{ $no++ }} </td>
-                                    <td style="text-align:center;"> {{ $periodeinsentif->masa_kinerja }} </td>
-                                    <td style="text-align:center;"> {{ $periodeinsentif->periode_pembayaran }} </td>
-                                 
+                                    <td> {{ $no++ }} </td>
+                                    <td> {{ $periodeinsentif->masa_kinerja}} </td>
+                                    <td> {{ $periodeinsentif->periode_pembayaran }} </td>
+   
                                     <td style="text-align:center;">
                                         @if ($periodeinsentif->status == "aktif")
                                             <span class="badge badge-success"><i class="fa fa-check-circle"></i>&nbsp; Aktif</span>
@@ -110,110 +137,87 @@
                                             <a onclick="aktifkanStatus( {{ $periodeinsentif->id }} )" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-thumbs-up"></i></a>
                                         @endif
                                     </td>
-                                    <td style="text-align:center;"><a href="{{ route('administrator.periodeinsentif.update',[$periodeinsentif->id]) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;</a></td>
-                                    <td style="text-align:center;">
-                                        <a onclick="hapusPeriode( {{ $periodeinsentif->id }} )" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-trash"></i></a>
+
+                                
+                                    <td>
+                                        <a onclick="editPeriodeinsentif({{ $periodeinsentif->id }})" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-edit"></i></a>
+                                        <a onclick="hapusperiodeinsentif({{ $periodeinsentif->id }})" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    <!-- modal ubah-->
+                    <div class="modal fade" id="modalubah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <p class="modal-title" style="font-size:17px;"><i class="fa fa-edit"></i>&nbsp;Form Ubah Data periodeinsentif</p>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <form action="{{ route('administrator.periodeinsentif.update') }}" method="POST">
+                                <div class="modal-body">
+                                        {{ csrf_field() }} {{ method_field('PATCH') }}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="alert alert-danger" role="alert">
+                                                    <strong>Perhatian :</strong> Silahkan ubah data Tenaga Kependidikan (periodeinsentif) Jika terdapat kesalahan data !!
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="id" id="id_ubah">
+                                            <div class="form-group col-md-12">
+                                                <label>Nama Periode P3 :</label>
+                                                <input type="text" name="masa_kinerja" id="masa_kinerja" required class="form-control" placeholder=" masukan nama periodeinsentif">
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>periode_pembayaran :</label>
+                                                <input type="date" name="periode_pembayaran" id="periode_pembayaran" required class="form-control" placeholder=" masukan periode_pembayaran">
+                                            </div>
+                                           
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp;Batalkan</button>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp;Simpan Perubahan</button>
+                                </div>
+                            </form>
+                          </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- Modal Hapus-->
                 <div class="modal fade" id="modalhapus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <form action=" {{ route('administrator.periodeinsentif.delete') }} " method="POST">
-                            {{ csrf_field() }} {{ method_field('DELETE') }}
-                            <div class="modal-header">
-                                <p style="font-size:15px; font-weight:bold;" class="modal-title"><i class="fa fa-key"></i>&nbsp;Form Konfirmasi Hapus Data</p>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <input type="hidden" name="id" id="id_hapus">
-                                        Apakah anda yakin ingin menghapus data? klik hapus jika iya !!
+                        <div class="modal-content">
+                            <form action=" {{ route('administrator.periodeinsentif.delete') }} " method="POST">
+                                {{ csrf_field() }} {{ method_field('DELETE') }}
+                                <div class="modal-header">
+                                    <p style="font-size:15px; font-weight:bold;" class="modal-title"><i class="fa fa-key"></i>&nbsp;Form Konfirmasi Hapus Data</p>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="hidden" name="id" id="id_hapus">
+                                            Apakah anda yakin ingin menghapus data? klik hapus jika iya !!
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp; Batalkan</button>
-                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Ya, Hapus</button>
-                            </div>
-                        </form>
-                    </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp; Batalkan</button>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Ya, Hapus</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- Modal Tambah -->
-            <div class="modal fade" id="modaltambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form action=" {{ route('administrator.periodeinsentif.add') }} " method="POST">
-                        {{ csrf_field() }} {{ method_field('POST') }}
-                        <div class="modal-header">
-                            <p style="font-size:15px; font-weight:bold;" class="modal-title"><i class="fa fa-clock-o"></i>&nbsp;Form Tambah Data Periode</p>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <input type="hidden" name="id" id="id_tambah">
-                                    <div class="form-group">
-                                        <label for="">Nama Periode : <a style="color:red">*contoh: periode januari - maret 2019</a></label>
-                                        <input type="text" name="masa_kinerja" value="{{ old('masa_kinerja') }}" class="form-control @error('masa_kinerja') is-invalid @enderror" placeholder="nama periode">
-                                        <div>
-                                            @if ($errors->has('masa_kinerja'))
-                                                <small class="form-text text-danger">{{ $errors->first('masa_kinerja') }}</small>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">Periode Pembayaran:</label>
-                                        <input type="text" name="periode_pembayaran" value="{{ old('periode_pembayaran') }}" class="form-control @error('periode_pembayaran') is-invalid @enderror" placeholder="periode pembayaran ">
-                                        <div>
-                                            @if ($errors->has('periode_pembayaran'))
-                                                <small class="form-text text-danger">{{ $errors->first('periode_pembayaran') }}</small>
-                                            @endif
-                                        </div>
-                                    </div>
-                                    {{-- <div class="form-group">
-                                        <label for="">Tanggal Akhir :</label>
-                                        <input type="date" name="status" value="{{ old('status') }}" class="form-control @error('status') is-invalid @enderror" placeholder="tanggal akhir ">
-                                        <div>
-                                            @if ($errors->has('status'))
-                                                <small class="form-text text-danger">{{ $errors->first('status') }}</small>
-                                            @endif
-                                        </div>
-                                    </div> --}}
-                                    {{-- <div class="form-group">
-                                        <label for="">Status:</label>
-                                        <input type="text" name="status" value="{{ old('status') }}" class="form-control @error('status') is-invalid @enderror" placeholder="status">
-                                        <div>
-                                            @if ($errors->has('status'))
-                                                <small class="form-text text-danger">{{ $errors->first('status') }}</small>
-                                            @endif
-                                        </div>
-                                    </div> --}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp; Batalkan</button>
-                            <button type="submit" class="btn btn-primary btn-sm" id="btn-submit-tambah"><i class="fa fa-check-circle"></i>&nbsp; Simpan Data</button>
-                        </div>
-                    </form>
-                </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
+     
+      
 @endsection
 @push('scripts')
     <script>
@@ -223,11 +227,83 @@
             });
         } );
 
-        function tambahPeriode(){
-            $('#modaltambah').modal('show');
+        function tambahperiodeinsentif(){
+            $('#form-tambah').show(300);
+            $('#alert-generate').hide(300);
+            $('#sedang-generate').hide(300);
+            $('#generate-jabatan').hide(300);
+            $('#generate-password').hide(300);
         }
-      
 
+        function ubahPassword(id){
+            $('#modalubahpassword').modal('show');
+            $('#id_password').val(id);
+            $('#id').val(id);
+        }
+        
+        function batalkan(){
+            $('#form-tambah').hide(300);
+            $('#generate').show(300);
+        }
+
+        function generatePassword(){
+            $('#modalgeneratepassword').modal('show');
+        }
+
+        $(document).ready(function(){
+            $("#password, #password2").keyup(function(){
+                var password = $("#password").val();
+                var ulangi = $("#password2").val();
+                if($("#password").val() == $("#password2").val()){
+                    $('.password_sama').show(200);
+                    $('.password_tidak_sama').hide(200);
+                    $('#btn-submit').attr("disabled",false);
+                }
+                else{
+                    $('.password_sama').hide(200);
+                    $('.password_tidak_sama').show(200);
+                    $('#btn-submit').attr("disabled",true);
+                }
+            });
+        });
+
+        $(document).ready(function(){
+            $("#password_ubah, #password_ubah2").keyup(function(){
+                var password_ubah = $("#password_ubah").val();
+                var ulangi = $("#password_ubah2").val();
+                if($("#password_ubah").val() == $("#password_ubah2").val()){
+                    $('.password_ubah_sama').show(200);
+                    $('.password_ubah_tidak_sama').hide(200);
+                    $('#btn-submit-ubah').attr("disabled",false);
+                }
+                else{
+                    $('.password_ubah_sama').hide(200);
+                    $('.password_ubah_tidak_sama').show(200);
+                    $('#btn-submit-ubah').attr("disabled",true);
+                }
+            });
+        });
+
+        function editPeriodeinsentif(id){
+            $.ajax({
+                url: "{{ url('administrator/periodeinsentif') }}"+'/'+ id + "/edit",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    
+                    $('#modalubah').modal('show');
+                    $('#id_ubah').val(id);
+                    $('#masa_kinerja').val(data.masa_kinerja)
+                    $('#periode_pembayaran').val(data.periode_pembayaran)
+  
+                    $('#status').val(data.status)
+                  
+                },
+                error:function(){
+                    alert("Nothing Data");
+                }
+            });
+        }
         function aktifkanStatus(id){
             $.ajaxSetup({
                 headers: {
@@ -270,15 +346,11 @@
             return false;
         }
 
-        function hapusPeriode(id){
+        function hapusperiodeinsentif(id){
             $('#modalhapus').modal('show');
             $('#id_hapus').val(id);
         }
 
-        @if (count($errors) > 0)
-            $("#modaltambah").modal({"backdrop": "static"});
-        @endif
       
     </script>
-
 @endpush

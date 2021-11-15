@@ -11,54 +11,89 @@ use Illuminate\Support\Str;
 class AdministratorUnitController extends Controller
 {
     public function index(){
-        $units = Unit::all();
+        $units = Unit::orderBy('id','desc')->get();
         return view('administrator/unit.index',compact('units'));
     }
 
     public function post(Request $request){
-        $this->validate($request,[
-            'nm_unit'   =>  'required',
-            'tingkatan'    =>  'required',
-           
-        ]);
-
+        $messages = [
+            'required' => ':attribute harus diisi',
+            'numeric' => ':attribute harus angka',
+        ];
+        $attributes = [
+          
+            'nm_unit'    =>  'Nama unit',
+            'tingkatan'   =>  'Kelas unit',
+          
+        ];
+        $this->validate($request, [
+            'tingkatan'    =>  'required|numeric',
+            'nm_unit'    =>  'required',
+        
+        ],$messages,$attributes);
+        $sudah = Unit::select('nm_unit')->get();
+        for ($i=0; $i <count($sudah) ; $i++) { 
+            if ($request->nm_unit == $sudah[$i]->nm_unit) {
+                return redirect()->route('administrator.unit')->with(['error'   =>  'unit Sudah Ditambahkan']);
+            }
+        }
         Unit::create([
-            'nm_unit'       =>  $request->nm_unit,
-            'tingkatan'     =>  $request->tingkatan,
-            'slug'  =>  Str::slug($request->nm_unit),
+            'tingkatan' => $request->tingkatan,
+            'nm_unit' => $request->nm_unit,
+          
         ]);
 
-        return redirect()->route('administrator.unit')->with(['success' =>  'Unit berhasil ditambahkan']);
+        $notification = array(
+            'message' => 'Berhasil, unit berhasil ditambahkan!',
+            'alert-type' => 'success'
+        );
+        
+        return redirect()->route('administrator.unit')->with($notification);
     }
 
-   
     public function edit($id){
-        $units = Unit::find($id);
-        return $units;
+        $unit = Unit::find($id);
+        return $unit;
     }
 
     public function update(Request $request){
+        $messages = [
+            'required' => ':attribute harus diisi',
+            'numeric' => ':attribute harus angka',
+        ];
+        $attributes = [
+            'tingkatan'   =>  'tingkatan',
+            'nm_unit'    =>  'Nama unit',
+           
+        ];
         $this->validate($request, [
-            'nm_unit'    =>  'required',
             'tingkatan'    =>  'required',
-           
-           
-            
-        ]);
-        $units = Unit::where('id',$request->id)->update([
-            'nm_unit'    =>  $request->nm_unit,
-            'tingkatan'    =>  $request->tingkatan,
-            'slug'  =>  Str::slug($request->nm_unit),
-           
+            'nm_unit'    =>  'required',
+          
+        ],$messages,$attributes);
+        
+        Unit::where('id',$request->id)->update([
+            'tingkatan' =>  $request->tingkatan,
+            'nm_unit' =>  $request->nm_unit,
+    
         ]);
 
-        return redirect()->route('administrator.unit')->with(['success'    =>  'Data Unit Berhasil Diubah !!']);
+        $notification = array(
+            'message' => 'Berhasil, unit berhasil diubah!',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('administrator.unit')->with($notification);
     }
 
     public function delete(Request $request){
         $unit = Unit::find($request->id);
         $unit->delete();
+        $notification = array(
+            'message' => 'Berhasil, unit berhasil dihapus!',
+            'alert-type' => 'success'
+        );
 
-        return redirect()->route('administrator.unit')->with(['success'    =>  'Data Unit Berhasil Dihapus !!']);
+        return redirect()->route('administrator.unit')->with($notification);
     }
 }
