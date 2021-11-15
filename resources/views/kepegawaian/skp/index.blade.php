@@ -110,7 +110,11 @@
                                                         <form action="{{ route('kepegawaian.r_skp.update_nilai',[$skp->id,$periode_id]) }}" method="POST">
                                                             {{ csrf_field() }} {{ method_field("PATCH") }}
                                                             <input type="text" name="nilai_skp" class="form-control" value="{{ $skp->nilai_skp }}" style="margin-bottom: 5px !important;">
-                                                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>
+                                                            @if ($skp->status != "menunggu")
+                                                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>
+                                                            @else
+                                                            <button disabled class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>    
+                                                            @endif
                                                         </form>
                                                     </td>
                                                     <td> {{ $skp->nm_periode }} </td>
