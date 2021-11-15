@@ -9,66 +9,94 @@ use Illuminate\Support\Str;
 
 class AdministratorJabatanController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
+    
     public function index(){
-        $jabatans = Jabatan::all();
+        $jabatans = Jabatan::orderBy('id','desc')->get();
         return view('administrator/jabatan.index',compact('jabatans'));
     }
 
     public function post(Request $request){
-        $this->validate($request,[
-            'nm_jabatan'   =>  'required',
-            'tingkatan'    =>  'required',
-           
-        ]);
-
+        $messages = [
+            'required' => ':attribute harus diisi',
+            'numeric' => ':attribute harus angka',
+        ];
+        $attributes = [
+            'kelas_jabatan'   =>  'Kelas Jabatan',
+            'nm_jabatan'    =>  'Nama Jabatan',
+            'remunerasi'    =>  'Nilai Remunerasi',
+        ];
+        $this->validate($request, [
+            'kelas_jabatan'    =>  'required|numeric',
+            'nm_jabatan'    =>  'required',
+            'remunerasi'    =>  'required|numeric',
+        ],$messages,$attributes);
+        $sudah = Jabatan::select('nm_jabatan')->get();
+        for ($i=0; $i <count($sudah) ; $i++) { 
+            if ($request->nm_jabatan == $sudah[$i]->nm_jabatan) {
+                return redirect()->route('administrator.jabatan')->with(['error'   =>  'Jabatan Sudah Ditambahkan']);
+            }
+        }
         Jabatan::create([
-            'rubrik_id'       =>  $request->rubrik_id,
-            'periode_id'       =>  $request->periode_id,
-            'no_sk'       =>  $request->no_sk,
-            'isian_1'     =>  $request->isian_1,
-            'isian_2'     =>  $request->isian_2,
-            'isian_3'     =>  $request->isian_3,
-            'isian_4'     =>  $request->isian_4,
-            'isian_5'     =>  $request->isian_5,
-            'isian_6'     =>  $request->isian_6,
-            'isian_7'     =>  $request->isian_7,
-            'isian_8'     =>  $request->isian_8,
-            'isian_9'     =>  $request->isian_9,
-            'isian_10'     =>  $request->isian_10,
-            
+            'kelas_jabatan' => $request->kelas_jabatan,
+            'nm_jabatan' => $request->nm_jabatan,
+            'remunerasi' => $request->remunerasi,
         ]);
 
-        return redirect()->route('administrator.jabatan')->with(['success' =>  'jabatan berhasil ditambahkan']);
+        $notification = array(
+            'message' => 'Berhasil, jabatan berhasil ditambahkan!',
+            'alert-type' => 'success'
+        );
+        
+        return redirect()->route('administrator.jabatan')->with($notification);
     }
 
-   
     public function edit($id){
-        $jabatans = Jabatan::find($id);
-        return $jabatans;
+        $jabatan = Jabatan::find($id);
+        return $jabatan;
     }
 
     public function update(Request $request){
+        $messages = [
+            'required' => ':attribute harus diisi',
+            'numeric' => ':attribute harus angka',
+        ];
+        $attributes = [
+            'kelas_jabatan_edit'   =>  'Kelas Jabatan',
+            'nm_jabatan_edit'    =>  'Nama Jabatan',
+            'remunerasi_edit'    =>  'Nilai Remunerasi',
+        ];
         $this->validate($request, [
-            'nm_jabatan'    =>  'required',
-            'tingkatan'    =>  'required',
-           
-           
-            
-        ]);
-        $jabatans = Jabatan::where('id',$request->id)->update([
-            'nm_jabatan'    =>  $request->nm_jabatan,
-            'tingkatan'    =>  $request->tingkatan,
-            'slug'  =>  Str::slug($request->nm_jabatan),
-           
+            'kelas_jabatan_edit'    =>  'required|numeric',
+            'nm_jabatan_edit'    =>  'required',
+            'remunerasi_edit'    =>  'required|numeric',
+        ],$messages,$attributes);
+        
+        Jabatan::where('id',$request->id)->update([
+            'kelas_jabatan' =>  $request->kelas_jabatan_edit,
+            'nm_jabatan' =>  $request->nm_jabatan_edit,
+            'remunerasi' =>  $request->remunerasi_edit,
         ]);
 
-        return redirect()->route('administrator.jabatan')->with(['success'    =>  'Data jabatan Berhasil Diubah !!']);
+        $notification = array(
+            'message' => 'Berhasil, jabatan berhasil diubah!',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('administrator.jabatan')->with($notification);
     }
 
     public function delete(Request $request){
         $jabatan = Jabatan::find($request->id);
         $jabatan->delete();
+        $notification = array(
+            'message' => 'Berhasil, jabatan berhasil dihapus!',
+            'alert-type' => 'success'
+        );
 
-        return redirect()->route('administrator.jabatan')->with(['success'    =>  'Data jabatan Berhasil Dihapus !!']);
+        return redirect()->route('administrator.jabatan')->with($notification);
     }
 }

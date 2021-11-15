@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Kepegawaian;
+namespace App\Http\Controllers\Administrator;
 
 use App\Http\Controllers\Controller;
 use App\Models\Periode;
@@ -12,16 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
-    error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
-}
-class RekapitulasiController extends Controller
+class AdministratorRekapitulasiController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth','isKepegawaian']);
-    }
-
     public function index($periode_id){
         $periode_aktif = Periode::where('id',$periode_id)->select('id','nm_periode','slug')->first();
         // $datas = Remunerasi::select('nm_lengkap','nip','pangkat','golongan','kelas_jabatan','nm_jabatan',
@@ -29,7 +21,7 @@ class RekapitulasiController extends Controller
         //                     ->where('periode_id',$periode_aktif->id)        
         //                     ->get();
         $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
-        return view('kepegawaian/rekapitulasi.index',compact('periode_id','periode_aktif','table'));
+        return view('administrator/rekapitulasi.index',compact('periode_id','periode_aktif','table'));
     }
 
     public function generateTable($periode_id){
@@ -41,7 +33,7 @@ class RekapitulasiController extends Controller
                 'message' => 'Gagal, tanel rekapitulasi sudah tersedia!',
                 'alert-type' => 'error'
             );
-            return redirect()->route('kepegawaian.rekapitulasi',[$periode_id])->with($notification);
+            return redirect()->route('administrator.rekapitulasi',[$periode_id])->with($notification);
         } else {
             $query = "create table ".$table."(
                 id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT KEY,
@@ -94,7 +86,7 @@ class RekapitulasiController extends Controller
                 'message' => 'Berhasil, tabel rekapitulasi berhasil digenerate!',
                 'alert-type' => 'success'
             );
-            return redirect()->route('kepegawaian.rekapitulasi',[$periode_id])->with($notification);
+            return redirect()->route('administrator.rekapitulasi',[$periode_id])->with($notification);
         }
         
     }
@@ -106,7 +98,7 @@ class RekapitulasiController extends Controller
                                     'remunerasi_per_bulan','jumlah_bulan','no_rekening')
                             ->where('periode_id',$periode_aktif->id)        
                             ->get();
-        return view('kepegawaian/rekapitulasi.data_tendik',compact('periode_id','periode_aktif','table','datas'));
+        return view('administrator/rekapitulasi.data_tendik',compact('periode_id','periode_aktif','table','datas'));
     }
 
     public function generateDataTendik($periode_id){
@@ -137,7 +129,7 @@ class RekapitulasiController extends Controller
             'message' => 'Berhasil, data tenaga kependidikan berhasil digenerate!',
             'alert-type' => 'success'
         );
-        return redirect()->route('kepegawaian.rekapitulasi.data_tendik',[$periode_id])->with($notification);
+        return redirect()->route('administrator.rekapitulasi.data_tendik',[$periode_id])->with($notification);
     }
 
     public function totalRemun($periode_id){
@@ -154,7 +146,7 @@ class RekapitulasiController extends Controller
         else{
             $a = "belum";
         }
-        return view('kepegawaian/rekapitulasi.total_remun', compact('datas','periode_aktif','periode_id','a'));
+        return view('administrator/rekapitulasi.total_remun', compact('datas','periode_aktif','periode_id','a'));
     }
 
     public function generateTotalRemun($periode_id){
@@ -178,7 +170,7 @@ class RekapitulasiController extends Controller
             'message' => 'Berhasil, data total remunerasi berhasil digenerate!',
             'alert-type' => 'success'
         );
-        return redirect()->route('kepegawaian.rekapitulasi.total_remun',[$periode_id])->with($notification);
+        return redirect()->route('administrator.rekapitulasi.total_remun',[$periode_id])->with($notification);
     }
 
     public function integritas($periode_id){
@@ -196,7 +188,7 @@ class RekapitulasiController extends Controller
         else{
             $a = "belum";
         }
-        return view('kepegawaian/rekapitulasi.integritas', compact('datas','periode_aktif','periode_id','a'));
+        return view('administrator/rekapitulasi.integritas', compact('datas','periode_aktif','periode_id','a'));
     }
 
     public function generateIntegritas($periode_id){
@@ -221,7 +213,7 @@ class RekapitulasiController extends Controller
             'message' => 'Berhasil, rubrik integritas berhasil digenerate!',
             'alert-type' => 'success'
         );
-        return redirect()->route('kepegawaian.rekapitulasi.integritas',[$periode_id])->with($notification);
+        return redirect()->route('administrator.rekapitulasi.integritas',[$periode_id])->with($notification);
     }
 
     public function skp($periode_id){
@@ -238,7 +230,7 @@ class RekapitulasiController extends Controller
         else{
             $a = "belum";
         }
-        return view('kepegawaian/rekapitulasi.skp', compact('datas','periode_id','periode_aktif','a'));
+        return view('administrator/rekapitulasi.skp', compact('datas','periode_id','periode_aktif','a'));
     }
 
     public function generateSkp($periode_id){
@@ -260,7 +252,7 @@ class RekapitulasiController extends Controller
             'message' => 'Berhasil, rubrik skp berhasil digenerate!',
             'alert-type' => 'success'
         );
-        return redirect()->route('kepegawaian.rekapitulasi.skp',[$periode_id])->with($notification);
+        return redirect()->route('administrator.rekapitulasi.skp',[$periode_id])->with($notification);
     }
 
     public function persentaseAbsen($periode_id){
@@ -277,7 +269,7 @@ class RekapitulasiController extends Controller
         else{
             $a = "belum";
         }
-        return view('kepegawaian/rekapitulasi.persentase_absen',[$periode_aktif], compact('datas','periode_aktif','periode_id','a'));
+        return view('administrator/rekapitulasi.persentase_absen',[$periode_aktif], compact('datas','periode_aktif','periode_id','a'));
     }
 
     public function generateAbsensi($periode_id){
@@ -307,7 +299,7 @@ class RekapitulasiController extends Controller
             'message' => 'Berhasil, rubrik absensi berhasil digenerate!',
             'alert-type' => 'success'
         );
-        return redirect()->route('kepegawaian.rekapitulasi.persentase_absen',[$periode_id])->with($notification);
+        return redirect()->route('administrator.rekapitulasi.persentase_absen',[$periode_id])->with($notification);
     }
 
     public function totalAkhir($periode_id){
@@ -322,7 +314,7 @@ class RekapitulasiController extends Controller
         else{
             $a = "belum";
         }
-        return view('kepegawaian/rekapitulasi.total_akhir',[$periode_aktif], compact('datas','periode_aktif','periode_id','a'));
+        return view('administrator/rekapitulasi.total_akhir',[$periode_aktif], compact('datas','periode_aktif','periode_id','a'));
     }
 
     public function generateTotalAkhir($periode_id){
@@ -343,6 +335,6 @@ class RekapitulasiController extends Controller
             'message' => 'Berhasil, total akhir berhasil digenerate!',
             'alert-type' => 'success'
         );
-        return redirect()->route('kepegawaian.rekapitulasi.total_akhir_remun',[$periode_id])->with($notification);
+        return redirect()->route('administrator.rekapitulasi.total_akhir_remun',[$periode_id])->with($notification);
     }
 }

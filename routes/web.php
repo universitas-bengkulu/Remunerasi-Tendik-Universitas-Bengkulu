@@ -16,6 +16,8 @@ use App\Http\Controllers\Administrator\AdministratorIsianRubrikController;
 use App\Http\Controllers\Administrator\AdministratorJabatanController;
 use App\Http\Controllers\Administrator\AdministratorPenggunaRubrikController;
 use App\Http\Controllers\AuthTendik\LoginTendikController;
+use App\Http\Controllers\Administrator\AdministratorRekapitulasiController;
+use App\Http\Controllers\Administrator\AdministratorDataInsentifController;
 use App\Http\Controllers\Kepegawaian\CapaianSkpController;
 use App\Http\Controllers\Kepegawaian\DashboardController;
 use App\Http\Controllers\Kepegawaian\IntegritasController;
@@ -98,8 +100,9 @@ Route::group(['prefix'  => 'administrator/'],function(){
 
 Route::group(['prefix' => 'administrator/periode'], function () {
     Route::get('/',[AdministratorPeriodeController::class, 'index'])->name('administrator.periode');
-    Route::post('/',[AdministratorPeriodeController::class, 'post'])->name('administrator.periode.add');
-    Route::get('/ubah_periode/{id}', [AdministratorPeriodeController::class, 'update'])->name('administrator.periode.update');
+    Route::post('/',[AdministratorPeriodeController::class, 'post'])->name('administrator.periode.post');
+    Route::get('/{id}/edit',[AdministratorPeriodeController::class, 'edit'])->name('administrator.periode.edit');
+    Route::patch('/',[AdministratorPeriodeController::class, 'update'])->name('administrator.periode.update');
     Route::patch('/aktifkan_status/{id}',[AdministratorPeriodeController::class, 'aktifkanStatus'])->name('administrator.periode.aktifkan_status');
     Route::patch('/non_aktifkan_status/{id}',[AdministratorPeriodeController::class, 'nonAktifkanStatus'])->name('administrator.periode.non_aktifkan_status');
     Route::delete('/',[AdministratorPeriodeController::class, 'delete'])->name('administrator.periode.delete');
@@ -107,47 +110,47 @@ Route::group(['prefix' => 'administrator/periode'], function () {
 
 Route::group(['prefix' => 'administrator/periodeinsentif'], function () {
     Route::get('/',[AdministratorPeriodeInsentifController::class, 'index'])->name('administrator.periodeinsentif');
-    Route::post('/',[AdministratorPeriodeInsentifController::class, 'post'])->name('administrator.periodeinsentif.add');
-    Route::get('/ubah_periodeinsentif/{id}', 'Administrator\AdministratorPeriodeInsentifController@edit')->name('administrator.periodeinsentif.edit');
-    Route::get('/ubah_periodeinsentif/{id}', [AdministratorPeriodeInsentifController::class, 'update'])->name('administrator.periodeinsentif.update');
+    Route::post('/',[AdministratorPeriodeInsentifController::class, 'post'])->name('administrator.periodeinsentif.post');
+    Route::get('/{id}/edit',[AdministratorPeriodeInsentifController::class, 'edit'])->name('administrator.periodeinsentif.edit');
+    Route::patch('/',[AdministratorPeriodeInsentifController::class, 'update'])->name('administrator.periodeinsentif.update');
     Route::patch('/aktifkan_status/{id}',[AdministratorPeriodeInsentifController::class, 'aktifkanStatus'])->name('administrator.periodeinsentif.aktifkan_status');
     Route::patch('/non_aktifkan_status/{id}',[AdministratorPeriodeInsentifController::class, 'nonAktifkanStatus'])->name('administrator.periodeinsentif.non_aktifkan_status');
     Route::delete('/',[AdministratorPeriodeInsentifController::class, 'delete'])->name('administrator.periodeinsentif.delete');
 });
 Route::group(['prefix' => 'administrator/user'], function () {
     Route::get('/',[AdministratorUserController::class, 'index'])->name('administrator.user');
-    Route::post('/',[AdministratorUserController::class, 'post'])->name('administrator.user.add');
-
-    Route::get('/ubah_user/{id}', [AdministratorUserController::class, 'update'])->name('administrator.user.update');
+    Route::post('/',[AdministratorUserController::class, 'post'])->name('administrator.user.post');
+    Route::get('/{id}/edit',[AdministratorUserController::class, 'edit'])->name('administrator.user.edit');
+    Route::patch('/',[AdministratorUserController::class, 'update'])->name('administrator.user.update');
+    Route::delete('/',[AdministratorUserController::class, 'delete'])->name('administrator.user.delete');
     Route::patch('/aktifkan_status/{id}',[AdministratorUserController::class, 'aktifkanStatus'])->name('administrator.user.aktifkan_status');
     Route::patch('/non_aktifkan_status/{id}',[AdministratorUserController::class, 'nonAktifkanStatus'])->name('administrator.user.non_aktifkan_status');
-    Route::delete('/',[AdministratorUserController::class, 'delete'])->name('administrator.user.delete');
+    Route::post('/generate_password',[AdministratorUserController::class, 'generatePassword'])->name('administrator.user.generate_password');
+    Route::patch('/ubah_password',[AdministratorUserController::class, 'ubahPassword'])->name('administrator.user.ubah_password');
 });
 Route::group(['prefix' => 'administrator/tendik'], function () {
     Route::get('/',[AdministratorTendikController::class, 'index'])->name('administrator.tendik');
-    Route::post('/',[AdministratorTendikController::class, 'post'])->name('administrator.tendik.add');
-
-    Route::get('/ubah_tendik/{id}', [AdministratorTendikController::class, 'update'])->name('administrator.tendik.update');
-    Route::patch('/aktifkan_status/{id}',[AdministratorTendikController::class, 'aktifkanStatus'])->name('administrator.tendik.aktifkan_status');
-    Route::patch('/non_aktifkan_status/{id}',[AdministratorTendikController::class, 'nonAktifkanStatus'])->name('administrator.tendik.non_aktifkan_status');
+    Route::post('/',[AdministratorTendikController::class, 'post'])->name('administrator.tendik.post');
+    Route::get('/{id}/edit',[AdministratorTendikController::class, 'edit'])->name('administrator.tendik.edit');
+    Route::patch('/',[AdministratorTendikController::class, 'update'])->name('administrator.tendik.update');
     Route::delete('/',[AdministratorTendikController::class, 'delete'])->name('administrator.tendik.delete');
+    Route::post('/generate_password',[AdministratorTendikController::class, 'generatePassword'])->name('administrator.tendik.generate_password');
+    Route::patch('/ubah_password',[AdministratorTendikController::class, 'ubahPassword'])->name('administrator.tendik.ubah_password');
 });
 
 Route::group(['prefix' => 'administrator/unit'], function () {
     Route::get('/',[AdministratorUnitController::class, 'index'])->name('administrator.unit');
-    Route::post('/',[AdministratorUnitController::class, 'post'])->name('administrator.unit.add');
-    Route::get('/ubah_Unit/{id}', [AdministratorUnitController::class, 'update'])->name('administrator.unit.update');
-    Route::patch('/aktifkan_status/{id}',[AdministratorUnitController::class, 'aktifkanStatus'])->name('administrator.unit.aktifkan_status');
-    Route::patch('/non_aktifkan_status/{id}',[AdministratorUnitController::class, 'nonAktifkanStatus'])->name('administrator.unit.non_aktifkan_status');
+    Route::post('/',[AdministratorUnitController::class, 'post'])->name('administrator.unit.post');
+    Route::get('/{id}/edit',[AdministratorUnitController::class, 'edit'])->name('administrator.unit.edit');
+    Route::patch('/',[AdministratorUnitController::class, 'update'])->name('administrator.unit.update');
     Route::delete('/',[AdministratorUnitController::class, 'delete'])->name('administrator.unit.delete');
 });
 
 Route::group(['prefix' => 'administrator/rubrik'], function () {
     Route::get('/',[AdministratorRubrikController::class, 'index'])->name('administrator.rubrik');
-    Route::post('/',[AdministratorRubrikController::class, 'post'])->name('administrator.rubrik.add');
-    Route::get('/ubah_rubrik/{id}', [AdministratorRubrikController::class, 'update'])->name('administrator.rubrik.update');
-    Route::patch('/aktifkan_status/{id}',[AdministratorRubrikController::class, 'aktifkanStatus'])->name('administrator.rubrik.aktifkan_status');
-    Route::patch('/non_aktifkan_status/{id}',[AdministratorRubrikController::class, 'nonAktifkanStatus'])->name('administrator.rubrik.non_aktifkan_status');
+    Route::post('/',[AdministratorRubrikController::class, 'post'])->name('administrator.rubrik.post');
+    Route::get('/{id}/edit',[AdministratorRubrikController::class, 'edit'])->name('administrator.rubrik.edit');
+    Route::patch('/',[AdministratorRubrikController::class, 'update'])->name('administrator.rubrik.update');
     Route::delete('/',[AdministratorRubrikController::class, 'delete'])->name('administrator.rubrik.delete');
 });
 Route::group(['prefix' => 'administrator/detailisianrubrik'], function () {
@@ -171,23 +174,45 @@ Route::group(['prefix' => 'administrator/isianrubrik'], function () {
 
 Route::group(['prefix' => 'administrator/penggunarubrik'], function () {
     Route::get('/',[AdministratorPenggunaRubrikController::class, 'index'])->name('administrator.penggunarubrik');
-    Route::post('/',[AdministratorPenggunaRubrikController::class, 'post'])->name('administrator.penggunarubrik.add');
-    Route::get('/ubah_penggunarubrik/{id}', [AdministratorPenggunaRubrikController::class, 'update'])->name('administrator.penggunarubrik.update');
+    Route::post('/',[AdministratorPenggunaRubrikController::class, 'post'])->name('administrator.penggunarubrik.post');
+    Route::get('/{id}/edit',[AdministratorPenggunaRubrikController::class, 'edit'])->name('administrator.penggunarubrik.edit');
+    Route::patch('/',[AdministratorPenggunaRubrikController::class, 'update'])->name('administrator.penggunarubrik.update');
+    Route::delete('/',[AdministratorPenggunaRubrikController::class, 'delete'])->name('administrator.penggunarubrik.delete');
     Route::patch('/aktifkan_status/{id}',[AdministratorPenggunaRubrikController::class, 'aktifkanStatus'])->name('administrator.penggunarubrik.aktifkan_status');
     Route::patch('/non_aktifkan_status/{id}',[AdministratorPenggunaRubrikController::class, 'nonAktifkanStatus'])->name('administrator.penggunarubrik.non_aktifkan_status');
-    Route::delete('/',[AdministratorPenggunaRubrikController::class, 'delete'])->name('administrator.penggunarubrik.delete');
 });
 
 Route::group(['prefix' => 'administrator/jabatan'], function () {
     Route::get('/',[AdministratorJabatanController::class, 'index'])->name('administrator.jabatan');
-    Route::post('/',[AdministratorJabatanController::class, 'post'])->name('administrator.jabatan.add');
-    Route::get('/ubah_jabatan/{id}', [AdministratorJabatanController::class, 'update'])->name('administrator.jabatan.update');
-    Route::patch('/aktifkan_status/{id}',[AdministratorJabatanController::class, 'aktifkanStatus'])->name('administrator.jabatan.aktifkan_status');
-    Route::patch('/non_aktifkan_status/{id}',[AdministratorJabatanController::class, 'nonAktifkanStatus'])->name('administrator.jabatan.non_aktifkan_status');
+    Route::post('/',[AdministratorJabatanController::class, 'post'])->name('administrator.jabatan.post');
+    Route::get('/{id}/edit',[AdministratorJabatanController::class, 'edit'])->name('administrator.jabatan.edit');
+    Route::patch('/',[AdministratorJabatanController::class, 'update'])->name('administrator.jabatan.update');
     Route::delete('/',[AdministratorJabatanController::class, 'delete'])->name('administrator.jabatan.delete');
 });
 
+Route::group(['prefix' => 'administrator/rekapitulasi'], function () {
+    Route::get('/{periode_id}',[AdministratorRekapitulasiController::class, 'index'])->name('administrator.rekapitulasi');
+    Route::get('/{periode_id}/generate_table',[AdministratorRekapitulasiController::class, 'generateTable'])->name('administrator.rekapitulasi.generate_table');
+    Route::get('/{periode_id}/data_tendik',[AdministratorRekapitulasiController::class, 'dataTendik'])->name('administrator.rekapitulasi.data_tendik');
+    Route::get('/{periode_id}/generate_data_tendik',[AdministratorRekapitulasiController::class, 'generateDataTendik'])->name('administrator.rekapitulasi.generate_data_tendik');
+    Route::get('/{periode_id}/total_remun',[AdministratorRekapitulasiController::class, 'totalRemun'])->name('administrator.rekapitulasi.total_remun');
+    Route::get('/{periode_id}/generate_total_remun',[AdministratorRekapitulasiController::class, 'generateTotalRemun'])->name('administrator.rekapitulasi.generate_total_remun');
+    Route::get('/{periode_id}/integritas',[AdministratorRekapitulasiController::class, 'integritas'])->name('administrator.rekapitulasi.integritas');
+    Route::get('/{periode_id}/generate_integritas',[AdministratorRekapitulasiController::class, 'generateIntegritas'])->name('administrator.rekapitulasi.generate_integritas');
+    Route::get('/{periode_id}/skp',[AdministratorRekapitulasiController::class, 'skp'])->name('administrator.rekapitulasi.skp');
+    Route::get('/{periode_id}/generate_skp',[AdministratorRekapitulasiController::class, 'generateSkp'])->name('administrator.rekapitulasi.generate_skp');
+    Route::get('/{periode_id}/persentase_absen',[AdministratorRekapitulasiController::class, 'persentaseAbsen'])->name('administrator.rekapitulasi.persentase_absen');
+    Route::get('/{periode_id}/generate_absensi',[AdministratorRekapitulasiController::class, 'generateAbsensi'])->name('administrator.rekapitulasi.generate_absensi');
+    Route::get('/{periode_id}/total_akhir',[AdministratorRekapitulasiController::class, 'totalAkhir'])->name('administrator.rekapitulasi.total_akhir_remun');
+    Route::get('/{periode_id}/generate_total_akhir',[AdministratorRekapitulasiController::class, 'generateTotalAkhir'])->name('administrator.rekapitulasi.generate_total_akhir');
+   
+    
+});
 
+
+Route::group(['prefix'  => 'administrator/data_insentif'],function(){
+    Route::get('/',[AdministratorDataInsentifController::class, 'index'])->name('administrator.data_insentif');
+});
 
 Route::group(['prefix'  => 'kepegawaian/'],function(){
     Route::get('/',[DashboardController::class, 'dashboard'])->name('kepegawaian.dashboard');
@@ -292,7 +317,8 @@ Route::group(['prefix' => 'kepegawaian/rekapitulasi'], function () {
     
 });
 
-Route::group(['prefix'  => 'kepegawaian/manajemen_data_kepegawaianistrator'],function(){
+
+Route::group(['prefix'  => 'kepegawaian/manajemen_data_kepegawaian'],function(){
     Route::get('/','kepegawaian\kepegawaianController@index')->name('kepegawaian.kepegawaian');
     Route::post('/','kepegawaian\kepegawaianController@post')->name('kepegawaian.kepegawaian.add');
     Route::patch('/ubah_password','kepegawaian\kepegawaianController@ubahPassword')->name('kepegawaian.kepegawaian.ubah_password');

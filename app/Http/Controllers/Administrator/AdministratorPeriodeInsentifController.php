@@ -9,11 +9,7 @@ use Illuminate\Support\Str;
 
 class AdministratorPeriodeInsentifController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth','isAdministrator']);
-    }
-
+   
     public function index(){
         $periodeinsentifs = PeriodeInsentif::orderBy('id','desc')->get();
         return view('administrator/periodeinsentif.index',compact('periodeinsentifs'));
@@ -25,27 +21,26 @@ class AdministratorPeriodeInsentifController extends Controller
             'numeric' => ':attribute harus angka',
         ];
         $attributes = [
-            'masa_kinerja'   =>  'Nama Periode',
-            'periode_pembayaran'    =>  'Tanggal Awal',
-            // 'status'    =>  'Status',
-            // 'slug'    =>  'slug',
+            'masa_kinerja'   =>  'Nama Periode insentif',
+            'periode_pembayaran'    =>  'periode pembayaran',
+           
+          
         ];
         $this->validate($request, [
             'masa_kinerja'    =>  'required',
             'periode_pembayaran'    =>  'required',
-          
+           
         ],$messages,$attributes);
         PeriodeInsentif::create([
-            'masa_kinerja' => $request->masa_kinerja,
-            'periode_pembayaran' => $request->periode_pembayaran,
-        
-      
+            'masa_kinerja'    =>  $request->masa_kinerja,
+            'periode_pembayaran'    =>  $request->periode_pembayaran,
+       
             'slug'  =>  Str::slug($request->masa_kinerja),
         ]);
         
 
         $notification = array(
-            'message' => 'Berhasil, data periode berhasil ditambakan!',
+            'message' => 'Berhasil, data periodeinsentif berhasil ditambakan!',
             'alert-type' => 'success'
         );
 
@@ -67,39 +62,48 @@ class AdministratorPeriodeInsentifController extends Controller
         ]);
     }
 
-    // public function edit($id){
-    //     $periodeinsentif = PeriodeInsentif::find($id);
-    //     return $periodeinsentif;
-    // }
     public function edit($id){
         $periodeinsentif = PeriodeInsentif::find($id);
-   
-        // $periode = Periode::where('status','aktif')->first();
-   
-        return view('administrator/periodeinsentif.edit',compact('periodeinsentif'));
+        return $periodeinsentif;
     }
+
     public function update(Request $request){
-        $this->validate($request, [
-            'masa_kinerja'    =>  'required',
-            'periode_pembayaran'    =>  'required',
+// return $request->all();
+        $messages = [
+            'required' => ':attribute harus diisi',
+            'numeric' => ':attribute harus angka',
+        ];
+        $attributes = [
+            'periode_pembayaran'   =>  'Tanggal Awal',
+            'masa_kinerja'    =>  'Nama periodeinsentif',
           
+        ];
+        $this->validate($request, [
+            'periode_pembayaran'    =>  'required',
+            'masa_kinerja'    =>  'required',
            
-        ]);
-        $periodeinsentif = PeriodeInsentif::where('id',$request->id)->update([
-            'masa_kinerja'    =>  $request->masa_kinerja,
-            'periode_pembayaran'    =>  $request->periode_pembayaran,
-         
-           
+
+        ],$messages,$attributes);
+        PeriodeInsentif::where('id',$request->id)->update([
+            'periode_pembayaran' =>  $request->periode_pembayaran,
+            'masa_kinerja' =>  $request->masa_kinerja,
+        
+            
+
         ]);
 
-        return redirect()->route('administrator.periodeinsentif')->with(['success'    =>  'Data Periode Berhasil Diubah !!']);
+        $notification = array(
+            'message' => 'Berhasil, periodeinsentif berhasil diubah!',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('administrator.periodeinsentif')->with($notification);
     }
-    
 
     public function delete(Request $request){
         $periodeinsentif = PeriodeInsentif::find($request->id);
         $periodeinsentif->delete();
 
-        return redirect()->route('administrator.periodeinsentif')->with(['success'    =>  'Data Periode Berhasil Dihapus !!']);
+        return redirect()->route('administrator.periodeinsentif')->with(['success'    =>  'Data Periodeinsentif Berhasil Dihapus !!']);
     }
 }
