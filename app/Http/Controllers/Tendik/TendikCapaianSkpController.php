@@ -89,6 +89,7 @@ class TendikCapaianSkpController extends Controller
         RCapaianSkp::where('id',$request->id)->update([
             'path'  =>  NULL,
             'nilai_skp' =>  0,
+            'status'    =>  NULL,
         ]); 
         return redirect()->route('tendik.r_skp')->with(['success'   =>  'Nilai dan file skp periode yang dipilih berhasil dihapus !!']);
     }
