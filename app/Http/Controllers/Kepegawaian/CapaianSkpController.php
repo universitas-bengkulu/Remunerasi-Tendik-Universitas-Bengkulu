@@ -135,7 +135,7 @@ class CapaianSkpController extends Controller
                                 ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                                 ->select('r_capaian_skps.id','nilai_skp','remunerasi')
                                 ->where('periode_id',$periode_id)
-                                ->where('r_capaian_skps.status','berhasil')
+                                // ->where('r_capaian_skps.status','berhasil')
                                 ->groupBy('r_capaian_skps.id')
                                 ->get();
         for ($i=0; $i <count($datas) ; $i++) { 
@@ -163,7 +163,7 @@ class CapaianSkpController extends Controller
                 RCapaianSkp::where('id',$datas[$i]->id)->update([
                     'potongan_skp'  =>  '50',
                 ]);
-            } else {
+            } elseif($datas[$i]->nilai_skp == 0) {
                 RCapaianSkp::where('id',$datas[$i]->id)->update([
                     'potongan_skp'  =>  '100',
                 ]);
