@@ -29,9 +29,9 @@ class TendikCapaianSkpController extends Controller
                                 ->get();
             $sekarang = RCapaianSkp::where('tendik_id',Auth::guard('tendik')
                                     ->user()->id)
+                                    ->where('periode_id',$periode->id)
                                     ->where('path','!=', NULL)
                                     ->where('path','!=',"")
-                                    ->where('periode_id',$periode->id)
                                     ->first();
         }else{
             return redirect()->back();
