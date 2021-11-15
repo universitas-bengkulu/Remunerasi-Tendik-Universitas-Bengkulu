@@ -5,83 +5,94 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PenggunaRubrik;
+use App\Models\Unit;
+use App\Models\Rubrik;
+
+
 use Illuminate\Support\Str;
 
 class AdministratorPenggunaRubrikController extends Controller
 {
-    public function index(){
-        $penggunarubriks = PenggunaRubrik::all();
-        return view('administrator/penggunarubrik.index',compact('penggunarubriks'));
+  public function index(){
+        $units = Unit::select('id','nm_unit')->get();
+        $rubriks = Rubrik::select('id','nama_rubrik')->get();
+
+        $penggunarubriks = PenggunaRubrik::leftJoin('units','units.id','pengguna_rubriks.unit_id')
+                                            ->leftJoin('rubriks','rubriks.id','pengguna_rubriks.rubrik_id')
+                                            ->select('pengguna_rubriks.id','nama_rubrik','nm_unit')
+                                            ->orderBy('pengguna_rubriks.id','desc')
+                                            ->get();
+                                          
+        return view('administrator/penggunarubrik.index',compact('penggunarubriks','rubriks','units'));
     }
 
     public function post(Request $request){
-        $this->validate($request,[
-            'nm_penggunarubrik'   =>  'required',
-            'tingkatan'    =>  'required',
+        $messages = [
+            'required' => ':attribute harus diisi',
+            'numeric' => ':attribute harus angka',
+        ];
+        $attributes = [
+            'rubrik_id'   =>  'Nama Rubrik',
+            'unit_id'    =>  'Nama Unit',
+            
+        ];
+        $this->validate($request, [
+            'rubrik_id'    =>  'required',
+            'unit_id'    =>  'required',
            
-        ]);
-
+        ], $messages, $attributes);
         PenggunaRubrik::create([
-            'rubrik_id'       =>  $request->rubrik_id,
-            'periode_id'       =>  $request->periode_id,
-            'no_sk'       =>  $request->no_sk,
-            'pengguna_1'     =>  $request->pengguna_1,
-            'pengguna_2'     =>  $request->pengguna_2,
-            'pengguna_3'     =>  $request->pengguna_3,
-            'pengguna_4'     =>  $request->pengguna_4,
-            'pengguna_5'     =>  $request->pengguna_5,
-            'pengguna_6'     =>  $request->pengguna_6,
-            'pengguna_7'     =>  $request->pengguna_7,
-            'pengguna_8'     =>  $request->pengguna_8,
-            'pengguna_9'     =>  $request->pengguna_9,
-            'pengguna_10'     =>  $request->pengguna_10,
+            'rubrik_id' => $request->rubrik_id,
+            'unit_id' => $request->unit_id,
             
         ]);
 
-        return redirect()->route('administrator.penggunarubrik')->with(['success' =>  'penggunarubrik berhasil ditambahkan']);
+        $notification = array(
+            'message' => 'Berhasil, data penggunarubrik berhasil ditambakan!',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('administrator.penggunarubrik')->with($notification);
     }
 
-   
     public function edit($id){
-        $penggunarubriks = PenggunaRubrik::find($id);
-        return $penggunarubriks;
+        $penggunarubrik = PenggunaRubrik::find($id);
+        return $penggunarubrik;
     }
 
     public function update(Request $request){
-        $this->validate($request, [
-            'nm_penggunarubrik'    =>  'required',
-            'tingkatan'    =>  'required',
-           
-           
-            
-        ]);
-        $penggunarubriks = PenggunaRubrik::where('id',$request->id)->update([
-            'nm_penggunarubrik'    =>  $request->nm_penggunarubrik,
-            'tingkatan'    =>  $request->tingkatan,
-            'slug'  =>  Str::slug($request->nm_penggunarubrik),
-           
+        PenggunaRubrik::where('id',$request->id_ubah)->update([
+            'unit_id'    =>  $request->unit_id,
+            'rubrik_id'    =>  $request->rubrik_id,
+        
         ]);
 
-        return redirect()->route('administrator.penggunarubrik')->with(['success'    =>  'Data penggunarubrik Berhasil Diubah !!']);
+        $notification = array(
+            'message' => 'Berhasil, data penggunarubrik berhasil diupdate!',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('administrator.penggunarubrik')->with($notification);
     }
 
     public function delete(Request $request){
         $penggunarubrik = PenggunaRubrik::find($request->id);
         $penggunarubrik->delete();
 
-        return redirect()->route('administrator.penggunarubrik')->with(['success'    =>  'Data penggunarubrik Berhasil Dihapus !!']);
+        return redirect()->route('administrator.penggunarubrik')->with(['success' =>  'Data penggunarubrik berhasil dihapus !']);
     }
+
     public function aktifkanStatus($id){
-        Penggunarubrik::where('id','!=',$id)->update([
+        PenggunaRubrik::where('id','!=',$id)->update([
             'status'    =>  'nonaktif',
         ]);
-        $penggunarubrik = Penggunarubrik::where('id',$id)->update([
+        $penggunarubrik = PenggunaRubrik::where('id',$id)->update([
             'status'    =>  'aktif',
         ]);
     }
 
     public function nonAktifkanStatus($id){
-        $penggunarubrik = Penggunarubrik::where('id',$id)->update([
+        $penggunarubrik = PenggunaRubrik::where('id',$id)->update([
             'status'    =>  'nonaktif',
         ]);
     }

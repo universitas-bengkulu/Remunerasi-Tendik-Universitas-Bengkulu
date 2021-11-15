@@ -32,13 +32,13 @@
 
     <section class="panel" style="margin-bottom:20px;">
         <header class="panel-heading" style="color: #ffffff;background-color: #074071;border-color: #fff000;border-image: none;border-style: solid solid none;border-width: 4px 0px 0;border-radius: 0;font-size: 14px;font-weight: 700;padding: 15px;">
-            <i class="fa fa-tasks"></i>&nbsp; isianrubrik 
+            <i class="fa fa-tasks"></i>&nbsp;  Remunerasi Tenaga Kependidikan Universitas Bengkulu
         </header>
         
         <div class="panel-body" style="border-top: 1px solid #eee; padding:15px; background:white;">
            
             <div class="col-md-12">
-                <a onclick="tambahisianrubrik()" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-user-plus"></i>&nbsp; Tambah isianrubrik</a>
+                <a onclick="tambahisianrubrik()" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-user-plus"></i>&nbsp; Tambah Isian Rubrik</a>
             </div>
            <div class="row">
                <div class="col-md-12 table-responsive">

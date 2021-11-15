@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class PenggunaRubrik extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'rubrik_id',
+        'unit_id',
+        
+    ];
     public function periode()
     {
         return $this->belongsTo('App\Models\PeriodeInsentif');

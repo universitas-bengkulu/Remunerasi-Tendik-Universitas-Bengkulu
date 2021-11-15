@@ -9,10 +9,7 @@ use Illuminate\Support\Str;
 
 class AdministratorPeriodeController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth','isAdministrator']);
-    }
+    
 
     public function index(){
         $periodes = Periode::orderBy('id','desc')->get();
@@ -76,22 +73,40 @@ class AdministratorPeriodeController extends Controller
     }
 
     public function update(Request $request){
+// return $request->all();
+        $messages = [
+            'required' => ':attribute harus diisi',
+            'numeric' => ':attribute harus angka',
+        ];
+        $attributes = [
+            'tanggal_awal'   =>  'Tanggal Awal',
+            'nm_periode'    =>  'Nama periode',
+            'tanggal_akhir'    =>  'tanggal_akhir',
+            'jumlah_bulan'    =>  'jumlah_bulan',
+        ];
         $this->validate($request, [
-            'nm_periode'    =>  'required',
             'tanggal_awal'    =>  'required',
+            'nm_periode'    =>  'required',
             'tanggal_akhir'    =>  'required',
-            'jumlah_bulan'    =>  'required|numeric',
-           
-        ]);
-        $periode = Periode::where('id',$request->id)->update([
-            'nm_periode'    =>  $request->nm_periode,
-            'tanggal_awal'    =>  $request->tanggal_awal,
-            'tanggal_akhir'    =>  $request->tanggal_akhir,
-            'jumlah_bulan'    =>  $request->jumlah_bulan,
-           
+            
+            'jumlah_bulan'    =>  'required',
+
+        ],$messages,$attributes);
+        Periode::where('id',$request->id)->update([
+            'tanggal_awal' =>  $request->tanggal_awal,
+            'nm_periode' =>  $request->nm_periode,
+            'tanggal_akhir' =>  $request->tanggal_akhir,
+            'jumlah_bulan' =>  $request->jumlah_bulan,
+            
+
         ]);
 
-        return redirect()->route('administrator.periode')->with(['success'    =>  'Data Periode Berhasil Diubah !!']);
+        $notification = array(
+            'message' => 'Berhasil, periode berhasil diubah!',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('administrator.periode')->with($notification);
     }
 
     public function delete(Request $request){

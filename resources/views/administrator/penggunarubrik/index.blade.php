@@ -1,342 +1,372 @@
-
 @extends('layouts.layout')
-@section('title', 'Dashboard')
-@section('login_as', 'Administrator')
+@section('title', 'Manajemen Data penggunarubrik')
+@section('login_as', 'administrator')
 @section('user-login')
-    {{ Auth::user()->nm_user }}
+    @if (Auth::check())
+    {{ Auth::user()->nama_lengkap }}
+    @endif
 @endsection
 @section('user-login2')
-    {{ Auth::user()->nm_user }}
+    @if (Auth::check())
+    {{ Auth::user()->nama_lengkap }}
+    @endif
 @endsection
 @section('sidebar-menu')
     @include('administrator/sidebar')
 @endsection
 @push('styles')
     <style>
-        #detail:hover{
-            text-decoration: underline !important;
-            cursor: pointer !important;
-            color:teal;
+        .penggunarubrik {
+            color: #007bff !important;
+            background: white;
         }
-        #selengkapnya{
-            color:#5A738E;
-            text-decoration:none;
-            cursor:pointer;
-        }
-        #selengkapnya:hover{
-            color:#007bff;
+
+        .penggunarubrik:hover,
+        .penggunarubrik:focus,
+        .penggunarubrik:active {
+            background-color: white !important;
+            color: #007bff !important;
         }
     </style>
 @endpush
 @section('content')
-
     <section class="panel" style="margin-bottom:20px;">
         <header class="panel-heading" style="color: #ffffff;background-color: #074071;border-color: #fff000;border-image: none;border-style: solid solid none;border-width: 4px 0px 0;border-radius: 0;font-size: 14px;font-weight: 700;padding: 15px;">
-            <i class="fa fa-tasks"></i>&nbsp; penggunarubrik 
+            <i class="fa fa-home"></i>&nbsp;Remunerasi Tenaga Kependidikan Universitas Bengkulu
         </header>
-        
         <div class="panel-body" style="border-top: 1px solid #eee; padding:15px; background:white;">
-           
-            <div class="col-md-12">
-                <a onclick="tambahpenggunarubrik()" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-user-plus"></i>&nbsp; Tambah penggunarubrik</a>
-            </div>
-           <div class="row">
-               <div class="col-md-12 table-responsive">
-                   <table class="table table-hover table-bordered" id="table">
-                       <thead>
-                           <tr>
-                               <th style="text-align:center">No</th>
-                               <th style="text-align:center">Nama pengguna rubrik</th>
-                               <th style="text-align:center">nama rubrik</th>
-                               <th style="text-align:center">status</th>
-                               <th style="text-align:center">ubah status</th>
-                             
-                               <th style="text-align:center" colspan="2">aksi</th>
-                           </tr>
-                       </thead>
-                       <tbody>
-                           @php
-                               $no=1;
-                           @endphp
-                           @foreach ($penggunarubriks as $penggunarubrik)
-                               <tr>
-                                   <td>{{ $no++ }}</td>
-                                   <td>{{ $penggunarubrik->id_unit }}</td>
-                                   <td>{{ $penggunarubrik->id_rubrik }}</td>
-                                  
-                                   <td style="text-align:center;">
-                                    @if ($penggunarubrik->status == "aktif")
-                                        <span class="badge badge-success"><i class="fa fa-check-circle"></i>&nbsp; Aktif</span>
-                                        @else
-                                        <span class="badge badge-danger"><i class="fa fa-minus-circle"></i>&nbsp; Tidak Aktif</span>
-                                    @endif
-                                </td>
-                                <td style="text-align:center;">
-                                    @if ($penggunarubrik->status == "aktif")
-                                        <a onclick="nonAktifkanStatus( {{ $penggunarubrik->id }} )" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-thumbs-down"></i></a>
-                                        @else
-                                        <a onclick="aktifkanStatus( {{ $penggunarubrik->id }} )" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-thumbs-up"></i></a>
-                                    @endif
-                                </td>
-                                   <td style="text-align:center;">
-                                    <a href="{{ route('administrator.penggunarubrik.update',[$penggunarubrik->id]) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></a>
-                                   
-                                </td>
-                                <td style="text-align:center;">
-                                    <a onclick="hapuspenggunarubrik( {{ $penggunarubrik->id }} )" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-trash"></i></a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <!-- Modal Hapus-->
-            <div class="modal fade" id="modalhapus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form action=" {{ route('administrator.penggunarubrik.delete') }} " method="POST">
-                        {{ csrf_field() }} {{ method_field('DELETE') }}
-                        <div class="modal-header">
-                            <p style="font-size:15px; font-weight:bold;" class="modal-title"><i class="fa fa-key"></i>&nbsp;Form Konfirmasi Hapus Data</p>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+            <div class="row" style="margin-right:-15px; margin-left:-15px;">
+                <div class="col-md-12">
+                    @if ($message   = Session::get('success'))
+                        <div class="alert alert-success alert-block" id="keterangan">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <strong><i class="fa fa-info-circle"></i>&nbsp;Berhasil: </strong> {{ $message }}
                         </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <input type="hidden" name="id" id="id_hapus">
-                                    Apakah anda yakin ingin menghapus data? klik hapus jika iya !!
-                                </div>
-                            </div>
+                        @else
+                        <div class="alert alert-success alert-block" id="keterangan">
+                            <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Berikut semua data Pengguna Rubrik yang tersedia, silahkan tambahkan manual jika diperlukan !!
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp; Batalkan</button>
-                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Ya, Hapus</button>
-                        </div>
-                    </form>
+                    @endif
                 </div>
-                </div>
-            </div>
-        </div>
-        <!-- Modal Tambah -->
-        <div class="modal fade" id="modaltambah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <form action=" {{ route('administrator.penggunarubrik.add') }} " method="POST">
-                    {{ csrf_field() }} {{ method_field('POST') }}
-                    <div class="modal-header">
-                        <p style="font-size:15px; font-weight:bold;" class="modal-title"><i class="fa fa-clock-o"></i>&nbsp;Form Tambah Data penggunarubrik</p>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                <div class="col-md-12" style="margin-bottom:10px;">
+                    <div class="btn-group">
+                        <button class="btn btn-primary btn-sm " onclick="tambahpenggunarubrik()">
+                          <i class="fa fa-plus"></i>&nbsp;Tambah Data Pengguna Rubrik
                         </button>
                     </div>
-                    <div class="modal-body">
+
+                  
+                </div>
+                <div class="col-md-12 form-tambah" id="form-tambah" style="display:none;">
+                    <hr style="width:50%;">
+                    <form action="{{ route('administrator.penggunarubrik.post') }}" method="POST">
+                        {{ csrf_field() }} {{ method_field('POST') }}
                         <div class="row">
-                            <div class="col-md-12">
-                                <input type="hidden" name="id" id="id_ubah">
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                                <div class="form-group">
-                                    <label for="" >Nama penggunarubrik  <a style="color:red"></a></label>
-                                    <input type="text" name="nm_penggunarubrik" value="{{ old('nm_penggunarubrik') }}" class="form-control @error('nm_penggunarubrik') is-invalid @enderror" placeholder="nama penggunarubrik">
-                                    <div>
-                                        @if ($errors->has('nm_penggunarubrik'))
-                                            <small class="form-text text-danger">{{ $errors->first('nm_penggunarubrik') }}</small>
-                                        @endif
-                                    </div>
-
-                                </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                        <label>tingkatan</label>
-                        <select name="tingkatan" id="" class="form-control @error('tingkatan') is-invalid @enderror">
-                            <option disabled selected>-- pilih tingkatan --</option>
-                            <option value="universitas">Universitas</option>
-                            <option value="lembaga">Lembaga</option>
-                            <option value="fakultas">Fakultas</option>
-
-                        </select>
-                        @error('tingkatan')
-                            <div class="invalid-feedback">
-                                {{ $message }}
+                         
+                            <div class="form-group col-md-6">
+                                <label>Nama Unit :</label>
+                                <select name="unit_id" class="form-control  @error('unit_id') is-invalid @enderror">
+                                    <option value="" selected disabled>-- pilih nama jabatan --</option>
+                                    @foreach ($units as $unit)
+                                        <option {{ $unit->id == old('unit_id') ? 'selected' : '' }} value="{{ $unit->id }}">{{ $unit->nm_unit }}</option>
+                                    @endforeach
+                                </select>                                
+                                @error('unit_id')
+                                    <small class="form-text text-danger">{{ $errors->first('unit_id') }}</small>
+                                @enderror
                             </div>
-                        @enderror
-                    </div>
-                             
+                            <div class="form-group col-md-6">
+                                <label>Nama rubrik :</label>
+                                <select name="rubrik_id" class="form-control  @error('rubrik_id') is-invalid @enderror">
+                                    <option value="" selected disabled>-- pilih nama rubrik --</option>
+                                    @foreach ($rubriks as $rubrik)
+                                        <option {{ $rubrik->id == old('rubrik_id') ? 'selected' : '' }} value="{{ $rubrik->id }}">{{ $rubrik->nama_rubrik }}</option>
+                                    @endforeach
+                                </select>                                
+                                @error('rubrik_id')
+                                    <small class="form-text text-danger">{{ $errors->first('rubrik_id') }}</small>
+                                @enderror
                             </div>
                         </div>
+                        <div class="col-md-12" style="text-align:center;">
+                            <a onclick="batalkan()" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-close"></i>&nbsp; Batalkan</a>
+                            <button type="reset" class="btn btn-warning btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-refresh"></i>&nbsp; Ulangi</button>
+                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Simpan Data penggunarubrik</button>
+                        </div>
+                    </form>
+                    <hr style="width:50%;">
+                </div>
+                <div class="col-md-12">
+                    <table class="table table-striped table-bordered" id="table" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Unit</th>
+                                <th>Nama rubrik</th>
+                                <th>Status</th>
+
+                                <th>Ubah Status</th>
+                               
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @php
+                                $no=1;
+                            @endphp
+                            @foreach ($penggunarubriks as $penggunarubrik)
+                                <tr>
+                                    <td> {{ $no++ }} </td>
+                                    <td> {{ $penggunarubrik->nm_unit }} </td>
+                                    <td> {{ $penggunarubrik->nama_rubrik }} </td>
+                                    <td style="text-align:center;">
+                                        @if ($penggunarubrik->status == "aktif")
+                                            <span class="badge badge-success"><i class="fa fa-check-circle"></i>&nbsp; Aktif</span>
+                                            @else
+                                            <span class="badge badge-danger"><i class="fa fa-minus-circle"></i>&nbsp; Tidak Aktif</span>
+                                        @endif
+                                    </td>
+                                    <td style="text-align:center;">
+                                        @if ($penggunarubrik->status == "aktif")
+                                            <a onclick="nonAktifkanStatus( {{ $penggunarubrik->id }} )" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-thumbs-down"></i></a>
+                                            @else
+                                            <a onclick="aktifkanStatus( {{ $penggunarubrik->id }} )" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-thumbs-up"></i></a>
+                                        @endif
+                                    </td>
+                                   
+                                
+                                    <td>
+                                        <a onclick="ubahpenggunarubrik({{ $penggunarubrik->id }})" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-edit"></i></a>
+                                        <a onclick="hapuspenggunarubrik({{ $penggunarubrik->id }})" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <!-- modal ubah-->
+                    <div class="modal fade" id="modalubah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <p class="modal-title" style="font-size:17px;"><i class="fa fa-edit"></i>&nbsp;Form Ubah Data penggunarubrik</p>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <form action="{{ route('administrator.penggunarubrik.update') }}" method="POST">
+                                <div class="modal-body">
+                                        {{ csrf_field() }} {{ method_field('PATCH') }}
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="alert alert-danger" role="alert">
+                                                    <strong>Perhatian :</strong> Silahkan ubah data Tenaga Kependidikan (penggunarubrik) Jika terdapat kesalahan data !!
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="id_ubah" id="id_ubah">
+                                            <div class="form-group col-md-12">
+                                                <label>Nama rubrik :</label>
+                                                <select name="rubrik_id" class="form-control  @error('rubrik_id') is-invalid @enderror">
+                                                    <option value="" selected disabled>-- pilih nama rubrik --</option>
+                                                    @foreach ($rubriks as $rubrik)
+                                                        <option {{ $rubrik->id == old('rubrik_id') ? 'selected' : '' }} value="{{ $rubrik->id }}">{{ $rubrik->nama_rubrik }}</option>
+                                                    @endforeach
+                                                </select>                                
+                                                @error('rubrik_id')
+                                                    <small class="form-text text-danger">{{ $errors->first('rubrik_id') }}</small>
+                                                @enderror
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label>Nama Unit :</label>
+                                                <select name="unit_id" class="form-control  @error('unit_id') is-invalid @enderror">
+                                                    <option value="" selected disabled>-- pilih nama jabatan --</option>
+                                                    @foreach ($units as $unit)
+                                                        <option {{ $unit->id == old('unit_id') ? 'selected' : '' }} value="{{ $unit->id }}">{{ $unit->nm_unit }}</option>
+                                                    @endforeach
+                                                </select>                                
+                                                @error('unit_id')
+                                                    <small class="form-text text-danger">{{ $errors->first('unit_id') }}</small>
+                                                @enderror
+                                            </div>
+                                          
+                                          
+                                        
+                                        </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp;Batalkan</button>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp;Simpan Perubahan</button>
+                                </div>
+                            </form>
+                          </div>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp; Batalkan</button>
-                        <button type="submit" class="btn btn-primary btn-sm" id="btn-submit-tambah"><i class="fa fa-check-circle"></i>&nbsp; Simpan Data</button>
+                </div>
+                <!-- Modal Hapus-->
+                <div class="modal fade" id="modalhapus" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form action=" {{ route('administrator.penggunarubrik.delete') }} " method="POST">
+                                {{ csrf_field() }} {{ method_field('DELETE') }}
+                                <div class="modal-header">
+                                    <p style="font-size:15px; font-weight:bold;" class="modal-title"><i class="fa fa-key"></i>&nbsp;Form Konfirmasi Hapus Data</p>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <input type="hidden" name="id" id="id_hapus">
+                                            Apakah anda yakin ingin menghapus data? klik hapus jika iya !!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp; Batalkan</button>
+                                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Ya, Hapus</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
-            </div>
+          
+
         </div>
-    </div>
-</section>
+   
+    </section>
 @endsection
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        $('#table').DataTable({
-            responsive : true,
+    <script>
+        $(document).ready(function() {
+            $('#table').DataTable({
+                responsive : true,
+            });
+        } );
+
+        function tambahpenggunarubrik(){
+            $('#form-tambah').show(300);
+            $('#alert-generate').hide(300);
+            $('#sedang-generate').hide(300);
+            $('#generate-jabatan').hide(300);
+            $('#generate-password').hide(300);
+        }
+
+        function ubahPassword(id){
+            $('#modalubahpassword').modal('show');
+            $('#id_password').val(id);
+            $('#id').val(id);
+        }
+        
+        function batalkan(){
+            $('#form-tambah').hide(300);
+            $('#generate').show(300);
+        }
+
+        function generatePassword(){
+            $('#modalgeneratepassword').modal('show');
+        }
+
+        $(document).ready(function(){
+            $("#password, #password2").keyup(function(){
+                var password = $("#password").val();
+                var ulangi = $("#password2").val();
+                if($("#password").val() == $("#password2").val()){
+                    $('.password_sama').show(200);
+                    $('.password_tidak_sama').hide(200);
+                    $('#btn-submit').attr("disabled",false);
+                }
+                else{
+                    $('.password_sama').hide(200);
+                    $('.password_tidak_sama').show(200);
+                    $('#btn-submit').attr("disabled",true);
+                }
+            });
         });
-    } );
 
-    function tambahpenggunarubrik(){
-        $('#modaltambah').modal('show');
-    }
+        $(document).ready(function(){
+            $("#password_ubah, #password_ubah2").keyup(function(){
+                var password_ubah = $("#password_ubah").val();
+                var ulangi = $("#password_ubah2").val();
+                if($("#password_ubah").val() == $("#password_ubah2").val()){
+                    $('.password_ubah_sama').show(200);
+                    $('.password_ubah_tidak_sama').hide(200);
+                    $('#btn-submit-ubah').attr("disabled",false);
+                }
+                else{
+                    $('.password_ubah_sama').hide(200);
+                    $('.password_ubah_tidak_sama').show(200);
+                    $('#btn-submit-ubah').attr("disabled",true);
+                }
+            });
+        });
 
-    // function aktifkanStatus(id){
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-    //     url = "{{ url('administrator/penggunarubrik/aktifkan_status').'/' }}"+id;
-    //     $.ajax({
-    //         url : url,
-    //         type : 'PATCH',
-    //         success : function($data){
-    //             $('#berhasil').show(100);
-    //             location.reload();
-    //         },
-    //         error:function(){
-    //             $('#gagal').show(100);
-    //         }
-    //     });
-    //     return false;
-    // }
+        function ubahpenggunarubrik(id){
+            $.ajax({
+                url: "{{ url('administrator/penggunarubrik') }}"+'/'+ id + "/edit",
+                type: "GET",
+                dataType: "JSON",
+                success: function(data){
+                    $('#form-tambah').hide(300);
+                    $('#modalubah').modal('show');
+                    $('#id_ubah').val(id);
+                    $('#rubrik_id').val(data.rubrik_id)
+                    $('#unit_id').val(data.unit_id)
+                   
+                },
+                error:function(){
+                    alert("Nothing Data");
+                }
+            });
+        }
+        function aktifkanStatus(id){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            url = "{{ url('administrator/penggunarubrik/aktifkan_status').'/' }}"+id;
+            $.ajax({
+                url : url,
+                type : 'PATCH',
+                success : function($data){
+                    $('#berhasil').show(100);
+                    location.reload();
+                },
+                error:function(){
+                    $('#gagal').show(100);
+                }
+            });
+            return false;
+        }
 
-    // function nonAktifkanStatus(id){
-    //     $.ajaxSetup({
-    //         headers: {
-    //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    //         }
-    //     });
-    //     url = "{{ url('administrator/penggunarubrik/non_aktifkan_status').'/' }}"+id;
-    //     $.ajax({
-    //         url : url,
-    //         type : 'PATCH',
-    //         success : function($data){
-    //             $('#berhasil').show(100);
-    //             location.reload();
-    //         },
-    //         error:function(){
-    //             $('#gagal').show(100);
-    //         }
-    //     });
-    //     return false;
-    // }
+        function nonAktifkanStatus(id){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            url = "{{ url('administrator/penggunarubrik/non_aktifkan_status').'/' }}"+id;
+            $.ajax({
+                url : url,
+                type : 'PATCH',
+                success : function($data){
+                    $('#berhasil').show(100);
+                    location.reload();
+                },
+                error:function(){
+                    $('#gagal').show(100);
+                }
+            });
+            return false;
+        }
+        function hapuspenggunarubrik(id){
+            $('#modalhapus').modal('show');
+            $('#id_hapus').val(id);
+        }
 
-    function hapuspenggunarubrik(id){
-        $('#modalhapus').modal('show');
-        $('#id_hapus').val(id);
-    }
-
-    @if (count($errors) > 0)
-        $("#modaltambah").modal({"backdrop": "static"});
-    @endif
-</script>
+        @if (count($errors) > 0)
+            $('#form-tambah').show(300);
+        @endif
+    </script>
 @endpush

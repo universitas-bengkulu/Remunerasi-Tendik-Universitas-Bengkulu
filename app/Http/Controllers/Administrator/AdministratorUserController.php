@@ -5,84 +5,124 @@ namespace App\Http\Controllers\Administrator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Unit;
+
 use Illuminate\Support\Str;
 class AdministratorUserController extends Controller
 {
     public function index(){
-        $users = User::orderBy('id','desc')->get();
-        return view('administrator/user.index',compact('users'));
+        $units = Unit::select('id','nm_unit')->get();
+        $users = User::leftJoin('units','units.id','users.unit_id')
+                        ->select('users.id','nama_lengkap','email','nm_unit','role','status')
+                        ->orderBy('users.id','desc')
+                        ->get();
+        return view('administrator/user.index',compact('users','units'));
     }
+
+
     public function post(Request $request){
-        
-        // return $request->all();
+        $messages = [
+            'required' => ':attribute harus diisi',
+            'numeric' => ':attribute harus angka',
+        ];
+        $attributes = [
+            'nama_lengkap'   =>  'Nama User',
+            'email'    =>  'email',
+            'password'   =>  'password',
+            'unit_id'   =>  'unit_id',
+            'role'   =>  'role',
 
-        $this->validate($request,[
-         
+           
+        ];
+        $this->validate($request, [
             'nama_lengkap'   =>  'required',
-            'email'   =>  'required',
+            'email'    =>  'required',
             'password'   =>  'required',
+            'unit_id'   =>  'required',
             'role'   =>  'required',
-        ]);
 
+           
+        ], $messages, $attributes);
         User::create([
-            'nama_lengkap'       =>  $request->nama_lengkap,
-          
-            'email'   =>  $request->email,
-            'password'   =>  bcrypt($request->password),
-            'role'   =>  $request->role,
-            'status' => 'aktif',
-        ]);
+            'nama_lengkap' => $request->nama_lengkap,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'unit_id' => $request->unit_id,
+            'role' => $request->role,
 
 
-        return redirect()->route('administrator.user')->with(['success' =>  'Pimpinan berhasil ditambahkan']);
-    }
-     public function nonaktifkanStatus($id){
-        User::where('id',$id)->update([
-            'status'    =>  '0'
+
+            'slug' => Str::slug($request->nama_lengkap),
+           
         ]);
-        return redirect()->route('administrator.user')->with(['success' =>  'User Berhasil Di Nonaktifkan !!']);
+
+        $notification = array(
+            'message' => 'Berhasil, data user berhasil ditambakan!',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('administrator.user')->with($notification);
     }
 
-    public function aktifkanStatus($id){
-        User::where('id',$id)->update([
-            'status'    =>  '1'
-        ]);
-        return redirect()->route('administrator.user')->with(['success' =>  'User Berhasil Di Aktifkan !!']);
-    }
     public function edit($id){
         $user = User::find($id);
-      ;
-       
-        $periode = Periode::where('status','aktif')->first();
-   
-        return view('administrator/user.edit',compact('user','periode'));
+        return $user;
     }
-    
-    public function update(Request $request,$id){
-        $this->validate($request,[
-            'nama_lengkap'   =>  'required',
-            'email'   =>  'required',
-            'password'   =>  'required',
-            'role'   =>  'required',
+
+    public function update(Request $request){
+        User::where('id',$request->id_ubah)->update([
+      
+            'slug' => Str::slug($request->nama_lengkap),
+            'nama_lengkap' => $request->nama_lengkap,
+            'email' => $request->email,
+   
+            'unit_id' => $request->unit_id,
+            'role' => $request->role,
+
         ]);
 
-        User::where('id',$id)->update([
-            'nama_lengkap'       =>  $request->nama_lengkap,
-          
-            'email'   =>  $request->email,
-            'password'   =>  bcrypt($request->password),
-            'role'   =>  $request->role,
-            'status' => 'aktif',
-        ]);
+        $notification = array(
+            'message' => 'Berhasil, data user berhasil diupdate!',
+            'alert-type' => 'success'
+        );
 
-        return redirect()->route('administrator.user')->with(['success'   =>  'User berhasil diubah']);
+        return redirect()->route('administrator.user')->with($notification);
     }
 
     public function delete(Request $request){
         $user = User::find($request->id);
-        User::where('id',$request->id)->delete();
-        return redirect()->route('administrator.user')->with(['success'   =>  'User '.$user->nm_user.' berhasil dihapus']);
+        $user->delete();
+
+        return redirect()->route('administrator.user')->with(['success' =>  'Data user berhasil dihapus !']);
+    }
+
+    public function generatePassword(Request $request){
+        User::where('status','aktif')->update([
+            'password'  =>  bcrypt($request->password),
+        ]);
+
+        return redirect()->route('administrator.user')->with(['success' =>  'Password berhasil di generate !']);
+    }
+
+    public function ubahPassword(Request $request){
+        User::where('id',$request->id)->update([
+            'password'  =>  bcrypt($request->password_ubah),
+        ]);
+
+        return redirect()->route('administrator.user')->with(['success' =>  'Password berhasil di generate !']);
     }
    
+    public function aktifkanStatus($id){
+       
+        $user = User::where('id',$id)->update([
+            'status'    =>  'aktif',
+        ]);
+    }
+
+    public function nonAktifkanStatus($id){
+        $user = User::where('id',$id)->update([
+            'status'    =>  'nonaktif',
+        ]);
+    }
 
 }
