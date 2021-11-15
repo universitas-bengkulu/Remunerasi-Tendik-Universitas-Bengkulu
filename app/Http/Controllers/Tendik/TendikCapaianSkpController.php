@@ -55,7 +55,7 @@ class TendikCapaianSkpController extends Controller
             'path'   =>  'File SKP',
         ];
         $this->validate($request, [
-            'nilai_skp'    =>  'required|min:30',
+            'nilai_skp'    =>  'required',
             'path'    =>  'required|mimes:doc,pdf,docx,jpg|max:2000',
         ],$messages,$attributes);
         $periode = Periode::where('status','aktif')->first();
