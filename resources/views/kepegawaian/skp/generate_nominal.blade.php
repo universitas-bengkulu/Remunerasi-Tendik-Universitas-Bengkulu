@@ -37,7 +37,7 @@
                                 <div class="alert alert-success alert-block">
                                     <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Data Potongan Capaian SKP <b style="text-transform:uppercase">{{ $periode_aktif->nm_periode }}</b> sudah digenerate, silahkan lanjutkan dengan klik tombol next hingga selesai !!
                                 </div> --}}
-                                @else
+                                {{-- @else --}}
                                 <div class="alert alert-danger alert-block" id="alert-generate">
                                     <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Silahkan Generate Potongan Capaian SKP Terlebih Dahulu. Jika ada Sanksi Disiplin yang tidak sesuai silahkan diupdate terlebih dahulu sebelum di generate !!
                                 </div>
