@@ -174,7 +174,7 @@
                                                 <input type="hidden" name="id" id="id_ubah">
                                                 <div class="form-group col-md-12">
                                                     <label>Nilai SKP : <a style="color:red">*harap masukan angka, gunakan titik (.) sebagai pengganti koma</a></label>
-                                                    <input type="text" id="nilai_skp" name="nilai_skp" class="form-control" placeholder=" masukan nilai skp">
+                                                    <input type="text" id="nilai_skp_edit" name="nilai_skp" class="form-control" placeholder=" masukan nilai skp">
                                                     <div>
                                                         @if ($errors->has('nilai_skp'))
                                                             <small class="form-text text-danger">{{ $errors->first('nilai_skp') }}</small>
