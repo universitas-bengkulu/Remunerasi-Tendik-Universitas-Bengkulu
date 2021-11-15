@@ -164,6 +164,7 @@ class AbsensiController extends Controller
         $datas = RAbsen::join('tendiks','tendiks.id','r_absens.tendik_id')
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                             ->select('r_absens.id','periode_id','nm_lengkap','potongan_bulan_1','remunerasi','nominal_bulan_1')
+                            ->where('periode_id',$periode_id)
                             ->get();
         $cek = RAbsen::select('nominal_bulan_1')->where('periode_id',$periode_id)->first();
         if ($cek->nominal_bulan_1 != null) {
