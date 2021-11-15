@@ -18,8 +18,8 @@ class CreateRCapaianSkpsTable extends Migration
             $table->unsignedInteger('tendik_id');
             $table->unsignedInteger('periode_id');
             $table->float('nilai_skp', 8, 2);
-            $table->string('file_skp');
-            $table->enum('status',['menunggu','terkirim','berhasil','gagal'])->default('menunggu');
+            $table->string('file_skp')->nullable();
+            $table->enum('status',['menunggu','terkirim','berhasil','gagal'])->nullable();
             $table->string('potongan_skp')->nullable();
             $table->string('nominal_potongan')->nullable();
             $table->timestamps();

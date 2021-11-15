@@ -15,9 +15,7 @@ use App\Http\Controllers\Administrator\AdministratorDetailIsianRubrikController;
 use App\Http\Controllers\Administrator\AdministratorIsianRubrikController;
 use App\Http\Controllers\Administrator\AdministratorJabatanController;
 use App\Http\Controllers\Administrator\AdministratorPenggunaRubrikController;
-
-
-
+use App\Http\Controllers\AuthTendik\LoginTendikController;
 use App\Http\Controllers\Kepegawaian\CapaianSkpController;
 use App\Http\Controllers\Kepegawaian\DashboardController;
 use App\Http\Controllers\Kepegawaian\IntegritasController;
@@ -30,6 +28,8 @@ use App\Http\Controllers\Operator\DashboardOperatorController;
 use App\Http\Controllers\Operator\DetailIsianController;
 use App\Http\Controllers\Operator\DetailRubrikController;
 use App\Http\Controllers\Operator\LaporanController;
+use App\Http\Controllers\Tendik\TendikCapaianSkpController;
+use App\Http\Controllers\Tendik\TendikDashboardController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -61,6 +61,32 @@ Route::get('/', function () {
     }
 });
 
+Route::group(['prefix'  => ''],function(){
+    Route::get('/tendik',function(){
+        if (Auth::guard('tendik')->check()) {
+            return redirect()->route('tendik.dashboard');
+        }
+        else{
+            return redirect()->route('tendik.login');
+        }
+    });
+    Route::get('/tendik/login',[LoginTendikController::class, 'showLoginForm'])->name('tendik.login');
+    Route::post('/tendik/login',[LoginTendikController::class, 'login'])->name('tendik.login.submit');
+    Route::get('/tendik/dashboard',[TendikDashboardController::class, 'index'])->name('tendik.dashboard');
+    Route::patch('/tendik/ubah_data',[TendikDashboardController::class, 'ubahData'])->name('tendik.ubah_data');
+    Route::patch('/tendik',[TendikDashboardController::class, 'ubahPassword'])->name('tendik.ubah_password');
+    Route::get('/logout',[LoginTendikController::class, 'logoutTendik'])->name('tendik.logout');
+});
+
+Route::group(['prefix' => 'tendik/manajemen_rubrik_capaian_skp'], function () {
+    Route::get('/',[TendikCapaianSkpController::class, 'index'])->name('tendik.r_skp');
+    Route::patch('input/{id}',[TendikCapaianSkpController::class, 'post'])->name('tendik.r_skp.post');
+    Route::get('/{id}/edit',[TendikCapaianSkpController::class, 'edit'])->name('tendik.r_skp.edit');
+    Route::patch('/',[TendikCapaianSkpController::class, 'update'])->name('tendik.r_skp.update');
+    Route::delete('/',[TendikCapaianSkpController::class, 'delete'])->name('tendik.r_skp.delete');
+    Route::get('/{id}/kirimkan_skp',[TendikCapaianSkpController::class, 'kirimkanSkp'])->name('tendik.r_skp.kirimkan');
+    Route::get('/{id}/download_path',[TendikCapaianSkpController::class, 'downloadSkp'])->name('tendik.r_skp.download_skp');
+});
 
 Auth::routes();
 
@@ -216,8 +242,8 @@ Route::group(['prefix' => 'kepegawaian/manajemen_rubrik_capaian_skp'], function 
     Route::get('/{periode_id}',[CapaianSkpController::class, 'index'])->name('kepegawaian.r_skp');
     Route::get('/generate_tendik/{periode_id}',[CapaianSkpController::class, 'generateTendik'])->name('kepegawaian.r_skp.generate_tendik');
     Route::patch('/{id}/update_nilai/{periode_id}',[CapaianSkpController::class, 'updateNilai'])->name('kepegawaian.r_skp.update_nilai');
-    Route::patch('/verifikasi',[CapaianSkpController::class, 'verifikasi'])->name('kepegawaian.r_skp.verifikasi');
-    Route::get('/{id}/download_file_skp',[CapaianSkpController::class, 'downloadSkp'])->name('kepegawaian.r_skp.download_skp');
+    Route::patch('/verifikasi/{periode_id}',[CapaianSkpController::class, 'verifikasi'])->name('kepegawaian.r_skp.verifikasi');
+    Route::get('/{id}/download_path',[CapaianSkpController::class, 'downloadSkp'])->name('kepegawaian.r_skp.download_skp');
     Route::get('/generate_potongan/{periode_id}',[CapaianSkpController::class, 'generate'])->name('kepegawaian.r_skp.generate');
     Route::get('/{periode_id}/generate_submit',[CapaianSkpController::class, 'generateSubmit'])->name('kepegawaian.r_skp.generate_submit');
     Route::get('/generate_nominal/{periode_id}',[CapaianSkpController::class, 'generateNominal'])->name('kepegawaian.r_skp.generate_nominal');

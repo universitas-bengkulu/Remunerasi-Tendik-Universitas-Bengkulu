@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'tendik' => [
+            'driver' => 'session',
+            'provider' => 'tendiks',
+        ],
     ],
 
     /*
@@ -63,6 +68,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'tendiks' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Tendik::class,
         ],
 
         // 'users' => [
@@ -91,6 +101,13 @@ return [
             'provider' => 'users',
             'table' => 'password_resets',
             'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'tendiks' => [
+            'provider' => 'tendiks',
+            'table' => 'password_resets',
+            'expire' => 15,
             'throttle' => 60,
         ],
     ],

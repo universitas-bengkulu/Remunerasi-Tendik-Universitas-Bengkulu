@@ -22,13 +22,15 @@ class CapaianSkpController extends Controller
     public function index($periode_id){
         $skps = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
                                 ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
-                                ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','file_skp','nm_periode')
-                                ->where('r_capaian_skps.status','terkirim')
+                                ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','path','nm_periode')
+                                ->where('r_capaian_skps.status',NULL)
+                                ->orWhere('r_capaian_skps.status','menunggu')
+                                ->orWhere('r_capaian_skps.status','terkirim')
                                 ->where('periode_id',$periode_id)
                                 ->get();
         $verifieds = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
                                 ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
-                                ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','file_skp','nm_periode')
+                                ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','path','nm_periode')
                                 ->where('r_capaian_skps.status','berhasil')
                                 ->where('periode_id',$periode_id)
                                 ->get();
@@ -39,7 +41,7 @@ class CapaianSkpController extends Controller
                     ->get();
         $jumlah_tendik = Count(Tendik::all());
         $jumlah_skp = Count($jumlah);
-        $periode_aktif = Periode::where('status','aktif')->select('id')->first();
+        $periode_aktif = Periode::where('status','aktif')->select('id','slug')->first();
         if (count($periode_aktif)<1) {
             $notification = array(
                 'message' => 'Gagal, Harap Aktifkan Periode Remunerasi Terlebih Dahulu!',
@@ -47,7 +49,7 @@ class CapaianSkpController extends Controller
             );
             return \redirect()->back()->with($notification);
         }
-        return view('kepegawaian/skp.index', compact('skps','verifieds','tendiks','jumlah_tendik','jumlah_skp','periode_id'));
+        return view('kepegawaian/skp.index', compact('skps','verifieds','tendiks','jumlah_tendik','jumlah_skp','periode_id','periode_aktif'));
     }
 
     public function updateNilai($id,$periode_id, Request $request){
@@ -70,8 +72,7 @@ class CapaianSkpController extends Controller
                 $array[]    =   [
                     'periode_id'            =>  $periode->id,
                     'tendik_id'             =>  $tendiks[$i]->id,
-                    'nilai_skp'  =>  100,
-                    'status'       =>  'berhasil',
+                    'nilai_skp'  =>  0,
                 ];
             }
 
@@ -91,15 +92,21 @@ class CapaianSkpController extends Controller
         }
     }
 
-    public function verifikasi(Request $request){
+    public function verifikasi(Request $request,$periode_id){
         $this->validate($request, [
             'verifikasi'    =>  'required',
         ]);
-        RCapaianSkp::where('id',$request->id)->update([
-            'status'    =>  $request->verifikasi,
-        ]);
+        if ($request->verifikasi == "diterima") {
+            RCapaianSkp::where('id',$request->id)->update([
+                'status'    =>  'berhasil',
+            ]);
+        } else{
+            RCapaianSkp::where('id',$request->id)->update([
+                'status'    =>  'menunggu',
+            ]); 
+        }
 
-        return redirect()->route('kepegawaian.r_skp')->with(['success'    =>  'Data rubrik skp berhasil di verifikasi !!']);
+        return redirect()->route('kepegawaian.r_skp',[$periode_id])->with(['success'    =>  'Data rubrik skp berhasil di verifikasi !!']);
     }
 
     public function generate($periode_id){

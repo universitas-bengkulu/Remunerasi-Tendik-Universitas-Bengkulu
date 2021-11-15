@@ -115,41 +115,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <!-- Modal Verifikasi -->
-                    <div class="modal fade" id="modalverifikasi" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-md" role="document">
-                            <div class="modal-content">
-                                <form action=" {{ route('kepegawaian.r_skp.verifikasi') }} " method="POST">
-                                    {{ csrf_field() }} {{ method_field('PATCH') }}
-                                    <div class="modal-header">
-                                        <p style="font-size:15px; font-weight:bold;" class="modal-title"><i class="fa fa-suitcase"></i>&nbsp;Form Verifikasi Data Rubrik SKP</p>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <input type="hidden" name="id" id="id_verifikasi">
-                                                <div class="form-group col-md-12">
-                                                    <label>Verifikasi Data Rubrik SKP :</label>
-                                                    <select name="verifikasi" id="verifikasi" class="form-control">
-                                                        <option value="" disabled selected>-- pilih opsi verifikasi --</option>
-                                                        <option value="2">Setujui</option>
-                                                        <option value="0">Tidak Setujui</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger btn-sm" data-dismiss="modal"><i class="fa fa-close"></i>&nbsp; Batalkan</button>
-                                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Simpan Perubahan</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

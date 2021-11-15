@@ -106,27 +106,34 @@
                                                     <td> {{ $no++ }} </td>
                                                     <td> {{ $skp->nip }} </td>
                                                     <td> {{ $skp->nm_lengkap }} </td>
-                                                    <td> {{ $skp->nilai_skp }} </td>
+                                                    <td>
+                                                        <form action="{{ route('kepegawaian.r_skp.update_nilai',[$skp->id,$periode_id]) }}" method="POST">
+                                                            {{ csrf_field() }} {{ method_field("PATCH") }}
+                                                            <input type="text" name="nilai_skp" class="form-control" value="{{ $skp->nilai_skp }}" style="margin-bottom: 5px !important;">
+                                                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>
+                                                        </form>
+                                                    </td>
                                                     <td> {{ $skp->nm_periode }} </td>
                                                     <td>
-                                                        @if (empty($skp->file_skp))
+                                                        @if (empty($skp->path))
                                                             <a style="color: red">file kosong</a>
                                                             @else
-                                                            <a href="{{ asset('storage/'.$skp->path) }}" download="file_skp{{ $skp->nip }}"><i class="fa fa-download"></i>&nbsp; download file skp</a>
-                                                            
+                                                            <a class="btn btn-primary btn-sm" href="{{ asset('upload/file_skp/'.$periode_aktif->slug.'/'.$skp->path) }}" download="{{ $skp->path }}"><i class="fa fa-download"></i>&nbsp; Download</a>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($skp->status == "0")
-                                                            <label class="badge badge-warning" style="color:white;"><i class="fa fa-clock-o"></i>&nbsp; Belum Dikirimkan</label>
-                                                            @elseif($skp->status == "1")
+                                                        @if ($skp->status == "menunggu")
+                                                            <label class="badge badge-warning"><i class="fa fa-clock-o"></i>&nbsp; Belum diteruskan</label>
+                                                            @elseif($skp->status == "terkirim")
                                                             <label class="badge badge-info" style="color:white;"><i class="fa fa-clock-o"></i>&nbsp; Menunggu Verifikasi</label>
-                                                            @elseif($skp->status == "2")
+                                                            @elseif($skp->status == "berhasil")
                                                             <label class="badge badge-success" style="color:white;"><i class="fa fa-clock-o"></i>&nbsp; Disetujui</label>
+                                                            @elseif($skp->status == NULL)
+                                                            <label class="badge badge-danger" style="color:white;"><i class="fa fa-clock-o"></i>&nbsp; Belum Input File</label>
                                                         @endif
                                                     </td>
                                                     <td style="text-align:center;">
-                                                        @if ($skp->status == "1")
+                                                        @if ($skp->status == "terkirim")
                                                             <a onclick="verifikasi({{ $skp->id }})" class="btn btn-primary btn-sm" style="color:white;cursor:pointer;"><i class="fa fa-check-circle"></i></a>
                                                             @else
                                                             <button class="btn btn-primary btn-sm disabled" style="color:white;cursor:pointer;"><i class="fa fa-check-circle"></i></button>
@@ -160,7 +167,6 @@
                                                 <th>Periode</th>
                                                 <th>Downlod File</th>
                                                 <th>Status</th>
-                                                <th>Verifikasi</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -181,29 +187,15 @@
                                                     </td>
                                                     <td> {{ $skp->nm_periode }} </td>
                                                     <td>
-                                                        @if (empty($skp->file_skp))
+                                                        @if (empty($skp->path))
                                                             <a style="color: red">file kosong</a>
                                                             @else
-                                                            <a href="{{ asset('storage/'.$skp->path) }}" download="file_skp{{ $skp->nip }}"><i class="fa fa-download"></i>&nbsp; download file skp</a>
-                                                            
+                                                            <a class="btn btn-primary btn-sm" href="{{ asset('upload/file_skp/'.$periode_aktif->slug.'/'.$skp->path) }}" download="{{ $skp->path }}"><i class="fa fa-download"></i>&nbsp; Download</a>
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        @if ($skp->status == "0")
-                                                            <label class="badge badge-warning" style="color:white;"><i class="fa fa-clock-o"></i>&nbsp; Belum Dikirimkan</label>
-                                                            @elseif($skp->status == "1")
-                                                            <label class="badge badge-info" style="color:white;"><i class="fa fa-clock-o"></i>&nbsp; Menunggu Verifikasi</label>
-                                                            @elseif($skp->status == "2")
-                                                            <label class="badge badge-success" style="color:white;"><i class="fa fa-clock-o"></i>&nbsp; Disetujui</label>
-                                                            @else
-                                                            <label class="badge badge-danger" style="color:white;"><i class="fa fa-clock-o"></i>&nbsp; Ditolak</label>
-                                                        @endif
-                                                    </td>
-                                                    <td style="text-align:center;">
-                                                        @if ($skp->status == "0")
-                                                            <a onclick="verifikasi({{ $skp->id }})" class="btn btn-primary btn-sm" style="color:white;cursor:pointer;"><i class="fa fa-check-circle"></i></a>
-                                                            @else
-                                                            <button class="btn btn-primary btn-sm disabled" style="color:white;cursor:pointer;"><i class="fa fa-check-circle"></i></button>
+                                                        @if ($skp->status == "berhasil")
+                                                            <label class="badge badge-success" style="color:white;"><i class="fa fa-check-circle"></i>&nbsp; Berhasil</label>
                                                         @endif
                                                     </td>
                                                 </tr>
@@ -215,10 +207,10 @@
                         </div>
                     </div>
                     <!-- Modal Verifikasi -->
-                    <div class="modal fade" id="modalubah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="modalverifikasi" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-md" role="document">
                             <div class="modal-content">
-                                <form action=" {{ route('kepegawaian.r_skp.verifikasi') }} " method="POST">
+                                <form action=" {{ route('kepegawaian.r_skp.verifikasi',[$periode_id]) }} " method="POST">
                                     {{ csrf_field() }} {{ method_field('PATCH') }}
                                     <div class="modal-header">
                                         <p style="font-size:15px; font-weight:bold;" class="modal-title"><i class="fa fa-suitcase"></i>&nbsp;Form Verifikasi Data Rubrik SKP</p>
@@ -228,27 +220,14 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="row">
-                                            <div>
-                                                <input type="hidden" name="id" id="">
+                                                <input type="hidden" name="id" id="id_verifikasi">
                                                 <div class="form-group col-md-12">
-                                                    <label>Nilai SKP : <a style="color:red">*harap masukan angka, gunakan titik (.) sebagai pengganti koma</a></label>
-                                                    <input type="text" pattern="[0-9]+([,\.][0-9]+)?" name="nilai_skp" class="form-control" placeholder=" masukan nilai skp">
-                                                    <div>
-                                                        @if ($errors->has('nilai_skp'))
-                                                            <small class="form-text text-danger">{{ $errors->first('nilai_skp') }}</small>
-                                                        @endif
-                                                    </div>
+                                                    <label>Verifikasi Rubrik SKP : </label>
+                                                    <select name="verifikasi" class="form-control" required>
+                                                        <option value="diterima">Diterima</option>
+                                                        <option value="ditolak">Ditolak</option>
+                                                    </select>
                                                 </div>
-                                                <div class="form-group col-md-12">
-                                                    <label>FIle SKP : <a style="color:red">*file pdf</a></label>
-                                                    <input type="file" name="file_skp" class="form-control">
-                                                    <div>
-                                                        @if ($errors->has('file_skp'))
-                                                            <small class="form-text text-danger">{{ $errors->first('file_skp') }}</small>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -286,8 +265,6 @@
                 $('#myTab a[href="' + activeTab + '"]').tab('show');
             }
         });
-
-        function
 
         @if (count($errors)>0)
             $("#modalubah").modal({"backdrop": "static"});

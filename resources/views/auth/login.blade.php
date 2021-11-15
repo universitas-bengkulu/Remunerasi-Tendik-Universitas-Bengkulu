@@ -19,7 +19,7 @@
                         <strong>Perhatian:</strong> <i>{{ $message }}</i>
                     </div>
                     @else
-                    <h6>Login Tenaga Kependidikan</h6>
+                    <h6>Login</h6>
                     <p style="text-align:center; margin-bottom:20px;"> Remunerasi Tenaga Kependidikan Universitas Bengkulu</p>
                 @endif
                 <form method="post" action="{{ route('login') }}">
@@ -31,7 +31,7 @@
 
                     <button type="submit" name="submit" style="margin-bottom:10px;r"><i class="fa fa-sign-in"></i>&nbsp; Login</button>
 
-                    <a href="#" style="font-weight:100; font-size:12px" >Versi 1.0</a>
+                    <a href="{{ route('tendik.login') }}" style="font-weight:100; font-size:12px;" ><i class="fa fa-users"></i>&nbsp; Login Tendik</a>
                 </form>
             </div>
         </div>
