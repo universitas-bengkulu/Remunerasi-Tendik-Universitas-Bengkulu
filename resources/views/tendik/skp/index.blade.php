@@ -43,7 +43,7 @@
                         </div>
                         @else
                         <div class="alert alert-success alert-block" id="keterangan">
-                            <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> File SKP Periode saat ini sudah ditambahkan, jika file ditolak, silahkan upload ulang file anda dengan klik tombol edit data !!
+                            <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> File SKP Periode saat ini sudah ditambahkan, jika file ditolak, silahkan upload ulang file anda !!
                         </div>
                     @endif
                     
@@ -241,6 +241,21 @@
                 responsive : true,
             });
         } );
+
+        $(function () {
+            $("#nilai_skp").keydown(function () {
+                // Save old value.
+                if (!$(this).val() || (parseInt($(this).val()) <= 100 && parseInt($(this).val()) >= 1))
+                $(this).data("old", $(this).val());
+            });
+            $("#nilai_skp").keyup(function () {
+                // Check correct, else revert back to old value.
+                if (!$(this).val() || (parseInt($(this).val()) <= 100 && parseInt($(this).val()) >= 1))
+                ;
+                else
+                $(this).val($(this).data("old"));
+            });
+        });
 
         function tambahSkp(){
             $('#form-skp').show(300);

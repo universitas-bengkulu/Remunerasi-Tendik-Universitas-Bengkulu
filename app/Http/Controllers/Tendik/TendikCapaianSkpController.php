@@ -68,7 +68,7 @@ class TendikCapaianSkpController extends Controller
                 'status'    =>  'menunggu',
             ]);
         }
-        return redirect()->route('tendik.r_skp')->with(['success'   =>  'Nilai dan file skp periode saat ini berhasil ditahmbahkan !!']);
+        return redirect()->route('tendik.r_skp')->with(['success'   =>  'Nilai dan file skp periode saat ini berhasil ditambahkan !!']);
     }
 
     public function kirimkanSkp($id){
