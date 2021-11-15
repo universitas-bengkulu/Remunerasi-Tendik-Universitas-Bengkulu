@@ -27,13 +27,14 @@ class TendikCapaianSkpController extends Controller
                                 ->where('path','!=', NULL)
                                 ->where('path','!=',"")
                                 ->get();
+            $sekarang = RCapaianSkp::where('tendik_id',Auth::guard('tendik')->user()->id)->where('periode_id',$periode->id)->first();
         }else{
             return redirect()->back();
         }
         $status = RCapaianSkp::select('id')
                                 ->where('tendik_id',Auth::guard('tendik')->user()->id)
                                 ->first();
-        return view('tendik/skp.index', compact('skps','status','periode'));
+        return view('tendik/skp.index', compact('skps','status','periode','sekarang'));
     }
 
     public function post(Request $request,$id){
@@ -49,7 +50,7 @@ class TendikCapaianSkpController extends Controller
             'path'   =>  'File SKP',
         ];
         $this->validate($request, [
-            'nilai_skp'    =>  'required',
+            'nilai_skp'    =>  'required|min:30',
             'path'    =>  'required|mimes:doc,pdf,docx,jpg|max:2000',
         ],$messages,$attributes);
         $periode = Periode::where('status','aktif')->first();
@@ -59,7 +60,7 @@ class TendikCapaianSkpController extends Controller
             if (!$tendik->path == NULL){
                 unlink(public_path($tendik->path));
             }
-            $model['path'] = Str::slug(Auth::guard('tendik')->user()->nm_lengkap, '-'.Auth::guard('tendik')->user()->nip).'.'.$request->path->getClientOriginalExtension();
+            $model['path'] = Str::slug(Auth::guard('tendik')->user()->nm_lengkap.'-'.Auth::guard('tendik')->user()->nip).'.'.$request->path->getClientOriginalExtension();
             $request->path->move(public_path('/upload/file_skp/'.$periode->slug.'/'), $model['path']);
 
             RCapaianSkp::where('tendik_id',$id)->update([

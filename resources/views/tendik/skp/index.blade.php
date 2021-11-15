@@ -46,7 +46,6 @@
                             <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> File SKP Periode saat ini sudah ditambahkan, jika file ditolak, silahkan upload ulang file anda !!
                         </div>
                     @endif
-                    
                 </div>
                 {{-- <div class="col-md-12">
                     @if (count($sudah)  <1)
@@ -56,6 +55,12 @@
                     @endif
                 </div> --}}
                 @if (!is_null($status))
+                    @if (!is_null($sekarang))
+                        <div class="alert alert-danger alert-block">
+                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                            <strong>Perhatian :</strong> Anda Hanya Boleh Memasukan Satu File Per Periode
+                        </div>
+                    @else
                     <div class="col-md-12" id="form-skp">
                         <p style="text-align:center;">Silahkan tambahkan file skp anda pada form dibawah ini !</p>
                         <hr style="width:50%;">
@@ -95,6 +100,7 @@
                             @endif
                         @endforeach
                     </div>
+                    @endif
                 @endif
                 <div class="col-md-12">
                     <table class="table table-striped table-bordered" id="table" style="width:100%;">
@@ -174,7 +180,7 @@
                                                 <input type="hidden" name="id" id="id_ubah">
                                                 <div class="form-group col-md-12">
                                                     <label>Nilai SKP : <a style="color:red">*harap masukan angka, gunakan titik (.) sebagai pengganti koma</a></label>
-                                                    <input type="text" id="nilai_skp_edit" name="nilai_skp" class="form-control" placeholder=" masukan nilai skp">
+                                                    <input type="text" id="nilai_skp" name="nilai_skp" class="form-control" placeholder=" masukan nilai skp">
                                                     <div>
                                                         @if ($errors->has('nilai_skp'))
                                                             <small class="form-text text-danger">{{ $errors->first('nilai_skp') }}</small>
@@ -241,21 +247,6 @@
                 responsive : true,
             });
         } );
-
-        $(function () {
-            $("#nilai_skp").keydown(function () {
-                // Save old value.
-                if (!$(this).val() || (parseInt($(this).val()) <= 100 && parseInt($(this).val()) >= 1))
-                $(this).data("old", $(this).val());
-            });
-            $("#nilai_skp").keyup(function () {
-                // Check correct, else revert back to old value.
-                if (!$(this).val() || (parseInt($(this).val()) <= 100 && parseInt($(this).val()) >= 1))
-                ;
-                else
-                $(this).val($(this).data("old"));
-            });
-        });
 
         function tambahSkp(){
             $('#form-skp').show(300);
