@@ -28,7 +28,6 @@ class CapaianSkpController extends Controller
                                 ->orWhere('r_capaian_skps.status','menunggu')
                                 ->orWhere('r_capaian_skps.status','terkirim')
                                 ->get();
-                                return $skps;
         $verifieds = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
                                 ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
                                 ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','path','nm_periode')
