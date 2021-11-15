@@ -101,7 +101,11 @@ class CapaianSkpController extends Controller
                 'status'    =>  'berhasil',
             ]);
         } else{
-            RCapaianSkp::destroy($request->id);
+            RCapaianSkp::where('id',$request->id)->update([
+                'path'  =>  NULL,
+                'nilai_skp' =>  0,
+                'status'    =>  NULL,
+            ]); 
         }
 
         return redirect()->route('kepegawaian.r_skp',[$periode_id])->with(['success'    =>  'Data rubrik skp berhasil di verifikasi !!']);
