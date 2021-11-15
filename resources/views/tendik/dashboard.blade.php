@@ -179,7 +179,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <th>Nama Jabatan</th>
+                                            <th>Kelas Jabatan</th>
                                             <td>:</td>
                                             <td>
                                                 @if (!empty($about->kelas_jabatan))
