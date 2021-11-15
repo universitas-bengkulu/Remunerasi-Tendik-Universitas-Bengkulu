@@ -88,26 +88,8 @@ class TendikCapaianSkpController extends Controller
         }
         RCapaianSkp::where('id',$request->id)->update([
             'path'  =>  NULL,
+            'nilai_skp' =>  0,
         ]); 
         return redirect()->route('tendik.r_skp')->with(['success'   =>  'Nilai dan file skp periode yang dipilih berhasil dihapus !!']);
-    }
-
-    public function update(Request $request){
-        $this->validate($request,[
-            'nilai_skp' =>  'required',
-            // 'path.*'  =>  'required|mimes:pdf|max:1000',
-            'path_edit'  =>  'required|mimes:pdf|max:1000',
-        ]);
-
-        $skp = RCapaianSkp::find($request->id);
-        Storage::delete(['public/'.$skp->path]);
-        // foreach ($request->path as $file) {
-            Storage::disk('public')->putFile('skp', $request->path_edit);
-            RcapaianSkp::where('id',$request->id)->update([
-                'path'  =>  Storage::disk('public')->putFile('skp', $request->path_edit),
-            ]);
-        // }
-
-        return redirect()->route('tendik.r_skp')->with(['success'   =>  'Nilai dan file skp periode yang dipilih berhasil diubah !!']);
     }
 }
