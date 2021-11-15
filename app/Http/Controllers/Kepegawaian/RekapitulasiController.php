@@ -272,7 +272,6 @@ class RekapitulasiController extends Controller
                                     'nominal_absen_bulan_empat','nominal_absen_bulan_lima','nominal_absen_bulan_enam','total_absensi')
                             ->where('periode_id',$periode_id)
                             ->get();
-                            return $datas;
         $cek = DB::table($table)->select('persen_absen_bulan_satu')->first();
         if ($cek->persen_absen_bulan_satu != null) {
             $a = "sudah";
