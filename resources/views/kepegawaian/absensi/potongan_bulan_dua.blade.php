@@ -74,8 +74,8 @@
                                 <li class="page-item disabled"><a class="page-link" href="{{ route('kepegawaian.r_absensi.potongan_bulan_5',[$periode_id]) }}">6</a></li>
                                 <li class="page-item disabled"><a class="page-link" href="{{ route('kepegawaian.r_absensi.potongan_bulan_6',[$periode_id]) }}">7</a></li>
                           @endif
-                          <li class="page-item">
-                            <a class="page-link" href="{{ route('kepegawaian.r_absensi.potongan_bulan_3',[$periode_id]) }}">Next</a>
+                          <li class="page-item disabled">
+                            <a class="page-link" href="">Next</a>
                           </li>
                         </ul>
                     </nav>
