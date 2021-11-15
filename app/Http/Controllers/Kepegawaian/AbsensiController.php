@@ -165,13 +165,12 @@ class AbsensiController extends Controller
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                             ->select('r_absens.id','periode_id','nm_lengkap','potongan_bulan_1','remunerasi','nominal_bulan_1')
                             ->get();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->nominal_bulan_1 != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RAbsen::select('nominal_bulan_1')->where('periode_id',$periode_id)->first();
+        if ($cek->nominal_bulan_1 != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/absensi.potongan_bulan_satu',compact('datas','a','periode_aktif','periode_id'));
     }
@@ -201,13 +200,12 @@ class AbsensiController extends Controller
                             ->select('r_absens.id','nm_lengkap','potongan_bulan_2','remunerasi','nominal_bulan_2')
                             ->where('periode_id',$periode_id)
                             ->get();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->nominal_bulan_2 != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RAbsen::select('nominal_bulan_2')->where('periode_id',$periode_id)->first();
+        if ($cek->nominal_bulan_2 != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/absensi.potongan_bulan_dua',compact('datas','a','periode_aktif','periode_id'));
     }
@@ -238,13 +236,12 @@ class AbsensiController extends Controller
                             ->select('r_absens.id','nm_lengkap','potongan_bulan_3','remunerasi','nominal_bulan_3')
                             ->where('periode_id',$periode_id)
                             ->get();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->nominal_bulan_3 != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RAbsen::select('nominal_bulan_3')->where('periode_id',$periode_id)->first();
+        if ($cek->nominal_bulan_3 != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/absensi.potongan_bulan_tiga',compact('datas','a','periode_id','periode_aktif'));
     }
@@ -275,13 +272,12 @@ class AbsensiController extends Controller
                             ->select('r_absens.id','nm_lengkap','potongan_bulan_4','remunerasi','nominal_bulan_4')
                             ->where('periode_id',$periode_id)
                             ->get();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->nominal_bulan_4 != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RAbsen::select('nominal_bulan_4')->where('periode_id',$periode_id)->first();
+        if ($cek->nominal_bulan_4 != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/absensi.potongan_bulan_empat',compact('datas','a','periode_id','periode_aktif'));
     }
@@ -312,13 +308,12 @@ class AbsensiController extends Controller
                             ->select('r_absens.id','nm_lengkap','potongan_bulan_5','remunerasi','nominal_bulan_5')
                             ->where('periode_id',$periode_id)
                             ->get();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->nominal_bulan_5 != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RAbsen::select('nominal_bulan_5')->where('periode_id',$periode_id)->first();
+        if ($cek->nominal_bulan_5 != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/absensi.potongan_bulan_lima',compact('datas','a','periode_id','periode_aktif'));
     }
@@ -349,13 +344,12 @@ class AbsensiController extends Controller
                             ->select('r_absens.id','nm_lengkap','potongan_bulan_6','remunerasi','nominal_bulan_6')
                             ->where('periode_id',$periode_id)
                             ->get();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->nominal_bulan_6 != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RAbsen::select('nominal_bulan_6')->where('periode_id',$periode_id)->first();
+        if ($cek->nominal_bulan_6 != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/absensi.potongan_bulan_enam',compact('datas','a','periode_id','periode_aktif'));
     }

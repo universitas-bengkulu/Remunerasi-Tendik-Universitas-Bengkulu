@@ -33,15 +33,15 @@
                                 <strong>Gagal :</strong>{{ $message }}
                             </div>
                             @else
-                            @if ($a == "sudah")
-                                <div class="alert alert-success alert-block">
-                                    <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Data Potongan Capaian SKP <b style="text-transform:uppercase">{{ $periode_aktif->nm_periode }}</b> sudah digenerate, silahkan lanjutkan dengan klik tombol next hingga selesai !!
-                                </div>
-                                @else
+                            {{-- @if ($a == "sudah") --}}
+                                {{-- <div class="alert alert-success alert-block"> --}}
+                                    {{-- <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Data Potongan Capaian SKP <b style="text-transform:uppercase">{{ $periode_aktif->nm_periode }}</b> sudah digenerate, silahkan lanjutkan dengan klik tombol next hingga selesai !! --}}
+                                {{-- </div> --}}
+                                {{-- @else --}}
                                 <div class="alert alert-danger alert-block" id="alert-generate">
                                     <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Silahkan Generate Potongan Capaian SKP Terlebih Dahulu. Jika ada Sanksi Disiplin yang tidak sesuai silahkan diupdate terlebih dahulu sebelum di generate !!
                                 </div>
-                            @endif
+                            {{-- @endif --}}
                     @endif
                 </div>
                 <div class="col-md-12">
@@ -65,11 +65,11 @@
                     </nav>
                 </div>
                 <div class="col-md-12">
-                    @if ($a == "sudah")
-                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Potongan SKP</button>
-                        @else
+                    {{-- @if ($a == "sudah") --}}
+                        {{-- <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Potongan SKP</button> --}}
+                        {{-- @else --}}
                         <a href="{{ route('kepegawaian.r_skp.generate_submit',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Potongan SKP</a>
-                    @endif
+                    {{-- @endif --}}
                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Potongan SKP</button>
                 </div>
                 <div class="col-md-12">

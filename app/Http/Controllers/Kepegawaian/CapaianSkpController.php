@@ -119,7 +119,7 @@ class CapaianSkpController extends Controller
                         ->groupBy('r_capaian_skps.id')
                         ->where('periode_id',$periode_id)
                         ->get();
-        $cek = RCapaianSkp::select('potongan_skp')->first();
+        $cek = RCapaianSkp::select('potongan_skp')->where('periode_id',$periode_id)->first();
         $periode_aktif = Periode::where('status','1')->select('id')->first();
         if ($cek->potongan_skp != null) {
             $a = "sudah";
@@ -183,8 +183,7 @@ class CapaianSkpController extends Controller
                         ->select('r_capaian_skps.id','nip','nm_lengkap','remunerasi','jumlah_bulan','potongan_skp','nominal_potongan')
                         ->where('periode_id',$periode_id)
                         ->get();
-        $cek = RCapaianSkp::select('nominal_potongan')->first();
-        $periode_aktif = Periode::where('status','1')->select('id')->first();
+        $cek = RCapaianSkp::select('nominal_potongan')->where('periode_id',$periode_id)->first();
         if ($cek->nominal_potongan != null) {
             $a = "sudah";
         }

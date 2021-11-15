@@ -75,13 +75,12 @@ class IntegritasController extends Controller
                             ->where('periode_id',$periode_id)
                             ->get();
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->remun_30 != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RIntegritas::select('total_remun_30')->where('periode_id',$periode_id)->first();
+        if ($cek->total_remun_30 != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/integritas.remun_tiga_puluh',compact('datas','periode_aktif','a','periode_id'));
     }
@@ -123,13 +122,12 @@ class IntegritasController extends Controller
                             ->where('periode_id',$periode_id)
                             ->get();
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->remun_70 != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RIntegritas::select('total_remun_70')->where('periode_id',$periode_id)->first();
+        if ($cek->total_remun_70 != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/integritas.remun_tujuh_puluh',compact('datas','periode_aktif','a','periode_id'));
     }
@@ -170,13 +168,12 @@ class IntegritasController extends Controller
                             ->where('periode_id',$periode_id)
                             ->get();
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->total_remun != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RIntegritas::select('total_remun')->where('periode_id',$periode_id)->first();
+        if ($cek->total_remun != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/integritas.total_remun',compact('datas','periode_aktif','a','periode_id'));
     }
@@ -215,13 +212,12 @@ class IntegritasController extends Controller
                             ->orderBy('golongan','desc')
                             ->get();
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->pajak_pph != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RIntegritas::select('pajak_pph')->where('periode_id',$periode_id)->first();
+        if ($cek->pajak_pph != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/integritas.pajak_pph',compact('datas','periode_aktif','a','periode_id'));
     }
@@ -266,13 +262,12 @@ class IntegritasController extends Controller
                             ->where('periode_id',$periode_id)
                             ->get();
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->potongan_lhkpn_lhkasn != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RIntegritas::select('potongan_lhkpn_lhkasn')->where('periode_id',$periode_id)->first();
+        if ($cek->potongan_lhkpn_lhkasn != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/integritas.lhkpn_lhkasn',compact('datas','periode_aktif','a','periode_id'));
     }
@@ -327,13 +322,12 @@ class IntegritasController extends Controller
                             ->where('periode_id',$periode_id)
                             ->get();
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->potongan_sanksi_disiplin != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RIntegritas::select('potongan_sanksi_disiplin')->where('periode_id',$periode_id)->first();
+        if ($cek->potongan_sanksi_disiplin != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/integritas.sanksi_disiplin',compact('datas','periode_aktif','periode_id','a'));
     }
@@ -388,13 +382,12 @@ class IntegritasController extends Controller
                             ->where('periode_id',$periode_id)
                             ->get();
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->integritas_satu_bulan != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RIntegritas::select('integritas_satu_bulan')->where('periode_id',$periode_id)->first();
+        if ($cek->integritas_satu_bulan != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/integritas.integritas_satu_bulan',compact('datas','periode_aktif','periode_id','a'));
     }
@@ -431,13 +424,12 @@ class IntegritasController extends Controller
                             ->where('periode_id',$periode_id)
                             ->get();
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
-        for ($i=0; $i < count($datas); $i++) { 
-            if ($datas[$i]->total_integritas != null) {
-                $a = "sudah";
-            }
-            else{
-                $a = "belum";
-            }
+        $cek = RIntegritas::select('total_integritas')->where('periode_id',$periode_id)->first();
+        if ($cek->total_integritas != null) {
+            $a = "sudah";
+        }
+        else{
+            $a = "belum";
         }
         return view('kepegawaian/integritas.total_integritas',compact('datas','periode_id','periode_aktif','a'));
     }
