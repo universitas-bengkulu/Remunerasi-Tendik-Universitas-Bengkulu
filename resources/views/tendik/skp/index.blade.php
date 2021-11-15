@@ -56,9 +56,11 @@
                 </div> --}}
                 @if (!is_null($status))
                     @if (!is_null($sekarang))
-                        <div class="alert alert-danger alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button> 
-                            <strong>Perhatian :</strong> Anda Hanya Boleh Memasukan Satu File Per Periode
+                        <div class="col-md-12">
+                            <div class="alert alert-danger alert-block">
+                                <button type="button" class="close" data-dismiss="alert">×</button> 
+                                <strong>Perhatian :</strong> Anda Hanya Boleh Memasukan Satu File Per Periode
+                            </div>
                         </div>
                     @else
                     <div class="col-md-12" id="form-skp">
