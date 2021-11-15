@@ -267,9 +267,12 @@ class RekapitulasiController extends Controller
         $periode_aktif = Periode::where('id',$periode_id)->select('id','slug','jumlah_bulan')->first();
         $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
         $datas =  DB::table($table)->select('id','nm_lengkap','persen_absen_bulan_satu','persen_absen_bulan_dua','persen_absen_bulan_tiga',
-                                    'nominal_absen_bulan_satu','nominal_absen_bulan_dua','nominal_absen_bulan_tiga','total_absensi')
+                                    'persen_absen_bulan_empat','persen_absen_bulan_lima','persen_absen_bulan_enam',
+                                    'nominal_absen_bulan_satu','nominal_absen_bulan_dua','nominal_absen_bulan_tiga',
+                                    'nominal_absen_bulan_empat','nominal_absen_bulan_lima','nominal_absen_bulan_enam','total_absensi')
                             ->where('periode_id',$periode_id)
                             ->get();
+                            return $datas;
         $cek = DB::table($table)->select('persen_absen_bulan_satu')->first();
         if ($cek->persen_absen_bulan_satu != null) {
             $a = "sudah";
