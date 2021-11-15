@@ -286,7 +286,7 @@
     <script>
         $(document).ready(function() {
             var table = $('#table').DataTable( {
-                responsive :true,
+                // responsive :true,
                 buttons: [
                 {
                     extend: 'copyHtml5',
