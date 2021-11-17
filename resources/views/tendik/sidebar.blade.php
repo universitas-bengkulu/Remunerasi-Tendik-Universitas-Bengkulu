@@ -7,5 +7,5 @@
 </li>
 
 <li style="padding-left:2px;">
-    <a href=" {{ route('tendik.logout') }} "><i class="fa fa-power-off"></i>Logout</a>
+    <a href=" {{ route('tendik.logout') }} "><i class="fa fa-power-off text-danger"></i>Logout</a>
 </li>

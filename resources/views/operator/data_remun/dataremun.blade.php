@@ -165,8 +165,8 @@
                            <th class="text-center">Unit</th>
                            <th class="text-center">Jumlah Anggota</th>
                            <th class="text-center">File</th>
-                           <th class="text-center">Status</th>
-                           <th class="text-center">Ubah Status</th>
+                           {{-- <th class="text-center">Status</th> --}}
+                           {{-- <th class="text-center">Ubah Status</th> --}}
                            <th class="text-center">Aksi</th>
                        </tr>
                    </thead>
@@ -176,7 +176,7 @@
                        @endphp
                        @foreach ($rubriks as $rubrik)
                             @php
-                                $jumlah = detailisianrubrik::select(DB::raw('count(nip) as jumlah_anggota'))
+                                $jumlah = detailisianrubrik::select(DB::raw('count(tendik_id) as jumlah_anggota'))
                                         ->where('isian_rubrik_id',$rubrik->isian_id)->first();
                             @endphp
                             <tr>
@@ -191,7 +191,7 @@
                                 <td class="text-center">
                                     <a class="btn btn-primary btn-sm" href="{{ asset('upload/file_isian/'.Illuminate\Support\Str::slug($rubrik->nama_rubrik).'/'.$rubrik->file_upload) }}" download="{{ $rubrik->file_upload}}"><i class="fa fa-download"></i></a>
                                 </td>
-                                <td class="text-center" width="10%">
+                                {{-- <td class="text-center" width="10%">
                                     @if ($rubrik->status_validasi=='menunggu')
                                         <h6><span class="badge badge-warning"><i class="fa fa-exclamation-circle"></i> &nbsp; Belum dikirim</span></h6>
                                     @elseif ($rubrik->status_validasi=='terkirim')
@@ -201,8 +201,8 @@
                                     @else
                                         <h6><span class="badge badge-danger"><i class="fa fa-minus"></i> &nbsp; Ditolak</span></h6>
                                     @endif
-                                </td>
-                                <td class="text-center">
+                                </td> --}}
+                                {{-- <td class="text-center">
                                     @if ($rubrik->status_validasi=='menunggu')
                                         <form action="{{ route('operator.dataremun.status',[$rubrik->id]) }}" class="selesai_form" method="POST">
                                             @csrf @method('PUT')
@@ -211,7 +211,7 @@
                                     @else
                                         <h6><span class="badge badge-success"><i class="fa fa-check-circle-o"></i></span></h6>
                                     @endif
-                                </td> 
+                                </td>  --}}
                                 <td class="text-center">
                                     <a href="{{ route('operator.detail_isian',[$rubrik->id,$rubrik->isian_id]) }}"  class="btn btn-primary btn-sm text-center"><i class="fa fa-info-circle"></i></a>
                                     <a href="{{ route('operator.dataremun.edit',[$rubrik->id]) }}" class="btn btn-warning btn-sm @if ($rubrik->status_validasi!='nonaktif') disabled @endif"><i class="fa fa-pencil-square-o"></i></a>

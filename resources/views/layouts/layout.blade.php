@@ -227,11 +227,13 @@
             $periode_aktif = Periode::where('status','aktif')->select('id')->first();
             $jumlah = count($periode_aktif);  
     @endphp
-    @if ($jumlah <1)
-        <script>
-          toastr.options = {"closeButton": true,"progressBar": true,"positionClass": "toast-bottom-right","showDuration": "300","hideDuration": "1000","timeOut": "10000","showEasing": "swing","hideEasing": "linear","showMethod": "fadeIn","hideMethod": "fadeOut"};
-          toastr.error("Periode Aktif Belum Ditambahkan, harap untuk mengatur periode aktif terlebih dahulu");
-        </script>
+    @if (Auth::user()->role == "kepegawaian" || Auth::guard('tendik')->check())
+      @if ($jumlah <1)
+      <script>
+        toastr.options = {"closeButton": true,"progressBar": true,"positionClass": "toast-bottom-right","showDuration": "300","hideDuration": "1000","timeOut": "10000","showEasing": "swing","hideEasing": "linear","showMethod": "fadeIn","hideMethod": "fadeOut"};
+        toastr.error("Periode Aktif Belum Ditambahkan, harap untuk mengatur periode aktif terlebih dahulu");
+      </script>
+      @endif
     @endif
     <script>
       

@@ -153,6 +153,16 @@ Route::group(['prefix' => 'administrator/rubrik'], function () {
     Route::patch('/',[AdministratorRubrikController::class, 'update'])->name('administrator.rubrik.update');
     Route::delete('/',[AdministratorRubrikController::class, 'delete'])->name('administrator.rubrik.delete');
 });
+
+Route::group(['prefix' => 'administrator/pengguna_rubrik'], function () {
+    Route::get('/',[AdministratorPenggunaRubrikController::class, 'index'])->name('administrator.pengguna_rubrik');
+    Route::post('/',[AdministratorPenggunaRubrikController::class, 'post'])->name('administrator.pengguna_rubrik.post');
+    Route::get('/{id}/edit',[AdministratorPenggunaRubrikController::class, 'edit'])->name('administrator.pengguna_rubrik.edit');
+    Route::patch('/',[AdministratorPenggunaRubrikController::class, 'update'])->name('administrator.pengguna_rubrik.update');
+    Route::delete('/',[AdministratorPenggunaRubrikController::class, 'delete'])->name('administrator.pengguna_rubrik.delete');
+});
+
+
 Route::group(['prefix' => 'administrator/detailisianrubrik'], function () {
     Route::get('/',[AdministratorDetailIsianRubrikController::class, 'index'])->name('administrator.detailisianrubrik');
     Route::post('/',[AdministratorDetailIsianRubrikController::class, 'post'])->name('administrator.detailisianrubrik.add');
@@ -190,25 +200,10 @@ Route::group(['prefix' => 'administrator/jabatan'], function () {
     Route::delete('/',[AdministratorJabatanController::class, 'delete'])->name('administrator.jabatan.delete');
 });
 
-Route::group(['prefix' => 'administrator/rekapitulasi'], function () {
-    Route::get('/{periode_id}',[AdministratorRekapitulasiController::class, 'index'])->name('administrator.rekapitulasi');
-    Route::get('/{periode_id}/generate_table',[AdministratorRekapitulasiController::class, 'generateTable'])->name('administrator.rekapitulasi.generate_table');
-    Route::get('/{periode_id}/data_tendik',[AdministratorRekapitulasiController::class, 'dataTendik'])->name('administrator.rekapitulasi.data_tendik');
-    Route::get('/{periode_id}/generate_data_tendik',[AdministratorRekapitulasiController::class, 'generateDataTendik'])->name('administrator.rekapitulasi.generate_data_tendik');
-    Route::get('/{periode_id}/total_remun',[AdministratorRekapitulasiController::class, 'totalRemun'])->name('administrator.rekapitulasi.total_remun');
-    Route::get('/{periode_id}/generate_total_remun',[AdministratorRekapitulasiController::class, 'generateTotalRemun'])->name('administrator.rekapitulasi.generate_total_remun');
-    Route::get('/{periode_id}/integritas',[AdministratorRekapitulasiController::class, 'integritas'])->name('administrator.rekapitulasi.integritas');
-    Route::get('/{periode_id}/generate_integritas',[AdministratorRekapitulasiController::class, 'generateIntegritas'])->name('administrator.rekapitulasi.generate_integritas');
-    Route::get('/{periode_id}/skp',[AdministratorRekapitulasiController::class, 'skp'])->name('administrator.rekapitulasi.skp');
-    Route::get('/{periode_id}/generate_skp',[AdministratorRekapitulasiController::class, 'generateSkp'])->name('administrator.rekapitulasi.generate_skp');
-    Route::get('/{periode_id}/persentase_absen',[AdministratorRekapitulasiController::class, 'persentaseAbsen'])->name('administrator.rekapitulasi.persentase_absen');
-    Route::get('/{periode_id}/generate_absensi',[AdministratorRekapitulasiController::class, 'generateAbsensi'])->name('administrator.rekapitulasi.generate_absensi');
-    Route::get('/{periode_id}/total_akhir',[AdministratorRekapitulasiController::class, 'totalAkhir'])->name('administrator.rekapitulasi.total_akhir_remun');
-    Route::get('/{periode_id}/generate_total_akhir',[AdministratorRekapitulasiController::class, 'generateTotalAkhir'])->name('administrator.rekapitulasi.generate_total_akhir');
-   
-    
+Route::group(['prefix'  => 'administrator/rekapitulasi'],function(){
+    Route::get('/p1_dan_p2',[AdministratorRekapitulasiController::class, 'index'])->name('administrator.rekap_p1');
+    Route::get('/p3',[AdministratorRekapitulasiController::class, 'rekapP3'])->name('administrator.rekap_p3');
 });
-
 
 Route::group(['prefix'  => 'administrator/data_insentif'],function(){
     Route::get('/',[AdministratorDataInsentifController::class, 'index'])->name('administrator.data_insentif');

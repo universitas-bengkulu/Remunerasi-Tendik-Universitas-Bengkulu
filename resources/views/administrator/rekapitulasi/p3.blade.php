@@ -3,7 +3,7 @@
 @endphp
 @extends('layouts.layout')
 @section('title', 'Laporan Remunerasi Insentif')
-@section('login_as', 'Operator')
+@section('login_as', 'Administrator')
 @section('user-login')
     @if (Auth::check())
     {{ Auth::user()->nama_lengkap }}
@@ -15,7 +15,7 @@
     @endif
 @endsection
 @section('sidebar-menu')
-    @include('operator/sidebar')
+    @include('administrator/sidebar')
 @endsection
 @push('styles')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -101,7 +101,7 @@
                                 <td>{{ $no++ }}</td>
                                 <td>{{ $laporan->nm_tendik }}</td>
                                 <td>{{ $laporan->nip }}</td>
-                                <td>{{ $unit->nm_unit }}</td>
+                                <td>{{ $laporan->nm_unit }}</td>
                                 <td>
                                     Rp. {{ number_format($laporan->jumlah, 2) }}
                                 </td>

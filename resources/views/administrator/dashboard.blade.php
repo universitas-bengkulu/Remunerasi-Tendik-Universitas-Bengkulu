@@ -55,109 +55,83 @@
                             <!-- small box -->
                             <div class="small-box bg-aqua" style="margin-bottom:0px;">
                                 <div class="inner">
-                                <h3> </h3>
+                                <h4>
+                                    @if (!is_null($periode_aktif))
+                                        <b>
+                                            {{ $periode_aktif->masa_kinerja }}
+                                        </b>
+                                    @else
+                                    <a style="color: red;">Tidak ada periode aktif</a>
+                                    @endif
+                                </h4>
 
-                                <p>Total Skim Penelitian</p>
+                                <p>Periode Aktif</p>
                                 </div>
                                 <div class="icon">
                                 <i class="fa fa-list"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <a href="#" class="small-box-footer">Data Remunerasi <i class="fa fa-info-circle"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-xs-3 col-md-3" style="padding-bottom:10px !important;">
                             <!-- small box -->
                             <div class="small-box bg-red" style="margin-bottom:0px;">
                                 <div class="inner">
-                                <h3></h3>
+                                <h4>
+                                    @if (!is_null($jumlah_tendik))
+                                        {{ $jumlah_tendik->jumlah }}
+                                    @else
+                                    0
+                                    @endif
+                                </h4>
 
-                                <p>Jumlah Usulan Kegiatan</p>
+                                <p>Jumlah Tendik</p>
                                 </div>
                                 <div class="icon">
                                 <i class="fa fa-list-alt"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <a href="#" class="small-box-footer">Data Remunerasi <i class="fa fa-info-circle"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-xs-3 col-md-3" style="padding-bottom:10px !important;">
                             <!-- small box -->
                             <div class="small-box bg-yellow" style="margin-bottom:0px;">
                                 <div class="inner">
-                                <h3></h3>
+                                <h4>
+                                    @if (!is_null($total_p1))
+                                        Rp.{{ number_format($total_p1->total,2) }}
+                                    @else
+                                    Rp.{{ number_format(0,2) }}
+                                    @endif
+                                </h4>
 
-                                <p>Total Formulir Penilaian</p>
+                                <p>Total Remun P1 dan P2</p>
                                 </div>
                                 <div class="icon">
                                 <i class="fa fa-wpforms"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <a href="#" class="small-box-footer">Data Remunerasi <i class="fa fa-info-circle"></i></a>
                             </div>
                         </div>
                         <div class="col-lg-3 col-xs-3 col-md-3" style="padding-bottom:10px !important;">
                             <!-- small box -->
                             <div class="small-box bg-green" style="margin-bottom:0px;">
                                 <div class="inner">
-                                <h3></h3>
+                                <h4>
+                                    @if (!is_null($total_remun))
+                                        Rp.{{ number_format($total_remun->total_remun,2) }}
+                                    @else
+                                    Rp.{{ number_format(0,2) }}
+                                    @endif
+                                </h4>
 
                                 <p>Usulan Kegiatan Disetujui</p>
                                 </div>
                                 <div class="icon">
                                 <i class="fa fa-check-circle"></i>
                                 </div>
-                                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                                <a href="#" class="small-box-footer">Data Remunerasi <i class="fa fa-info-circle"></i></a>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
-
-    <div class="row" style="margin-bottom:10px; margin-top:10px;">
-        <div class="col-md-6">
-            <section class="panel">
-                <header class="panel-heading" style="color: #ffffff;background-color: #074071;border-color: #fff000;border-image: none;border-style: solid solid none;border-width: 4px 0px 0;border-radius: 0;font-size: 14px;font-weight: 700;padding: 15px;">
-                    <i class="fa fa-bar-chart"></i>&nbsp;Statistik Jumlah Remunerasi Per Golongan
-                </header>
-                <div class="panel-body" style="border-top: 1px solid #eee; padding:15px; background:white;">
-                    <div class="row">
-                        <div class="col-md-12">
-                            @section('charts')
-                                chart.data = [
-                                    {{-- @foreach ($penelitians as $data)
-                                        {
-                                            "country": "{{ substr($data['nm_skim'],11) }}",
-                                            "litres": {{ $data['jumlah'] }}
-                                        },
-                                    @endforeach --}}
-                                ];
-                            @endsection
-                            <div id="chartdiv"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div class="col-md-6">
-            <section class="panel">
-                <header class="panel-heading" style="color: #ffffff;background-color: #074071;border-color: #fff000;border-image: none;border-style: solid solid none;border-width: 4px 0px 0;border-radius: 0;font-size: 14px;font-weight: 700;padding: 15px;">
-                    <i class="fa fa-bar-chart"></i>&nbsp;Statistik Jumlah Remunerasi Per Rubrik P3
-                </header>
-                <div class="panel-body" style="border-top: 1px solid #eee; padding:15px; background:white;">
-                    <div class="row">
-                        <div class="col-md-12">
-                            @section('charts2')
-                                chart.data = [
-                                    {{-- @foreach ($pengabdians as $data)
-                                        {
-                                            "country2": "{{ $data['nm_skim'] }}",
-                                            "litres2": {{ $data['jumlah'] }}
-                                        },
-                                    @endforeach --}}
-                                ];
-                            @endsection
-                            <div id="chartdiv2"></div>
                         </div>
                     </div>
                 </div>

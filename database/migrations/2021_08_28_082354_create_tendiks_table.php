@@ -17,6 +17,7 @@ class CreateTendiksTable extends Migration
             $table->id();
             $table->unsignedInteger('jabatan_id')->nullable();
             $table->unsignedInteger('user_id_absensi')->nullable();
+            $table->unsignedInteger('unit_id')->nullable();
             $table->string('nm_lengkap')->nullable();
             $table->string('slug');
             $table->string('nip')->nullable();

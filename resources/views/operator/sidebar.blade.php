@@ -1,10 +1,3 @@
-@php
-if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
-    error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
-}
-    use App\Models\PeriodeInsentif;
-    $periode_aktif = PeriodeInsentif::where('status','aktif')->select('slug')->firstOrFail();
-@endphp
 <li>
     <a  href=" {{ route('operator.dashboard') }} "><i class="fa fa-home"></i>Dashboard</a>
 </li>

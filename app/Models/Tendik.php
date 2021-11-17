@@ -20,6 +20,7 @@ class Tendik extends Authenticatable
     protected $guard = 'tendik';
     protected $fillable = [
         'jabatan_id',
+        'unit_id',
         'nm_lengkap',
         'slug',
         'nip',

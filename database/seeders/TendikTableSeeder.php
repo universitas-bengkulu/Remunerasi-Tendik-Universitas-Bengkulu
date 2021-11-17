@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Jabatan;
+use App\Models\Unit;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -17,11 +18,12 @@ class TendikTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (range(1,30) as $index) {
+        foreach (range(1,100) as $index) {
             $name = $faker->name;
             $slug = Str::slug($name, '-');
             DB::table('tendiks')->insert([
                 'jabatan_id'    =>  Jabatan::all()->random()->id,
+                'unit_id'    =>  Unit::all()->random()->id,
                 'user_id_absensi' => $faker->randomElement(['1','2','3','4','5','6','7','8','9','10','11']),
                 'nm_lengkap' => $name,
                 'slug' => $slug,

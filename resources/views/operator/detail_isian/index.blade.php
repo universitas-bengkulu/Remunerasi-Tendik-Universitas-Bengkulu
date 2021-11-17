@@ -45,51 +45,28 @@
                             <i class="fa fa-info-circle"></i>&nbsp; Silahkan tambahkan detail isian rubrik baru jika diperlukan.
                         </div>
                     </div>
-                    <input type="hidden" value="" id="nama_dosen" name="nama_dosen">
-                    <input type="hidden" value="" id="nama_prodi" name="nama_prodi">
+                    <input type="hidden" value="" id="nm_tendik" name="nm_tendik">
                     <input type="hidden" name="isian_id" value="{{ $isian_id }}">
                     <input type="hidden" name="rubrik_id" value="{{ $rubrik_id }}">
                     <div class="col-md-6">
-                        <label>Fakultas</label>
-                        <select name="fakultas" id="fakultas" class="form-control @error('fakultas') is-invalid @enderror">
-                            <option value="">-- Pilih Nama Fakultas --</option>
-                            @foreach ($fakultases as $fakultas)
-                                @foreach ($fakultas as $value)
-                                    <option value="{{ $value['fakKode'] }}">{{ $value['fakNamaResmi'] }}</option>
+                       <div class="form-group">
+                            <label>Tenaga Kependidikan (Tendik)</label>
+                            <select name="tendik" class="form-control @error('tendik') is-invalid @enderror">
+                                <option value="">-- Pilih Tendik --</option>
+                                @foreach ($tendiks as $tendik)
+                                        <option value="{{ $tendik->id }}">{{ $tendik->nm_lengkap }} - ({{ $tendik->nm_jabatan }})</option>
                                 @endforeach
-                            @endforeach
-                        </select>
-                        @error('fakultas')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
+                            </select>
+                            @error('tendik')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                       </div>
                     </div>
-                    <div class="col-md-6">
-                        <label>Prodi</label>
-                        <select name="prodi" id="prodi" class="form-control @error('prodi') is-invalid @enderror">
-                            <option value="">-- Pilih Nama Prodi --</option>
-                        </select>
-                        @error('prodi')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    <div class="col-md-6 mt-2">
-                        <label>Dosen</label>
-                        <select name="dosen" id="dosen" class="form-control @error('dosen') is-invalid @enderror">
-                            <option value="">-- Pilih Nama Dosen --</option>
-                        </select>
-                        @error('dosen')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                    <div class="col-md-6 mt-2">
-                        <label>Rate Remun <a style="color: red">(Rp)</a></label>
-                        <div class="input-group">
+                    <div class="col-md-6 ">
+                        <div class="form-group">
+                            <label>Rate Remun <a style="color: red">(Rp)</a></label>
                             <input type="text" name="rate_remun" id="rate_remun" oninput="this.value = this.value.replace(/[^0-9]/g, '');" aria-describedby="basic-addon1" class="form-control @error('rate_remun') is-invalid @enderror">
                             @error('rate_remun')
                                 <span class="invalid-feedback" role="alert">
@@ -137,7 +114,7 @@
                                 <tr>
                                     <td >{{ $no++."." }}</td>
                                     <td>{{ $detail->nip }}</td>
-                                    <td>{{ $detail->nama_dosen }}</td>
+                                    <td>{{ $detail->nm_tendik }}</td>
                                     {{-- <td>{{ $dosen->dsnNip }}</td>
                                     <td>{{ $dosen->dsnNama }}</td> --}}
                                     <td>Rp {{ number_format($detail->rate_remun,0,',','.') }}</td>
@@ -311,7 +288,7 @@
                             $.each(value,function(index2, value2){
                                 $.each(value2['dosen'],function(index3,value3){
                                     if(value3['pegawai']['pegIsAktif']==1){
-                                        $('#nama_dosen_add').val(value3['pegawai']['pegNama']);
+                                        $('#nm_tendik_add').val(value3['pegawai']['pegNama']);
                                         op+='<option value="'+value3['pegawai']['pegNip']+'">'+value3['pegawai']['pegNama']+'</option>';
                                     }
                                 })
@@ -327,7 +304,7 @@
             });
             $('#dosen').change(function(){
                 var nama=$( "#dosen option:selected" ).text();
-                $('#nama_dosen').val(nama);
+                $('#nm_tendik').val(nama);
             });
 
             $('#prodi').change(function(){

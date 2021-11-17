@@ -16,7 +16,7 @@ class UnitTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (range(1,5) as $index) {
+        foreach (range(1,10) as $index) {
             DB::table('units')->insert([
                 'nm_unit'    =>  $faker->name(),
                 'tingkatan' =>  $faker->randomElement(['unversitas','lembaga','fakultas']),

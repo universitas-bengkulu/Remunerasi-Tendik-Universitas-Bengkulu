@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Tendik;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Jabatan;
+use App\Models\Periode;
 use App\Models\Tendik;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
+    error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+}
 class TendikDashboardController extends Controller
 {
     public function __construct(){
@@ -15,11 +20,34 @@ class TendikDashboardController extends Controller
     }
 
     public function index(){
-        $about = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->where('nip',Auth::guard('tendik')->user()->nip)->first();
-        $jabatans = Jabatan::get();
-        $harga = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->select('remunerasi')->where('nip',Auth::guard('tendik')->user()->nip)->first();
-        $absensi = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->select('remunerasi')->where('nip',Auth::guard('tendik')->user()->nip)->first();
-        return view('tendik/dashboard', compact('about','jabatans'));
+        $periode_aktif = Periode::where('status','aktif')->first();
+        $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
+        $find = Schema::hasTable($table);
+        if (empty($find)) {
+            $absensi  = 0;
+            $integritas  = 0;
+            $skp  = 0;
+            $total  = 0;
+        } else {
+            $datas =  DB::table($table)->where('periode_id',$periode_aktif->id)
+                            ->where('tendik_id',Auth::guard('tendik')->user()->id)
+                            ->first();
+            if (count($datas)<1) {
+                $absensi  = 0;
+                $integritas  = 0;
+                $skp  = 0;
+                $total  = 0;
+            } else {
+                $periode = Periode::where('status','aktif')->first();
+                $about = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->where('nip',Auth::guard('tendik')->user()->nip)->first();
+                $jabatans = Jabatan::get();
+                $absensi = $datas->total_absensi;
+                $skp = $datas->total_skp;
+                $integritas = $datas->total_integritas;
+                $total = $datas->total_akhir_remun;
+                return view('tendik/dashboard', compact('about','jabatans','periode','absensi','skp','integritas','total'));
+            }
+        }
     }
 
     public function ubahPassword(Request $request){

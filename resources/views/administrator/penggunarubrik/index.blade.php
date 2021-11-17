@@ -66,7 +66,7 @@
                             <div class="form-group col-md-6">
                                 <label>Nama Unit :</label>
                                 <select name="unit_id" class="form-control  @error('unit_id') is-invalid @enderror">
-                                    <option value="" selected disabled>-- pilih nama jabatan --</option>
+                                    <option value="" selected disabled>-- pilih unit --</option>
                                     @foreach ($units as $unit)
                                         <option {{ $unit->id == old('unit_id') ? 'selected' : '' }} value="{{ $unit->id }}">{{ $unit->nm_unit }}</option>
                                     @endforeach
@@ -78,7 +78,7 @@
                             <div class="form-group col-md-6">
                                 <label>Nama rubrik :</label>
                                 <select name="rubrik_id" class="form-control  @error('rubrik_id') is-invalid @enderror">
-                                    <option value="" selected disabled>-- pilih nama rubrik --</option>
+                                    <option value="" selected disabled>-- pilih rubrik --</option>
                                     @foreach ($rubriks as $rubrik)
                                         <option {{ $rubrik->id == old('rubrik_id') ? 'selected' : '' }} value="{{ $rubrik->id }}">{{ $rubrik->nama_rubrik }}</option>
                                     @endforeach
