@@ -18,7 +18,7 @@ class TendikTableSeeder extends Seeder
     public function run()
     {
         $faker = \Faker\Factory::create();
-        foreach (range(1,100) as $index) {
+        foreach (range(1,20) as $index) {
             $name = $faker->name;
             $slug = Str::slug($name, '-');
             DB::table('tendiks')->insert([
