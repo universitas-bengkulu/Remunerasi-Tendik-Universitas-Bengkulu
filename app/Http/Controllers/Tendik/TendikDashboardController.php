@@ -32,7 +32,7 @@ class TendikDashboardController extends Controller
                 $periode = Periode::where('status','aktif')->first();
                 $about = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->where('nip',Auth::guard('tendik')->user()->nip)->first();
                 $jabatans = Jabatan::get();
-                return view('tendik/dashboard', compact('about','jabatans','periode','absensi','skp','integritas','total'));
+                // return view('tendik/dashboard', compact('about','jabatans','periode','absensi','skp','integritas','total'));
             } else {
                 $datas =  DB::table($table)->where('periode_id',$periode_aktif->id)
                                 ->where('tendik_id',Auth::guard('tendik')->user()->id)
@@ -45,7 +45,7 @@ class TendikDashboardController extends Controller
                     $periode = Periode::where('status','aktif')->first();
                     $about = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->where('nip',Auth::guard('tendik')->user()->nip)->first();
                     $jabatans = Jabatan::get();
-                    return view('tendik/dashboard', compact('about','jabatans','periode','absensi','skp','integritas','total'));
+                    // return view('tendik/dashboard', compact('about','jabatans','periode','absensi','skp','integritas','total'));
                 } else {
                     $periode = Periode::where('status','aktif')->first();
                     $about = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->where('nip',Auth::guard('tendik')->user()->nip)->first();
@@ -54,9 +54,9 @@ class TendikDashboardController extends Controller
                     $skp = $datas->total_skp;
                     $integritas = $datas->total_integritas;
                     $total = $datas->total_akhir_remun;
-                    return view('tendik/dashboard', compact('about','jabatans','periode','absensi','skp','integritas','total'));
                 }
             }
+            return view('tendik/dashboard', compact('about','jabatans','periode','absensi','skp','integritas','total'));
         }
         else{
             return redirect()->back();  
