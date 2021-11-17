@@ -21,32 +21,45 @@ class TendikDashboardController extends Controller
 
     public function index(){
         $periode_aktif = Periode::where('status','aktif')->first();
-        $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
-        $find = Schema::hasTable($table);
-        if (empty($find)) {
-            $absensi  = 0;
-            $integritas  = 0;
-            $skp  = 0;
-            $total  = 0;
-        } else {
-            $datas =  DB::table($table)->where('periode_id',$periode_aktif->id)
-                            ->where('tendik_id',Auth::guard('tendik')->user()->id)
-                            ->first();
-            if (count($datas)<1) {
+        if (count($periode_aktif)>0) {
+            $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
+            $find = Schema::hasTable($table);
+            if (empty($find)) {
                 $absensi  = 0;
                 $integritas  = 0;
                 $skp  = 0;
                 $total  = 0;
-            } else {
                 $periode = Periode::where('status','aktif')->first();
                 $about = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->where('nip',Auth::guard('tendik')->user()->nip)->first();
                 $jabatans = Jabatan::get();
-                $absensi = $datas->total_absensi;
-                $skp = $datas->total_skp;
-                $integritas = $datas->total_integritas;
-                $total = $datas->total_akhir_remun;
                 return view('tendik/dashboard', compact('about','jabatans','periode','absensi','skp','integritas','total'));
+            } else {
+                $datas =  DB::table($table)->where('periode_id',$periode_aktif->id)
+                                ->where('tendik_id',Auth::guard('tendik')->user()->id)
+                                ->first();
+                if (count($datas)<1) {
+                    $absensi  = 0;
+                    $integritas  = 0;
+                    $skp  = 0;
+                    $total  = 0;
+                    $periode = Periode::where('status','aktif')->first();
+                    $about = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->where('nip',Auth::guard('tendik')->user()->nip)->first();
+                    $jabatans = Jabatan::get();
+                    return view('tendik/dashboard', compact('about','jabatans','periode','absensi','skp','integritas','total'));
+                } else {
+                    $periode = Periode::where('status','aktif')->first();
+                    $about = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->where('nip',Auth::guard('tendik')->user()->nip)->first();
+                    $jabatans = Jabatan::get();
+                    $absensi = $datas->total_absensi;
+                    $skp = $datas->total_skp;
+                    $integritas = $datas->total_integritas;
+                    $total = $datas->total_akhir_remun;
+                    return view('tendik/dashboard', compact('about','jabatans','periode','absensi','skp','integritas','total'));
+                }
             }
+        }
+        else{
+            return redirect()->back();  
         }
     }
 
