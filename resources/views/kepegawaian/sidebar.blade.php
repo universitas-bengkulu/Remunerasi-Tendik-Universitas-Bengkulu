@@ -77,7 +77,7 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
                 @elseif(Route::current()->getName() == "kepegawaian.r_integritas.total_integritas")
                 class="current-page"
             @endif
-        ><a href=" {{ route('kepegawaian.r_integritas',[count($periode_aktif)> 0 ? $periode_aktif->id : '']) }} ">Rubrik Integritas</a></li> 
+        ><a href=" {{ route('kepegawaian.r_integritas',[count($periode_aktif)> 0 ? $periode_aktif->id : '']) }} ">Rubrik Disiplin</a></li> 
     </ul>
 </li>
 

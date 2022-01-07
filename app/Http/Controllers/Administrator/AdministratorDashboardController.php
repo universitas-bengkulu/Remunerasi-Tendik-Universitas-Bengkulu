@@ -32,6 +32,15 @@ class AdministratorDashboardController extends Controller
             $integritas  = 0;
             $skp  = 0;
             $total  = 0;
+            $periode_aktif = PeriodeInsentif::select('masa_kinerja')->where('status','aktif')->first();
+                $jumlah_tendik = Tendik::select(DB::raw('count(id) as jumlah'))->where('unit_id',Auth::user()->unit_id)->first();
+                $total_remun    = DetailIsianRubrik::join('tendiks','tendiks.id','detail_isian_rubriks.tendik_id')
+                                                    ->select(DB::raw('sum(rate_remun) as total_remun'))
+                                                    ->first();
+                $total_p1 = DB::table($table)->where('periode_id',$periode_p1->id)
+                            ->select(DB::raw('sum(total_akhir_remun) as total'))
+                            ->first();
+                return view('administrator/dashboard',compact('periode_aktif','jumlah_tendik','total_remun','total_p1'));
         } else {
             $datas =  DB::table($table)->where('periode_id',$periode_p1->id)
                             ->first();
@@ -40,6 +49,15 @@ class AdministratorDashboardController extends Controller
                 $integritas  = 0;
                 $skp  = 0;
                 $total  = 0;
+                $periode_aktif = PeriodeInsentif::select('masa_kinerja')->where('status','aktif')->first();
+                $jumlah_tendik = Tendik::select(DB::raw('count(id) as jumlah'))->where('unit_id',Auth::user()->unit_id)->first();
+                $total_remun    = DetailIsianRubrik::join('tendiks','tendiks.id','detail_isian_rubriks.tendik_id')
+                                                    ->select(DB::raw('sum(rate_remun) as total_remun'))
+                                                    ->first();
+                $total_p1 = DB::table($table)->where('periode_id',$periode_p1->id)
+                            ->select(DB::raw('sum(total_akhir_remun) as total'))
+                            ->first();
+                return view('administrator/dashboard',compact('periode_aktif','jumlah_tendik','total_remun','total_p1'));
             } else {
                 $periode_aktif = PeriodeInsentif::select('masa_kinerja')->where('status','aktif')->first();
                 $jumlah_tendik = Tendik::select(DB::raw('count(id) as jumlah'))->where('unit_id',Auth::user()->unit_id)->first();
