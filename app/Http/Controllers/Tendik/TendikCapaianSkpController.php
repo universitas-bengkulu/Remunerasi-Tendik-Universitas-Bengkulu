@@ -51,11 +51,11 @@ class TendikCapaianSkpController extends Controller
         ];
         $attributes = [
             'nilai_skp'   =>  'Nilai SKP',
-            'path'   =>  'File SKP',
+            // 'path'   =>  'File SKP',
         ];
         $this->validate($request, [
             'nilai_skp'    =>  'required',
-            'path'    =>  'required|mimes:doc,pdf,docx,jpg|max:2000',
+            'path'    =>  'mimes:doc,pdf,docx,jpg|max:1000',
         ],$messages,$attributes);
         $periode = Periode::where('status','aktif')->first();
         $tendik = RCapaianSkp::where('id',$id)->firstOrFail();
@@ -69,6 +69,12 @@ class TendikCapaianSkpController extends Controller
 
             RCapaianSkp::where('tendik_id',$id)->update([
                 'path'  =>  $model['path'],
+                'nilai_skp' =>  $request->nilai_skp,
+                'status'    =>  'menunggu',
+            ]);
+        }else {
+            RCapaianSkp::where('tendik_id',$id)->update([
+                'path'  =>  '-',
                 'nilai_skp' =>  $request->nilai_skp,
                 'status'    =>  'menunggu',
             ]);

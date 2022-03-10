@@ -79,8 +79,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <label>FIle SKP : </label>
-                                    <input type="file" name="path" class="form-control @error('path') is-invalid @enderror">
+                                    <label>FIle SKP : <a style="color:red">belum diberlakukan</a> </label>
+                                    <input type="file" name="path" disabled="disabled" class="form-control @error('path') is-invalid @enderror">
                                     <div>
                                         @if ($errors->has('path'))
                                             <small class="form-text text-danger">{{ $errors->first('path') }}</small>

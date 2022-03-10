@@ -19,7 +19,7 @@
                         <strong>Perhatian:</strong> <i>{{ $message }}</i>
                     </div>
                     @else
-                    <h6>Login</h6>
+                    <h6>Login Operator</h6>
                     <p style="text-align:center; margin-bottom:20px;"> Remunerasi Tenaga Kependidikan Universitas Bengkulu</p>
                 @endif
                 <form method="post" action="{{ route('login') }}">

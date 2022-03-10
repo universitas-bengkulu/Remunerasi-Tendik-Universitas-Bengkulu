@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\AuthPimpinan;
+namespace App\Http\Controllers\AuthTendik;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tendik;
 
-class LoginPimpinanController extends Controller
+class LoginTendikController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -27,28 +27,28 @@ class LoginPimpinanController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest:pimpinan')->except(['logout','logoutTendik']);
+        $this->middleware('guest:tendik')->except(['logout','logoutTendik']);
     }
 
     public function showLoginForm(){
-        return view('authPimpinan.login');
+        return view('authTendik.login');
     }
 
     public function login(Request $request){
         $this->validate($request, [
-            'pasNama' => 'required',
+            'nip' => 'required',
             'password' => 'required'
         ]);
 
         $credential = [
-            'pasNama' => $request->pasNama,
+            'nip' => $request->nip,
             'password' => $request->password
         ];
 
         // Attempt to log the user in
-        if (Auth::guard('pimpinan')->attempt($credential, $request->member)){
+        if (Auth::guard('tendik')->attempt($credential, $request->member)){
             // If login succesful, then redirect to their intended location
-            return redirect()->intended(route('pimpinan.dashboard'));
+            return redirect()->intended(route('tendik.dashboard'));
         }
 
         // If Unsuccessful, then redirect back to the login with the form data
@@ -57,11 +57,11 @@ class LoginPimpinanController extends Controller
 
     public function username()
     {
-        return 'pasNama';
+        return 'nip';
     }
 
     public function logoutTendik(){
-        Auth::guard('pimpinan')->logout();
+        Auth::guard('tendik')->logout();
         return redirect()->route('tendik.login');
     }
 }
