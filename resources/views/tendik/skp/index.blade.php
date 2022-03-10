@@ -131,8 +131,12 @@
                                     <td> {{ $skp->nilai_skp }} </td>
                                     <td> {{ $skp->nm_periode }} </td>
                                     <td>
-                                        <a class="btn btn-primary btn-sm" href="{{ asset('upload/file_skp/'.$periode->slug.'/'.$skp->path) }}" download="{{ $skp->path }}"><i class="fa fa-download"></i>&nbsp; Download</a>
-
+                                        {{--  <a class="btn btn-primary btn-sm" href="{{ asset('upload/file_skp/'.$periode->slug.'/'.$skp->path) }}" download="{{ $skp->path }}"><i class="fa fa-download"></i>&nbsp; Download</a>  --}}
+                                    @if (empty($skp->path) or $skp->path=="-" )
+                                                            <a style="color: red">file kosong</a>
+                                                            @else
+                                                            <a class="btn btn-primary btn-sm" href="{{ asset('upload/file_skp/'.$periode->slug.'/'.$skp->path) }}" download="{{ $skp->path }}"><i class="fa fa-download"></i>&nbsp; Download</a>
+                                                        @endif
                                     </td>
                                     <td>
                                         @if ($skp->status == "menunggu")
