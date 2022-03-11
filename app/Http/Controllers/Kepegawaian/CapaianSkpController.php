@@ -65,7 +65,7 @@ class CapaianSkpController extends Controller
 
     public function generateTendik($periode_id){
         $periode = Periode::select('id')->where('id',$periode_id)->first();
-        if (count($periode)>0) {
+        if (count((array)$periode)>0) {
             $tendiks = Tendik::select('id','nip','nm_lengkap')->get();
             $array = [];
             for ($i=0; $i <count($tendiks) ; $i++) { 
