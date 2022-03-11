@@ -21,7 +21,7 @@ class TendikDashboardController extends Controller
 
     public function index(){
         $periode_aktif = Periode::where('status','aktif')->first();
-        if (count($periode_aktif)>0) {
+        if (count((array)$periode_aktif)>0) {
             $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
             $find = Schema::hasTable($table);
             if (empty($find)) {
