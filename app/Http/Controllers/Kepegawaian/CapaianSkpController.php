@@ -42,7 +42,7 @@ class CapaianSkpController extends Controller
         $jumlah_tendik = Count(Tendik::all());
         $jumlah_skp = Count($jumlah);
         $periode_aktif = Periode::where('status','aktif')->select('id','slug')->first();
-        if (count($periode_aktif)<1) {
+        if (count((array)$periode_aktif)<1) {
             $notification = array(
                 'message' => 'Gagal, Harap Aktifkan Periode Remunerasi Terlebih Dahulu!',
                 'alert-type' => 'error'
