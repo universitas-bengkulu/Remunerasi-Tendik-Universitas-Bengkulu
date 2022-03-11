@@ -3,7 +3,7 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
     error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 }
     use App\Models\Periode;
-    $periode_aktif = Periode::where('status','aktif')->select('id')->first();
+    $periode_aktif = Periode::where('status','aktif')->select('id')->get();
 @endphp
 <li>
     <a class={{ count($periode_aktif)<1 ? "noclick"  : 'click'}} href=" {{ route('kepegawaian.dashboard') }} "><i class="fa fa-home"></i>Dashboard</a>
