@@ -12,6 +12,7 @@ class Periode extends Model
         'nm_periode',
         'tanggal_awal',
         'tanggal_akhir',
+        'tanggal_akhir_skp',
         'jumlah_bulan',
         'slug'
     ];

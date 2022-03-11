@@ -9,6 +9,7 @@ use App\Models\RCapaianSkp;
 use App\Models\Periode;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
+use Carbon\Carbon;
 
 class TendikCapaianSkpController extends Controller
 {
@@ -17,7 +18,7 @@ class TendikCapaianSkpController extends Controller
     }
 
     public function index(){
-        $periode = Periode::select('id','jumlah_bulan','slug')->where('status','aktif')->first();
+        $periode = Periode::select('id','jumlah_bulan','slug','tanggal_akhir_skp')->where('status','aktif')->first();
         if (!empty($periode)) {
             $skps = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
                                 ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
@@ -32,13 +33,14 @@ class TendikCapaianSkpController extends Controller
                                     ->where('path','!=', NULL)
                                     ->where('path','!=',"")
                                     ->first();
+            $dt = Carbon::now()->format('Y-m-d');
+            $status = RCapaianSkp::select('id')
+                                ->where('tendik_id',Auth::guard('tendik')->user()->id)
+                                ->first();
+            return view('tendik/skp.index', compact('skps','status','periode','sekarang','dt'));
         }else{
             return redirect()->back();
         }
-        $status = RCapaianSkp::select('id')
-                                ->where('tendik_id',Auth::guard('tendik')->user()->id)
-                                ->first();
-        return view('tendik/skp.index', compact('skps','status','periode','sekarang'));
     }
 
     public function post(Request $request,$id){

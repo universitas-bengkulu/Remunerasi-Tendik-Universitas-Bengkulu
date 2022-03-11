@@ -28,18 +28,21 @@ class PeriodeController extends Controller
             'nm_periode'   =>  'Nama Periode',
             'tanggal_awal'    =>  'Tanggal Awal',
             'tanggal_akhir'    =>  'Tanggal Akhir',
+            'tanggal_akhir_skp'    =>  'Tanggal Akhir Input SKP',
             'jumlah_bulan'    =>  'Jumlah Bulan',
         ];
         $this->validate($request, [
             'nm_periode'    =>  'required',
             'tanggal_awal'    =>  'required',
             'tanggal_akhir'    =>  'required',
+            'tanggal_akhir_skp'    =>  'required',
             'jumlah_bulan'    =>  'required|numeric',
         ],$messages,$attributes);
         Periode::create([
             'nm_periode' => $request->nm_periode,
             'tanggal_awal' => $request->tanggal_awal,
             'tanggal_akhir' => $request->tanggal_akhir,
+            'tanggal_akhir_skp' => $request->tanggal_akhir_skp,
             'jumlah_bulan' => $request->jumlah_bulan,
             'slug'  =>  Str::slug($request->nm_periode),
         ]);

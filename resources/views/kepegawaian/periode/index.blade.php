@@ -81,6 +81,7 @@
                                 <th style="text-align:center">Nama Periode</th>
                                 <th style="text-align:center">Tanggal Awal</th>
                                 <th style="text-align:center">Tanggal Akhir</th>
+                                <th style="text-align:center">Tanggal Akhir Input SKP</th>
                                 <th style="text-align:center">Jumlah Bulan</th>
                                 <th style="text-align:center">Status Periode</th>
                                 <th style="text-align:center">Ubah Status</th>
@@ -97,6 +98,7 @@
                                     <td style="text-align:center;"> {{ $periode->nm_periode }} </td>
                                     <td style="text-align:center;"> {{ $periode->tanggal_awal }} </td>
                                     <td style="text-align:center;"> {{ $periode->tanggal_akhir }} </td>
+                                    <td style="text-align:center;"> {{ $periode->tanggal_akhir_skp }} </td>
                                     <td style="text-align:center;"> {{ $periode->jumlah_bulan }} Bulan </td>
                                     <td style="text-align:center;">
                                         @if ($periode->status == "aktif")
@@ -192,6 +194,17 @@
                                             @endif
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="">Tanggal Akhir Input SKP :</label>
+                                        <input type="date" name="tanggal_akhir_skp" value="{{ old('tanggal_akhir_skp') }}" class="form-control @error('tanggal_akhir_skp') is-invalid @enderror" placeholder="tanggal akhir ">
+                                        <div>
+                                            @if ($errors->has('tanggal_akhir_skp'))
+                                                <small class="form-text text-danger">{{ $errors->first('tanggal_akhir_skp') }}</small>
+                                            @endif
+                                        </div>
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="">Jumlah Bulan :</label>
                                         <input type="text" name="jumlah_bulan" value="{{ old('jumlah_bulan') }}" class="form-control @error('jumlah_bulan') is-invalid @enderror" placeholder="jumlah bulan ">
