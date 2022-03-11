@@ -225,7 +225,7 @@
         }
             use App\Models\Periode;
             $periode_aktif = Periode::where('status','aktif')->select('id')->first();
-            $jumlah = count($periode_aktif);  
+            $jumlah = !empty($periode_aktif);  
     @endphp
     @if (Auth::user()->role == "kepegawaian" || Auth::guard('tendik')->check())
       @if ($jumlah <1)
