@@ -57,7 +57,7 @@ class TendikController extends Controller
             'jenis_kelamin' =>  'required',
             'kedekatan_hukum'   =>  'required',
             'no_rekening'   =>  'required|numeric',
-            'no_npwp'   =>  'required|numeric',
+            // 'no_npwp'   =>  'required|numeric',
             // 'user_id_absensi'   =>  'required|numeric',
         ], $messages, $attributes);
         Tendik::create([
