@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use App\Models\Tendik;
 use App\Models\Jabatan;
+use App\Models\Unit;
 use Illuminate\Support\Str;
 
 class TendikController extends Controller
