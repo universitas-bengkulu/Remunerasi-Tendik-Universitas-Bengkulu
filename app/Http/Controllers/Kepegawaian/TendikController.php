@@ -53,7 +53,7 @@ class TendikController extends Controller
             'nip'   =>  'required|numeric',
             'pangkat'   =>  'required',
             'golongan'  =>  'required',
-            'jenis_kepegawaian' =>  'required',
+            // 'jenis_kepegawaian' =>  'required',
             'jenis_kelamin' =>  'required',
             'kedekatan_hukum'   =>  'required',
             'no_rekening'   =>  'required|numeric',
