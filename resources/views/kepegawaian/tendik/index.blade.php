@@ -297,7 +297,7 @@
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>Jenis Kepegawaian :</label>
-                                            <input type="text" name="jenis_kepegawaian" id="jenis_kepegawaian" required class="form-control" placeholder=" masukan jenis kepegawaian">
+                                            <input type="text" name="jenis_kepegawaian" id="jenis_kepegawaian" class="form-control" placeholder=" masukan jenis kepegawaian">
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>Jenis Kelamin :</label>
@@ -323,7 +323,7 @@
 
                                         <div class="form-group col-md-12">
                                             <label>User ID Aplikasi Absensi :</label>
-                                            <input type="text" name="user_id_absensi" id="user_id_absensi" required value="{{ old('user_id_absensi') }}" class="form-control  @error('user_id_absensi') is-invalid @enderror" placeholder="user id dari aplikasi absensi   ">
+                                            <input type="text" name="user_id_absensi" id="user_id_absensi" value="{{ old('user_id_absensi') }}" class="form-control  @error('user_id_absensi') is-invalid @enderror" placeholder="user id dari aplikasi absensi   ">
 
                                         </div>
                                     </div>
