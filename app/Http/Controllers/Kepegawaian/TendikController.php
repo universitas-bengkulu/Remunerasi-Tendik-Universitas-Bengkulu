@@ -21,8 +21,8 @@ class TendikController extends Controller
         $jabatans = Jabatan::select('id','nm_jabatan','kelas_jabatan')->orderBy('kelas_jabatan')->get();
         $units = Unit::select('id','nm_unit')->get();
         $tendiks = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
-                        ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','jabatan_id','user_id_absensi','jabatans.nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
-                        ->orderBy('tendiks.id','desc')
+                        ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','jabatan_id','kelas_jabatan','jabatans.nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
+                        ->orderBy('kelas_jabatan','desc')
                         ->get();
         return view('kepegawaian/tendik.index',compact('tendiks','jabatans','units'));
     }

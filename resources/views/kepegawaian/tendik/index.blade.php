@@ -186,7 +186,7 @@
                                 <th>Jenis Kelamin</th>
                                 <th>No. Rekening</th>
                                 <th>No. NPWP</th>
-                                <th>User ID Absensi</th>
+                                <th>Kelas Jabatan</th>
                                 <th>Ubah Password</th>
                                 <th>Aksi</th>
                             </tr>
@@ -237,7 +237,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        {{ $tendik->user_id_absensi }}
+                                        {{ $tendik->kelas_jabatan }}
                                     </td>
                                     <td>
                                         <a onclick="ubahPassword({{ $tendik->id }})" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-key"></i></a>
