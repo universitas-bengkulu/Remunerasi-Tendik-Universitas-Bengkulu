@@ -314,11 +314,11 @@
 
                                         <div class="form-group col-md-12">
                                             <label>Nomor Rekening :</label>
-                                            <input type="number" name="no_rekening" id="no_rekening" required class="form-control" placeholder="masukan nomor rekening">
+                                            <input type="number" name="no_rekening" id="no_rekening" class="form-control" placeholder="masukan nomor rekening">
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>Nomor NPWP :</label>
-                                            <input type="text" name="no_npwp" id="no_npwp" required class="form-control" placeholder="masukan nomor npwp">
+                                            <input type="text" name="no_npwp" id="no_npwp" class="form-control" placeholder="masukan nomor npwp">
                                         </div>
 
                                         <div class="form-group col-md-12">
