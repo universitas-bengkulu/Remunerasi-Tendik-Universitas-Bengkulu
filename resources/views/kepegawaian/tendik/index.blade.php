@@ -457,6 +457,7 @@
         $(document).ready(function() {
             $('#table').DataTable({
                 responsive : true,
+                "lengthMenu": [[-1], ["All"]]
             });
         } );
 
