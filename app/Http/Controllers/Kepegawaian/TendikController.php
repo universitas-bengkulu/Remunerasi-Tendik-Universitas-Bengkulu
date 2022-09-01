@@ -17,13 +17,23 @@ class TendikController extends Controller
         $this->middleware(['auth','isKepegawaian']);
     }
 
-    public function index(){
+    public function index(Request $request){
+        $filter = $request->query('filter');
         $jabatans = Jabatan::select('id','nm_jabatan')->get();
         // $tendiks = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
         //                 ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','jabatan_id','user_id_absensi','jabatans.nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
         //                 ->orderBy('tendiks.id','desc')
         //                 ->get();
-        $tendiks = Tendik::orderBy('id', 'desc')->paginate(25);
+
+        if (!empty($filter)){
+            $tendiks = Tendik::where('tendiks.nm_lengkap','like','%'.$filter.'%')
+            ->orWhere('nip','like','%'.$filter.'%')
+            ->orderBy('id','desc')
+            ->paginate(15);
+        } else
+        {
+            $tendiks = Tendik::orderBy('id', 'desc')->paginate(15);
+        }
         return view('kepegawaian.tendik.index',compact('tendiks','jabatans'));
     }
 

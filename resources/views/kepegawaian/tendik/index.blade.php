@@ -175,6 +175,13 @@
                 <hr style="width:50%;">
             </div>
             <div class="col-md-12">
+                <form class="form-inline" method="GET">
+                    <div class="form-group mb-2">
+                        <label for="filter" class="col-sm-2 col-form-label">Filter</label>
+                        <input type="text" class="form-control" id="filter" name="filter" placeholder="Nama/Nip..." value="{{$filter}}">
+                    </div>
+                    <button type="submit" class="btn btn-default mb-2">Filter</button>
+                </form>
                 <table class="table table-striped table-bordered" id="table" style="width:100%;">
                     <thead>
                         <tr>
@@ -251,6 +258,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{$tendiks->links() }}
                 <!-- modal ubah-->
                 <div class="modal fade" id="modalubah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -455,15 +463,18 @@
 @endsection
 @push('scripts')
 <script>
-    $(document).ready(function() {
-        $('#table').DataTable({
-            responsive: true
-            , "lengthMenu": [
-                [-1]
-                , ["All"]
-            ]
-        });
-    });
+    // $(document).ready(function() {
+    //     $('#table').DataTable({
+    //         responsive: true
+    //         , processing: true
+    //         , paging: false
+
+    //         , "lengthMenu": [
+    //             [-1]
+    //             , ["All"]
+    //         ]
+    //     });
+    // });
 
     function tambahTendik() {
         $('#form-tambah').show(300);
