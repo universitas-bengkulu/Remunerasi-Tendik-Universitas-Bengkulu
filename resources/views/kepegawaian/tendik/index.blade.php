@@ -200,12 +200,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php
-                        $no=1;
-                        @endphp
-                        @foreach ($tendiks as $tendik)
+
+                        @foreach ($tendiks as $key => $tendik)
                         <tr>
-                            <td> {{ $no++ }} </td>
+                            <td> {{ $tendiks->firstItem() + $key }} </td>
                             <td> {{ $tendik->nm_lengkap }} </td>
                             <td> {{ $tendik->nip }} </td>
                             <td>
