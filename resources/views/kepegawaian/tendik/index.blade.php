@@ -258,7 +258,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                {{$tendiks->links() }}
+                {{$tendiks->links("pagination::bootstrap-4") }}
                 <!-- modal ubah-->
                 <div class="modal fade" id="modalubah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
