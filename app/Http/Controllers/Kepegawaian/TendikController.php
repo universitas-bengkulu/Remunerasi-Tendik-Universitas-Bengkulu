@@ -15,14 +15,15 @@ class TendikController extends Controller
     {
         $this->middleware(['auth','isKepegawaian']);
     }
-    
+
     public function index(){
         $jabatans = Jabatan::select('id','nm_jabatan')->get();
-        $tendiks = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
-                        ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','jabatan_id','user_id_absensi','jabatans.nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
-                        ->orderBy('tendiks.id','desc')
-                        ->get();
-        return view('kepegawaian/tendik.index',compact('tendiks','jabatans'));
+        // $tendiks = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
+        //                 ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','jabatan_id','user_id_absensi','jabatans.nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
+        //                 ->orderBy('tendiks.id','desc')
+        //                 ->get();
+        $tendiks = Tendik::orderBy('id', 'desc')->paginate(25);
+        return view('kepegawaian.tendik.index',compact('tendiks','jabatans'));
     }
 
     public function post(Request $request){

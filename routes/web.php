@@ -95,7 +95,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::group(['prefix'  => 'administrator/'],function(){
     Route::get('/',[AdministratorDashboardController::class, 'dashboard'])->name('administrator.dashboard');
-  
+
 });
 
 Route::group(['prefix' => 'administrator/periode'], function () {
@@ -309,20 +309,20 @@ Route::group(['prefix' => 'kepegawaian/rekapitulasi'], function () {
     Route::get('/{periode_id}/generate_absensi',[RekapitulasiController::class, 'generateAbsensi'])->name('kepegawaian.rekapitulasi.generate_absensi');
     Route::get('/{periode_id}/total_akhir',[RekapitulasiController::class, 'totalAkhir'])->name('kepegawaian.rekapitulasi.total_akhir_remun');
     Route::get('/{periode_id}/generate_total_akhir',[RekapitulasiController::class, 'generateTotalAkhir'])->name('kepegawaian.rekapitulasi.generate_total_akhir');
-    
+
 });
 
 
-Route::group(['prefix'  => 'kepegawaian/manajemen_data_kepegawaian'],function(){
-    Route::get('/','kepegawaian\kepegawaianController@index')->name('kepegawaian.kepegawaian');
-    Route::post('/','kepegawaian\kepegawaianController@post')->name('kepegawaian.kepegawaian.add');
-    Route::patch('/ubah_password','kepegawaian\kepegawaianController@ubahPassword')->name('kepegawaian.kepegawaian.ubah_password');
-    Route::patch('/aktifkan_status/{id}','kepegawaian\kepegawaianController@aktifkanStatus')->name('kepegawaian.kepegawaian.aktifkan_status');
-    Route::patch('/non_aktifkan_status/{id}','kepegawaian\kepegawaianController@nonAktifkanStatus')->name('kepegawaian.kepegawaian.non_aktifkan_status');
-    Route::get('/{id}/edit','kepegawaian\kepegawaianController@edit')->name('kepegawaian.kepegawaian.edit');
-    Route::patch('/','kepegawaian\kepegawaianController@update')->name('kepegawaian.kepegawaian.update');
-    Route::delete('/','kepegawaian\kepegawaianController@delete')->name('kepegawaian.kepegawaian.delete');
-});
+    /* Route::group(['prefix'  => 'kepegawaian/manajemen_data_kepegawaian'],function(){
+        Route::get('/','Kepegawaian\KepegawaianController@index')->name('kepegawaian.kepegawaian');
+        Route::post('/','Kepegawaian\KepegawaianController@post')->name('kepegawaian.kepegawaian.add');
+        Route::patch('/ubah_password','Kepegawaian\KepegawaianController@ubahPassword')->name('kepegawaian.kepegawaian.ubah_password');
+        Route::patch('/aktifkan_status/{id}','Kepegawaian\KepegawaianController@aktifkanStatus')->name('kepegawaian.kepegawaian.aktifkan_status');
+        Route::patch('/non_aktifkan_status/{id}','Kepegawaian\KepegawaianController@nonAktifkanStatus')->name('kepegawaian.kepegawaian.non_aktifkan_status');
+        Route::get('/{id}/edit','Kepegawaian\KepegawaianController@edit')->name('kepegawaian.kepegawaian.edit');
+        Route::patch('/','Kepegawaian\KepegawaianController@update')->name('kepegawaian.kepegawaian.update');
+        Route::delete('/','Kepegawaian\KepegawaianController@delete')->name('kepegawaian.kepegawaian.delete');
+    }); */
 
 //Route Operator
 Route::group(['prefix'  => 'operator'], function () {
