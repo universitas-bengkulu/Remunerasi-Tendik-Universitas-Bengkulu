@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use GuzzleHttp\Client;
 use App\Models\Tendik;
 use App\Models\Jabatan;
+use App\Models\Unit;
 use Illuminate\Support\Str;
 
 class TendikController extends Controller
@@ -33,6 +34,7 @@ class TendikController extends Controller
         ];
         $attributes = [
             'jabatan_id'   =>  'Nama Jabatan',
+            'unit_id'   =>  'Unit Kerja',
             'nm_lengkap'    =>  'Nama Lengkap',
             'nip'   =>  'Nip',
             'pangkat'   =>  'Pangkat',
@@ -46,19 +48,21 @@ class TendikController extends Controller
         ];
         $this->validate($request, [
             'jabatan_id'    =>  'required',
+            'unit_id'    =>  'required',
             'nm_lengkap'    =>  'required',
             'nip'   =>  'required|numeric',
             'pangkat'   =>  'required',
             'golongan'  =>  'required',
-            'jenis_kepegawaian' =>  'required',
+            // 'jenis_kepegawaian' =>  'required',
             'jenis_kelamin' =>  'required',
             'kedekatan_hukum'   =>  'required',
-            'no_rekening'   =>  'required|numeric',
-            'no_npwp'   =>  'required|numeric',
-            'user_id_absensi'   =>  'required|numeric',
+            // 'no_rekening'   =>  'required|numeric',
+            // 'no_npwp'   =>  'required|numeric',
+            // 'user_id_absensi'   =>  'required|numeric',
         ], $messages, $attributes);
         Tendik::create([
             'jabatan_id' => $request->jabatan_id,
+            'unit_id' => $request->unit_id,
             'nm_lengkap' => $request->nm_lengkap,
             'slug' => Str::slug($request->nm_lengkap),
             'nip' => $request->nip,

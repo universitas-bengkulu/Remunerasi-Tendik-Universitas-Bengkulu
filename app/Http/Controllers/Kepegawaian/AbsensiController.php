@@ -24,7 +24,7 @@ class AbsensiController extends Controller
                             ->select('r_absens.id as id','periode_id','nip','nm_lengkap','potongan_bulan_1','potongan_bulan_2','potongan_bulan_3','potongan_bulan_4','potongan_bulan_5','potongan_bulan_6')
                             ->where('periode_id',$periode_id)
                             ->get();
-        if (count($periode_aktif)<1) {
+        if (count((array)$periode_aktif)<1) {
             $notification = array(
                 'message' => 'Gagal, Harap Aktifkan Periode Remunerasi Terlebih Dahulu!',
                 'alert-type' => 'error'
@@ -37,7 +37,7 @@ class AbsensiController extends Controller
 
     public function generateTendik($periode_id){
         $periode = Periode::select('id','jumlah_bulan')->where('id',$periode_id)->first();
-        if (count($periode)>0) {
+        if (count((array)$periode)>0) {
             $tendiks = Tendik::select('id','nip','nm_lengkap')->get();
             $array = [];
             for ($i=0; $i <count($tendiks) ; $i++) { 

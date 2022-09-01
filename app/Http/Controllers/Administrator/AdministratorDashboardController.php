@@ -44,7 +44,7 @@ class AdministratorDashboardController extends Controller
         } else {
             $datas =  DB::table($table)->where('periode_id',$periode_p1->id)
                             ->first();
-            if (count($datas)<1) {
+            if (count((array)$datas)<1) {
                 $absensi  = 0;
                 $integritas  = 0;
                 $skp  = 0;
@@ -72,37 +72,37 @@ class AdministratorDashboardController extends Controller
         }
     }
     public function index(){
-       
+
         $user_administrators = User:: select('users.id as id','nama_lengkap','email','role','status_user')->where('role','administrator')
         ->get();
         return view('administrator/dashboard',compact('user_administrators'));
     }
 
     public function post(Request $request){
-        
+
         // return $request->all();
 
         $this->validate($request,[
-            
-           
+
+
             'nama_lengkap'   =>  'required',
             'email'   =>  'required',
-        
+
             'password'   =>  'required',
-            
-            
-            
+
+
+
         ]);
 
         User::create([
             'nama_lengkap'       =>  $request->nama_lengkap,
-        
-           
-            
-            
+
+
+
+
             'email'   =>  $request->email,
             'password'   =>  bcrypt($request->password),
-         
+
             'role' => 'administrator'
         ]);
 
@@ -124,32 +124,32 @@ class AdministratorDashboardController extends Controller
     }
     public function edit($id){
         $user = User::find($id);
-   
-       
+
+
         $periode = Periode::where('status','aktif')->first();
-   
+
         return view('backend/administrator/user_administrator.edit',compact('user','periode'));
     }
-    
+
     public function update(Request $request,$id){
         $this->validate($request,[
             'role'   =>  'required',
             'nama_lengkao'   =>  'required',
             'email'   =>  'required',
-           
+
             'password'   =>  'required',
             'no_hp'   =>  'required',
         ]);
 
         User::where('id',$id)->update([
             'nama_lengkap'       =>  $request->nama_lengkap,
-        
-           
-            
-            
+
+
+
+
             'email'   =>  $request->email,
             'password'   =>  bcrypt($request->password),
-           
+
             'role' => 'administrator'
         ]);
 

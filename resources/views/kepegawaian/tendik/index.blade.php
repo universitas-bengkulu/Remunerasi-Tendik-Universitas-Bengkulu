@@ -82,6 +82,18 @@
                             @enderror
                         </div>
                         <div class="form-group col-md-4">
+                            <label>Unit Kerja :</label>
+                            <select name="unit_id" class="form-control  @error('unit_id') is-invalid @enderror">
+                                <option value="" selected disabled>-- pilih nama jabatan --</option>
+                                @foreach ($units as $unit)
+                                <option {{ $unit->id == old('unit_id') ? 'selected' : '' }} value="{{ $unit->id }}">{{ $unit->nm_unit }} </option>
+                                @endforeach
+                            </select>
+                            @error('unit_id')
+                            <small class="form-text text-danger">{{ $errors->first('unit_id') }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-4">
                             <label>Pangkat :</label>
                             <input type="text" name="pangkat" value="{{ old('pangkat') }}" class="form-control  @error('pangkat') is-invalid @enderror" placeholder=" masukan pangkat">
                             @error('pangkat')
@@ -100,7 +112,7 @@
                             <select name="jabatan_id" class="form-control  @error('jabatan_id') is-invalid @enderror">
                                 <option value="" selected disabled>-- pilih nama jabatan --</option>
                                 @foreach ($jabatans as $jabatan)
-                                <option {{ $jabatan->id == old('jabatan_id') ? 'selected' : '' }} value="{{ $jabatan->id }}">{{ $jabatan->nm_jabatan }}</option>
+                                <option {{ $jabatan->id == old('jabatan_id') ? 'selected' : '' }} value="{{ $jabatan->id }}">(kelas jabatan : {{ $jabatan->kelas_jabatan }}) - {{ $jabatan->nm_jabatan }} </option>
                                 @endforeach
                             </select>
                             @error('jabatan_id')
@@ -175,7 +187,7 @@
                             <th>Jenis Kelamin</th>
                             <th>No. Rekening</th>
                             <th>No. NPWP</th>
-                            <th>User ID Absensi</th>
+                            <th>Kelas Jabatan</th>
                             <th>Ubah Password</th>
                             <th>Aksi</th>
                         </tr>
@@ -226,7 +238,7 @@
                                 @endif
                             </td>
                             <td>
-                                {{ $tendik->user_id_absensi }}
+                                {{ $tendik->kelas_jabatan }}
                             </td>
                             <td>
                                 <a onclick="ubahPassword({{ $tendik->id }})" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-key"></i></a>
@@ -286,7 +298,7 @@
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>Jenis Kepegawaian :</label>
-                                            <input type="text" name="jenis_kepegawaian" id="jenis_kepegawaian" required class="form-control" placeholder=" masukan jenis kepegawaian">
+                                            <input type="text" name="jenis_kepegawaian" id="jenis_kepegawaian" class="form-control" placeholder=" masukan jenis kepegawaian">
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>Jenis Kelamin :</label>
@@ -303,16 +315,16 @@
 
                                         <div class="form-group col-md-12">
                                             <label>Nomor Rekening :</label>
-                                            <input type="number" name="no_rekening" id="no_rekening" required class="form-control" placeholder="masukan nomor rekening">
+                                            <input type="number" name="no_rekening" id="no_rekening" class="form-control" placeholder="masukan nomor rekening">
                                         </div>
                                         <div class="form-group col-md-12">
                                             <label>Nomor NPWP :</label>
-                                            <input type="text" name="no_npwp" id="no_npwp" required class="form-control" placeholder="masukan nomor npwp">
+                                            <input type="text" name="no_npwp" id="no_npwp" class="form-control" placeholder="masukan nomor npwp">
                                         </div>
 
                                         <div class="form-group col-md-12">
                                             <label>User ID Aplikasi Absensi :</label>
-                                            <input type="text" name="user_id_absensi" id="user_id_absensi" required value="{{ old('user_id_absensi') }}" class="form-control  @error('user_id_absensi') is-invalid @enderror" placeholder="user id dari aplikasi absensi   ">
+                                            <input type="text" name="user_id_absensi" id="user_id_absensi" value="{{ old('user_id_absensi') }}" class="form-control  @error('user_id_absensi') is-invalid @enderror" placeholder="user id dari aplikasi absensi   ">
 
                                         </div>
                                     </div>
@@ -446,7 +458,11 @@
     $(document).ready(function() {
         $('#table').DataTable({
             responsive: true
-        , });
+            , "lengthMenu": [
+                [-1]
+                , ["All"]
+            ]
+        });
     });
 
     function tambahTendik() {

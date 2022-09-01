@@ -230,8 +230,8 @@
         error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
         }
         use App\Models\Periode;
-        $periode_aktif = Periode::where('status','aktif')->select('id')->get();
-        $jumlah = count($periode_aktif);
+        $periode_aktif = Periode::where('status','aktif')->select('id')->first();
+        $jumlah = count((array)$periode_aktif);
         @endphp
         @if (Auth::user()->role == "kepegawaian" || Auth::guard('tendik')->check())
         @if ($jumlah <1) <script>

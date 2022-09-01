@@ -46,7 +46,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('/', function () {
     if (Auth::check() && Auth::user()->role == "administrator") {
         return redirect()->route('administrator.dashboard');

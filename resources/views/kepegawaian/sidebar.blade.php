@@ -31,7 +31,7 @@ $periode_aktif = Periode::where('status','aktif')->select('id')->first();
     Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_4"||Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_5"||Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_6")
     class="set_active active"
     @endif
-    ><a class={{ $periode_aktif or false  ? "noclick"  : 'click'}}><i class="fa fa-check-circle"></i>Rubrik Remun P1&P2<span class="fa fa-chevron-down"></span></a>
+    ><a class={{ (array)$periode_aktif or false  ? "noclick"  : 'click'}}><i class="fa fa-check-circle"></i>Rubrik Remun P1&P2<span class="fa fa-chevron-down"></span></a>
     <ul class="nav child_menu" @if (Route::current()->getName() == "kepegawaian.r_integritas" || Route::current()->getName() == "kepegawaian.r_integritas.remun_30"
         ||Route::current()->getName() == "kepegawaian.r_integritas.remun_70"||Route::current()->getName() == "kepegawaian.r_integritas.total_remun"||
         Route::current()->getName() == "kepegawaian.r_integritas.pajak_pph"||Route::current()->getName() == "kepegawaian.r_integritas.lhkpn_lhkasn"||
@@ -46,13 +46,13 @@ $periode_aktif = Periode::where('status','aktif')->select('id')->first();
         <li @if (Route::current()->getName() == "kepegawaian.capaian_skp")
             class="current-page"
             @endif
-            ><a href=" {{ route('kepegawaian.r_skp',[$periode_aktif or false  ? $periode_aktif->id : '']) }} ">Rubrik Capaian SKP</a></li>
+            ><a href=" {{ route('kepegawaian.r_skp',[(array)$periode_aktif or false  ? $periode_aktif->id : '']) }} ">Rubrik Capaian SKP</a></li>
         <li @if(Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_1" || Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_2"||
             Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_3"||Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_4"||
             Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_5"||Route::current()->getName() == "kepegawaian.r_absensi.potongan_bulan_6")
             class="current-page "
             @endif
-            ><a href=" {{ route('kepegawaian.r_absensi',[$periode_aktif or false  ? $periode_aktif->id : '']) }} ">Rubrik Absensi</a></li>
+            ><a href=" {{ route('kepegawaian.r_absensi',[(array)$periode_aktif or false  ? $periode_aktif->id : '']) }} ">Rubrik Absensi</a></li>
         <li @if (Route::current()->getName() == "kepegawaian.r_integritas")
             class="current-page"
             @elseif(Route::current()->getName() == "kepegawaian.r_integritas.remun_30")

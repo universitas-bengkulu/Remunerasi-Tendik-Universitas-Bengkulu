@@ -64,10 +64,14 @@
                         </div>
                     @else
                     <div class="col-md-12" id="form-skp">
-                        <p style="text-align:center;">Silahkan tambahkan file skp anda pada form dibawah ini !</p>
-                        <hr style="width:50%;">
+                        
                         <form action="{{ route('tendik.r_skp.post',[Auth::guard('tendik')->user()->id]) }}" method="POST" enctype="multipart/form-data">
                             {{ csrf_field() }} {{ method_field('PATCH') }}
+                            @if ($dt>$periode->tanggal_akhir_skp)
+                                <div class="alert alert-primary">
+                                    <b>Perhatian : </b> Anda sudah tidak bisa menambahkan data SKP karna masa penginputsan sudah lewat
+                                </div>
+                            @else
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label>Nilai SKP : <a style="color:red">*harap masukan angka, gunakan titik (.) sebagai pengganti koma</a></label>
@@ -80,7 +84,11 @@
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label>FIle SKP : <a style="color:red">belum diberlakukan</a> </label>
-                                    <input type="file" name="path" disabled="disabled" class="form-control @error('path') is-invalid @enderror">
+                                    <input type="file"
+                                        @if ($dt > $periode->tanggal_akhir_skp)
+                                            disabled
+                                        @endif
+                                    name="path" disabled="disabled" class="form-control @error('path') is-invalid @enderror">
                                     <div>
                                         @if ($errors->has('path'))
                                             <small class="form-text text-danger">{{ $errors->first('path') }}</small>
@@ -94,6 +102,7 @@
                                 <button type="reset" class="btn btn-warning btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-refresh"></i>&nbsp; Ulangi</button>
                                 <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Simpan Data</button>
                             </div>
+                            @endif
                         </form>
                         <hr style="width:50%;">
                         @foreach ($skps as $skp)
