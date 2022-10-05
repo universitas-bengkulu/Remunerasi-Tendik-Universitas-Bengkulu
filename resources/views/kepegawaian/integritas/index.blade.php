@@ -113,22 +113,23 @@
                             @php
                                 $no=1;
                             @endphp
-                            @foreach ($integritas as $integritas)
+                            @foreach ($integritas as $inte)
                                 <tr>
                                     <td> {{ $no++ }} </td>
-                                    <td> {{ $integritas->nm_lengkap }} </td>
+                                    <td> {{ $inte->nm_lengkap }} </td>
                                     <td style="text-align:center;">
-                                        @if ($integritas->remunerasi == null)
+                                        @if ($inte->remunerasi == null)
                                             <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
                                             @else
-                                            Rp.{{ number_format($integritas->remunerasi) }},-
+                                            Rp.{{ number_format($inte->remunerasi) }},-
                                         @endif
                                     </td>
-                                    <td> {{ $integritas->jumlah_bulan }} </td>
+                                    <td> {{ $inte->jumlah_bulan }} </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    {{$integritas->links("pagination::bootstrap-4") }}
                 </div>
             </div>
         </div>
@@ -136,8 +137,6 @@
 @endsection
 @push('scripts')
     <script>
-
-
         function generateTendik(){
             $('#alert-generate').hide(300);
             $('#alert-proses-generate').show(300);

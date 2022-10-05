@@ -25,7 +25,7 @@ class IntegritasController extends Controller
                             ->select('r_integritas.id','periode_id','jumlah_bulan','nm_lengkap','remunerasi'
                                         )
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $periode_aktif = Periode::select('id','nm_periode')->where('id',$periode_id)->first();
         if (count((array)$periode_aktif) < 1) {
             $notification = array(
@@ -42,7 +42,7 @@ class IntegritasController extends Controller
         if (count((array)$periode)>0) {
             $tendiks = Tendik::select('id','nip','nm_lengkap')->get();
             $array = [];
-            for ($i=0; $i <count($tendiks) ; $i++) { 
+            for ($i=0; $i <count($tendiks) ; $i++) {
                 $array[]    =   [
                     'periode_id'            =>  $periode->id,
                     'tendik_id'             =>  $tendiks[$i]->id,
@@ -99,8 +99,8 @@ class IntegritasController extends Controller
             );
             return redirect()->route('kepegawaian.r_integritas.remun_30',[$periode_id])->with($notification);
         }
-        
-        for ($i=0; $i <count($data_r30) ; $i++) { 
+
+        for ($i=0; $i <count($data_r30) ; $i++) {
             RIntegritas::where('id',$data_r30[$i]->id)->where('periode_id',$data_r30[$i]->periode_id)->update([
                 'remun_30'  =>  (($data_r30[$i]->remunerasi *30) / 100),
                 'total_remun_30'  =>  (($data_r30[$i]->remunerasi *30) / 100) * $data_r30[$i]->jumlah_bulan ,
@@ -146,7 +146,7 @@ class IntegritasController extends Controller
             );
             return redirect()->route('kepegawaian.r_integritas.remun_70',[$periode_id])->with($notification);
         }
-        for ($i=0; $i <count($data_r70) ; $i++) { 
+        for ($i=0; $i <count($data_r70) ; $i++) {
             RIntegritas::where('id',$data_r70[$i]->id)->where('periode_id',$data_r70[$i]->periode_id)->update([
                 'remun_70'  =>  (($data_r70[$i]->remunerasi *70) / 100),
                 'total_remun_70'  =>  (($data_r70[$i]->remunerasi *70) / 100) * $data_r70[$i]->jumlah_bulan,
@@ -189,10 +189,10 @@ class IntegritasController extends Controller
             );
             return redirect()->route('kepegawaian.r_integritas.total_remun',[$periode_id])->with($notification);
         }
-        for ($i=0; $i <count($total) ; $i++) { 
+        for ($i=0; $i <count($total) ; $i++) {
             RIntegritas::where('id',$total[$i]->id)->update([
                 'total_remun'   =>  $total[$i]->total_remun_30 + $total[$i]->total_remun_70,
-            ]); 
+            ]);
         }
 
         $notification2 = array(
@@ -231,7 +231,7 @@ class IntegritasController extends Controller
         if (empty($data[0]->total_remun)) {
             return redirect()->route('kepegawaian.r_integritas.pajak_pph',[$periode_id])->with(['error'  =>  'Silahkan Kembali dan Generate Total Remunerasi Terlebih Dahulu !!']);
         }
-        for ($i=0; $i <count($data) ; $i++) { 
+        for ($i=0; $i <count($data) ; $i++) {
             if (substr($data[$i]->golongan, 0 ,1) == 4) {
                 RIntegritas::where('id',$data[$i]->id)->update([
                     'pajak_pph' =>  ($data[$i]->total_remun * 15)/100,
@@ -294,7 +294,7 @@ class IntegritasController extends Controller
             );
             return redirect()->route('kepegawaian.r_integritas.lhkpn_lhkasn',[$periode_id])->with($notification);
         }
-        for ($i=0; $i <count($datas) ; $i++) { 
+        for ($i=0; $i <count($datas) ; $i++) {
             if ($datas[$i]->laporan_lhkpn_lhkasn == "sudah") {
                 RIntegritas::where('id',$datas[$i]->id)->update([
                     'potongan_lhkpn_lhkasn' =>  (($datas[$i]->remun_30 * 0)/100),
@@ -305,7 +305,7 @@ class IntegritasController extends Controller
                     'potongan_lhkpn_lhkasn' =>  (($datas[$i]->remun_30 * 30)/100),
                 ]);
             }
-        } 
+        }
         $notification = array(
             'message' => 'Berhasil, potongan LHKPN/LHKASN berhasil di generate!',
             'alert-type' => 'success'
@@ -354,7 +354,7 @@ class IntegritasController extends Controller
             );
             return redirect()->route('kepegawaian.r_integritas.sanksi_disiplin',[$periode_id])->with($notification);
         }
-        for ($i=0; $i <count($datas) ; $i++) { 
+        for ($i=0; $i <count($datas) ; $i++) {
             if ($datas[$i]->sanksi_disiplin == "tidak") {
                 RIntegritas::where('id',$datas[$i]->id)->update([
                     'potongan_sanksi_disiplin' =>  (($datas[$i]->remun_70 * 0)/100),
@@ -365,7 +365,7 @@ class IntegritasController extends Controller
                     'potongan_sanksi_disiplin' =>  (($datas[$i]->remun_70 * 30)/100),
                 ]);
             }
-        } 
+        }
         $notification = array(
             'message' => 'Berhasil, potongan sanksi disiplin berhasil digenerate!',
             'alert-type' => 'success'
@@ -403,11 +403,11 @@ class IntegritasController extends Controller
             );
             return redirect()->route('kepegawaian.r_integritas.integritas_satu_bulan',[$periode_id])->with($notification);
         }
-        for ($i=0; $i <count($datas) ; $i++) { 
+        for ($i=0; $i <count($datas) ; $i++) {
             RIntegritas::where('id',$datas[$i]->id)->update([
                 'integritas_satu_bulan' =>  ($datas[$i]->potongan_lhkpn_lhkasn)+ ($datas[$i]->potongan_sanksi_disiplin),
             ]);
-        } 
+        }
         $notification = array(
             'message' => 'Berhasil, Potongan Integritas Satu Bulan Berhasil Di Generate!',
             'alert-type' => 'success'
@@ -446,11 +446,11 @@ class IntegritasController extends Controller
             );
             return redirect()->route('kepegawaian.r_integritas.total_integritas',[$periode_id])->with($notification);
         }
-        for ($i=0; $i <count($datas) ; $i++) { 
+        for ($i=0; $i <count($datas) ; $i++) {
             RIntegritas::where('id',$datas[$i]->id)->update([
                 'total_integritas' =>  (($datas[$i]->integritas_satu_bulan) * $datas[$i]->jumlah_bulan),
             ]);
-        } 
+        }
         $notification = array(
             'message' => 'Berhasil, Potongan Integritas Tiga Bulan Berhasil Di Generate!',
             'alert-type' => 'success'

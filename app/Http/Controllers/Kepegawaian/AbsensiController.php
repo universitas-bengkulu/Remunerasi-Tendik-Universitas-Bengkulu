@@ -23,7 +23,7 @@ class AbsensiController extends Controller
         $absensis = RAbsen::join('tendiks','tendiks.id','r_absens.tendik_id')
                             ->select('r_absens.id as id','periode_id','nip','nm_lengkap','potongan_bulan_1','potongan_bulan_2','potongan_bulan_3','potongan_bulan_4','potongan_bulan_5','potongan_bulan_6')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         if (count((array)$periode_aktif)<1) {
             $notification = array(
                 'message' => 'Gagal, Harap Aktifkan Periode Remunerasi Terlebih Dahulu!',
