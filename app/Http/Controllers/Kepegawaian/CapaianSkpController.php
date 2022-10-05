@@ -34,13 +34,7 @@ class CapaianSkpController extends Controller
                                 ->where('r_capaian_skps.status','berhasil')
                                 ->where('periode_id',$periode_id)
                                 ->get();
-        $tendiks =RCapaianSkp::where('periode_id',$periode_id)->get();
-        $jumlah = RCapaianSkp::where('r_capaian_skps.status','!=','menunggu')
-                    ->where('periode_id',$periode_id)
-                    ->groupBy('tendik_id')
-                    ->get();
-        $jumlah_tendik = Count(Tendik::all());
-        $jumlah_skp = Count($jumlah);
+
         $periode_aktif = Periode::where('status','aktif')->select('id','slug')->first();
 
         return view('kepegawaian/skp.index', compact('skps','verifieds','tendiks','jumlah_tendik','jumlah_skp','periode_id','periode_aktif'));

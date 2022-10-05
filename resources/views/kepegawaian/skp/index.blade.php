@@ -76,11 +76,8 @@
                         <div class="tab-pane fade show active" id="nav-skp" role="tabpanel" aria-labelledby="nav-honor-tab">
                             <div class="row">
                                 <div class="col-md-12">
-                                    @if (count($tendiks)>0)
-                                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
-                                        @else
+
                                         <a href="{{ route('kepegawaian.r_skp.generate_tendik',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</a>
-                                    @endif
                                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
                                 </div>
                                 <div class="col-md-12" style="margin-top:10px;">
@@ -149,11 +146,8 @@
                         <div class="tab-pane fade show" id="nav-verified" role="tabpanel" aria-labelledby="nav-honor-tab">
                             <div class="row">
                                 <div class="col-md-12">
-                                    @if (count($tendiks)>0)
-                                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
-                                        @else
+
                                         <a href="{{ route('kepegawaian.r_skp.generate_tendik',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</a>
-                                    @endif
                                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
                                 </div>
                                 <div class="col-md-12" style="margin-top:10px;">
