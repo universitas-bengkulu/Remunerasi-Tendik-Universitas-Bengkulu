@@ -147,6 +147,7 @@
                                             @endforeach
                                         </tbody>
                                     </table>
+                                    {{$skps->links("pagination::bootstrap-4") }}
                                 </div>
                             </div>
                         </div>
