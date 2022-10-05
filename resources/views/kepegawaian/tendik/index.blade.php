@@ -182,82 +182,80 @@
                     </div>
                     <button type="submit" class="btn btn-default mb-2">Filter</button>
                 </form>
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="table" style="width:100%;">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Nama Lengkap</th>
-                                <th>Nip</th>
-                                <th>Pangkat</th>
-                                <th>Golongan</th>
-                                <th>Jabatan</th>
-                                <th>Jenis Kelamin</th>
-                                <th>No. Rekening</th>
-                                <th>No. NPWP</th>
-                                <th>Kelas Jabatan</th>
-                                <th>Ubah Password</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <table class="table table-striped table-bordered" id="table" style="width:100%;">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Lengkap</th>
+                            <th>Nip</th>
+                            <th>Pangkat</th>
+                            <th>Golongan</th>
+                            <th>Jabatan</th>
+                            <th>Jenis Kelamin</th>
+                            <th>No. Rekening</th>
+                            <th>No. NPWP</th>
+                            <th>Kelas Jabatan</th>
+                            <th>Ubah Password</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                            @foreach ($tendiks as $key => $tendik)
-                            <tr>
-                                <td> {{ $tendiks->firstItem() + $key }} </td>
-                                <td> {{ $tendik->nm_lengkap }} </td>
-                                <td> {{ $tendik->nip }} </td>
-                                <td>
-                                    @if ($tendik->pangkat == null)
-                                    <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
-                                    @else
-                                    {{ $tendik->pangkat }}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($tendik->golongan == null)
-                                    <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
-                                    @else
-                                    {{ $tendik->golongan }}
-                                    @endif
-                                </td>
-                                <td> {{ $tendik->nm_jabatan }} </td>
-                                <td>
-                                    @if ($tendik->jenis_kelamin == "L")
-                                    <label class="badge badge-primary"><i class="fa fa-male"></i>&nbsp; Laki-Laki</label>
-                                    @else
-                                    <label class="badge badge-success"><i class="fa fa-female"></i>&nbsp; Perempuan</label>
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($tendik->no_rekening == null)
-                                    <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
-                                    @else
-                                    {{ $tendik->no_rekening }}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if ($tendik->no_npwp == null)
-                                    <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
-                                    @else
-                                    {{ $tendik->no_npwp }}
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ $tendik->kelas_jabatan }}
-                                </td>
-                                <td>
-                                    <a onclick="ubahPassword({{ $tendik->id }})" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-key"></i></a>
-                                </td>
-                                <td>
-                                    <a onclick="ubahTendik({{ $tendik->id }})" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-edit"></i></a>
-                                    <a onclick="hapusTendik({{ $tendik->id }})" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-trash"></i></a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        @foreach ($tendiks as $key => $tendik)
+                        <tr>
+                            <td> {{ $tendiks->firstItem() + $key }} </td>
+                            <td> {{ $tendik->nm_lengkap }} </td>
+                            <td> {{ $tendik->nip }} </td>
+                            <td>
+                                @if ($tendik->pangkat == null)
+                                <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
+                                @else
+                                {{ $tendik->pangkat }}
+                                @endif
+                            </td>
+                            <td>
+                                @if ($tendik->golongan == null)
+                                <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
+                                @else
+                                {{ $tendik->golongan }}
+                                @endif
+                            </td>
+                            <td> {{ $tendik->nm_jabatan }} </td>
+                            <td>
+                                @if ($tendik->jenis_kelamin == "L")
+                                <label class="badge badge-primary"><i class="fa fa-male"></i>&nbsp; Laki-Laki</label>
+                                @else
+                                <label class="badge badge-success"><i class="fa fa-female"></i>&nbsp; Perempuan</label>
+                                @endif
+                            </td>
+                            <td>
+                                @if ($tendik->no_rekening == null)
+                                <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
+                                @else
+                                {{ $tendik->no_rekening }}
+                                @endif
+                            </td>
+                            <td>
+                                @if ($tendik->no_npwp == null)
+                                <label class="badge badge-danger"><i class="fa fa-minus"></i></label>
+                                @else
+                                {{ $tendik->no_npwp }}
+                                @endif
+                            </td>
+                            <td>
+                                {{ $tendik->kelas_jabatan }}
+                            </td>
+                            <td>
+                                <a onclick="ubahPassword({{ $tendik->id }})" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-key"></i></a>
+                            </td>
+                            <td>
+                                <a onclick="ubahTendik({{ $tendik->id }})" class="btn btn-primary btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-edit"></i></a>
+                                <a onclick="hapusTendik({{ $tendik->id }})" class="btn btn-danger btn-sm" style="color:white; cursor:pointer;"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
                 {{$tendiks->links("pagination::bootstrap-4") }}
                 <!-- modal ubah-->
                 <div class="modal fade" id="modalubah" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
