@@ -249,12 +249,6 @@
 @endsection
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $("table[id^='table']").DataTable({
-                responsive : true,
-            });
-        } );
-
         function verifikasi(id){
             $('#modalverifikasi').modal('show');
             $('#id_verifikasi').val(id);
