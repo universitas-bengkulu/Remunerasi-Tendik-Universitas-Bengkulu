@@ -42,13 +42,7 @@ class CapaianSkpController extends Controller
         $jumlah_tendik = Count(Tendik::all());
         $jumlah_skp = Count($jumlah);
         $periode_aktif = Periode::where('status','aktif')->select('id','slug')->first();
-        if (count((array)$periode_aktif)<1) {
-            $notification = array(
-                'message' => 'Gagal, Harap Aktifkan Periode Remunerasi Terlebih Dahulu!',
-                'alert-type' => 'error'
-            );
-            return \redirect()->back()->with($notification);
-        }
+
         return view('kepegawaian/skp.index', compact('skps','verifieds','tendiks','jumlah_tendik','jumlah_skp','periode_id','periode_aktif'));
     }
 
@@ -68,7 +62,7 @@ class CapaianSkpController extends Controller
         if (count((array)$periode)>0) {
             $tendiks = Tendik::select('id','nip','nm_lengkap')->get();
             $array = [];
-            for ($i=0; $i <count($tendiks) ; $i++) { 
+            for ($i=0; $i <count($tendiks) ; $i++) {
                 $array[]    =   [
                     'periode_id'            =>  $periode->id,
                     'tendik_id'             =>  $tendiks[$i]->id,
@@ -105,7 +99,7 @@ class CapaianSkpController extends Controller
                 'path'  =>  NULL,
                 'nilai_skp' =>  0,
                 'status'    =>  NULL,
-            ]); 
+            ]);
         }
 
         return redirect()->route('kepegawaian.r_skp',[$periode_id])->with(['success'    =>  'Data rubrik skp berhasil di verifikasi !!']);
@@ -138,7 +132,7 @@ class CapaianSkpController extends Controller
                                 // ->where('r_capaian_skps.status','berhasil')
                                 ->groupBy('r_capaian_skps.id')
                                 ->get();
-        for ($i=0; $i <count($datas) ; $i++) { 
+        for ($i=0; $i <count($datas) ; $i++) {
             if ($datas[$i]->nilai_skp >=85) {
                 RCapaianSkp::where('id',$datas[$i]->id)->update([
                     'potongan_skp'  =>  '0',
@@ -192,14 +186,14 @@ class CapaianSkpController extends Controller
         }
         return view('kepegawaian/skp.generate_nominal',compact('datas','periode_aktif','periode_id','a'));
     }
-    
+
     public function generateNominalSubmit($periode_id){
         $datas = RCapaianSkp::join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
                                 ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                                 ->select('r_capaian_skps.id','nilai_skp','potongan_skp','remunerasi')
                                 ->where('periode_id',$periode_id)
                                 ->get();
-        for ($i=0; $i <count($datas) ; $i++) { 
+        for ($i=0; $i <count($datas) ; $i++) {
             RCapaianSkp::where('id',$datas[$i]->id)->update([
                 'nominal_potongan'  =>  ($datas[$i]->potongan_skp/100) * (($datas[$i]->remunerasi * 40)/100),
             ]);
