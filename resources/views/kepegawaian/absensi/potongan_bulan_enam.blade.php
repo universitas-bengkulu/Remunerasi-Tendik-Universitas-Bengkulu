@@ -24,12 +24,12 @@
                 <div class="col-md-12">
                     @if ($message = Session::get('success'))
                         <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                            <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong>Berhasil :</strong>{{ $message }}
                         </div>
                         @elseif ($message = Session::get('error'))
                             <div class="alert alert-danger alert-block">
-                                <button type="button" class="close" data-dismiss="alert">×</button> 
+                                <button type="button" class="close" data-dismiss="alert">×</button>
                                 <strong>Gagal :</strong>{{ $message }}
                             </div>
                             @else
@@ -86,7 +86,7 @@
                                 <th style="text-align:center">Persentase Potongan Bulan Enam</th>
                                 <th style="text-align:center">Nominal Potongan Bulan Enam</th>
                             </tr>
-                            
+
                         </thead>
                         <tbody>
                             @php
@@ -120,10 +120,6 @@
 @endsection
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $("table[id^='table']").DataTable({
-                responsive : true,
-            });
-        } );
+
     </script>
 @endpush

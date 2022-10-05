@@ -39,12 +39,12 @@
                 <div class="col-md-12">
                     @if ($message = Session::get('success'))
                         <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                            <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong>Berhasil :</strong>{{ $message }}
                         </div>
                         @elseif ($message = Session::get('error'))
                             <div class="alert alert-danger alert-block">
-                                <button type="button" class="close" data-dismiss="alert">×</button> 
+                                <button type="button" class="close" data-dismiss="alert">×</button>
                                 <strong>Gagal :</strong>{{ $message }}
                             </div>
                             @else
@@ -137,11 +137,7 @@
 @endsection
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $("table[id^='table']").DataTable({
-                responsive : true,
-            });
-        } );
+
 
         function generateTendik(){
             $('#alert-generate').hide(300);

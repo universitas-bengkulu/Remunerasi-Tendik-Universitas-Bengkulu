@@ -24,12 +24,12 @@
                 <div class="col-md-12">
                     @if ($message = Session::get('success'))
                         <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                            <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong>Berhasil :</strong>{{ $message }}
                         </div>
                         @elseif ($message = Session::get('error'))
                             <div class="alert alert-danger alert-block">
-                                <button type="button" class="close" data-dismiss="alert">×</button> 
+                                <button type="button" class="close" data-dismiss="alert">×</button>
                                 <strong>Gagal :</strong>{{ $message }}
                             </div>
                             @else
@@ -58,7 +58,7 @@
                                 <span class="sr-only">(current)</span>
                               </span>
                           </li>
-                          
+
                           @if ($periode_aktif->jumlah_bulan == "3")
                                 <li class="page-item"><a class="page-link" href="{{ route('kepegawaian.r_absensi.potongan_bulan_3',[$periode_id]) }}">4</a></li>
                                 @elseif ($periode_aktif->jumlah_bulan == "4")
@@ -97,7 +97,7 @@
                                 <th style="text-align:center">Persentase Potongan Bulan Dua</th>
                                 <th style="text-align:center">Nominal Potongan Bulan Dua</th>
                             </tr>
-                            
+
                         </thead>
                         <tbody>
                             @php
@@ -131,10 +131,6 @@
 @endsection
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $("table[id^='table']").DataTable({
-                responsive : true,
-            });
-        } );
+
     </script>
 @endpush

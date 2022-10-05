@@ -39,12 +39,12 @@
                 <div class="col-md-12">
                     @if ($message = Session::get('success'))
                         <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                            <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong>Berhasil :</strong>{{ $message }}
                         </div>
                         @elseif ($message = Session::get('error'))
                             <div class="alert alert-danger alert-block">
-                                <button type="button" class="close" data-dismiss="alert">×</button> 
+                                <button type="button" class="close" data-dismiss="alert">×</button>
                                 <strong>Gagal :</strong>{{ $message }}
                             </div>
                             @else
@@ -80,7 +80,7 @@
                           <li class="page-item disabled"><a class="page-link" href="{{ route('administrator.rekapitulasi.skp',[$periode_id]) }}">5</a></li>
                           <li class="page-item disabled"><a class="page-link" href="{{ route('administrator.rekapitulasi.persentase_absen',[$periode_id]) }}">6</a></li>
                           <li class="page-item disabled"><a class="page-link" href="{{ route('administrator.rekapitulasi.total_remun',[$periode_id]) }}">7</a></li>
-                         
+
                           <li class="page-item">
                             <a class="page-link" href="{{ route('administrator.rekapitulasi.integritas',[$periode_id],[$periode_id]) }}">Next</a>
                           </li>
@@ -170,11 +170,7 @@
 @endsection
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $("table[id^='table']").DataTable({
-                responsive : true,
-            });
-        } );
+
 
         function generateTendik(){
             $('#alert-generate').hide(300);

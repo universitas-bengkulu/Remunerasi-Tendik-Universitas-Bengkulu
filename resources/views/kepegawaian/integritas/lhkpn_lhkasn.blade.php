@@ -39,18 +39,18 @@
                 <div class="col-md-12">
                     @if ($message = Session::get('success'))
                         <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                            <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong>Berhasil :</strong>{{ $message }}
                         </div>
                         @elseif ($message = Session::get('error'))
                             <div class="alert alert-danger alert-block">
-                                <button type="button" class="close" data-dismiss="alert">×</button> 
+                                <button type="button" class="close" data-dismiss="alert">×</button>
                                 <strong>Gagal :</strong>{{ $message }}
                             </div>
                             @else
                                 @if ($a == "sudah")
                                     <div class="alert alert-success alert-block">
-                                        
+
                                         <strong><i class="fa fa-info-circle"></i>&nbsp;Perhatian: </strong> Data Potongan LHKAPN/LHKASN <b style="text-transform:uppercase">{{ $periode_aktif->nm_periode }}</b> sudah digenerate, silahkan lanjutkan dengan klik tombol next hingga selesai !!
                                     </div>
                                     @else
@@ -124,7 +124,7 @@
                                     <form action="{{ route('kepegawaian.r_integritas.update_data_lhkpn_lhkasn',[$data->id,$periode_id]) }}" method="POST">
                                         {{ csrf_field() }} {{ method_field('PATCH') }}
                                         <td>
-                                            <select name="laporan_lhkpn_lhkasn" class="form-control" 
+                                            <select name="laporan_lhkpn_lhkasn" class="form-control"
                                                 @if ($data->laporan_lhkpn_lhkasn == "sudah")
                                                     style="color:green"
                                                     @else
@@ -136,9 +136,9 @@
                                                         selected
                                                     @endif
                                                 >Sudah</option>
-                                                <option value="belum" 
+                                                <option value="belum"
                                                     @if ($data->laporan_lhkpn_lhkasn == "belum")
-                                                        selected 
+                                                        selected
                                                     @endif
                                                 >Belum</option>
                                             </select>
@@ -161,11 +161,7 @@
 @endsection
 @push('scripts')
     <script>
-        $(document).ready(function() {
-            $("table[id^='table']").DataTable({
-                responsive : true,
-            });
-        } );
+
 
         function generateTendik(){
             $('#alert-generate').hide(300);
