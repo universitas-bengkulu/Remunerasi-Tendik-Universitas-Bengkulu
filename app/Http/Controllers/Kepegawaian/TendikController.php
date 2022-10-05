@@ -26,13 +26,14 @@ class TendikController extends Controller
         //                 ->get();
 
         if (!empty($filter)){
-            $tendiks = Tendik::where('tendiks.nm_lengkap','like','%'.$filter.'%')
+            $tendiks = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
+                        ->where('tendiks.nm_lengkap','like','%'.$filter.'%')
             ->orWhere('nip','like','%'.$filter.'%')
-            ->orderBy('id','desc')
+            ->orderBy('tendiks.id','desc')
             ->paginate(15);
         } else
         {
-            $tendiks = Tendik::orderBy('id', 'desc')->paginate(15);
+            $tendiks = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')->orderBy('tendiks.id', 'desc')->paginate(15);
         }
         return view('kepegawaian.tendik.index',compact('tendiks','jabatans'));
     }
