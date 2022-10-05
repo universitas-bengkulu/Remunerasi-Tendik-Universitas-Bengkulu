@@ -24,12 +24,12 @@
                 <div class="col-md-12">
                     @if ($message = Session::get('success'))
                         <div class="alert alert-success alert-block">
-                            <button type="button" class="close" data-dismiss="alert">×</button> 
+                            <button type="button" class="close" data-dismiss="alert">×</button>
                             <strong>Berhasil :</strong>{{ $message }}
                         </div>
                         @elseif ($message = Session::get('error'))
                             <div class="alert alert-danger alert-block">
-                                <button type="button" class="close" data-dismiss="alert">×</button> 
+                                <button type="button" class="close" data-dismiss="alert">×</button>
                                 <strong>Gagal :</strong>{{ $message }}
                             </div>
                             @else
@@ -71,7 +71,7 @@
                             <li><a class="nav-item nav-link" data-toggle="tab" href="#nav-verified"><i class="fa fa-list-alt"></i>&nbsp;Sudah Verifikasi</a></li>
                         </ul>
                     </div>
-                    
+
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="nav-skp" role="tabpanel" aria-labelledby="nav-honor-tab">
                             <div class="row">
@@ -110,11 +110,7 @@
                                                         <form action="{{ route('kepegawaian.r_skp.update_nilai',[$skp->id,$periode_id]) }}" method="POST">
                                                             {{ csrf_field() }} {{ method_field("PATCH") }}
                                                             <input type="text" name="nilai_skp" class="form-control" value="{{ $skp->nilai_skp }}" style="margin-bottom: 5px !important;">
-                                                            @if ($skp->status != "menunggu" && $skp->status != "" && $skp->status != NULL)
-                                                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>
-                                                            @else
-                                                            <button disabled class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>    
-                                                            @endif
+                                                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>
                                                         </form>
                                                     </td>
                                                     <td> {{ $skp->nm_periode }} </td>
