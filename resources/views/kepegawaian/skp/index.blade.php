@@ -76,8 +76,11 @@
                         <div class="tab-pane fade show active" id="nav-skp" role="tabpanel" aria-labelledby="nav-honor-tab">
                             <div class="row">
                                 <div class="col-md-12">
-
+                                    @if (count($tendiks)>0)
+                                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
+                                        @else
                                         <a href="{{ route('kepegawaian.r_skp.generate_tendik',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</a>
+                                    @endif
                                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
                                 </div>
                                 <div class="col-md-12" style="margin-top:10px;">
@@ -107,7 +110,11 @@
                                                         <form action="{{ route('kepegawaian.r_skp.update_nilai',[$skp->id,$periode_id]) }}" method="POST">
                                                             {{ csrf_field() }} {{ method_field("PATCH") }}
                                                             <input type="text" name="nilai_skp" class="form-control" value="{{ $skp->nilai_skp }}" style="margin-bottom: 5px !important;">
-                                                            <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>
+                                                            @if ($skp->status != "menunggu" && $skp->status != "" && $skp->status != NULL)
+                                                                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>
+                                                            @else
+                                                            <button disabled class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Update</button>
+                                                            @endif
                                                         </form>
                                                     </td>
                                                     <td> {{ $skp->nm_periode }} </td>
@@ -146,8 +153,11 @@
                         <div class="tab-pane fade show" id="nav-verified" role="tabpanel" aria-labelledby="nav-honor-tab">
                             <div class="row">
                                 <div class="col-md-12">
-
+                                    @if (count($tendiks)>0)
+                                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
+                                        @else
                                         <a href="{{ route('kepegawaian.r_skp.generate_tendik',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</a>
+                                    @endif
                                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
                                 </div>
                                 <div class="col-md-12" style="margin-top:10px;">

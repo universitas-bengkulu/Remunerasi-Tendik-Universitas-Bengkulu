@@ -20,23 +20,29 @@ class CapaianSkpController extends Controller
     }
 
     public function index($periode_id){
-        $skps = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
-                                ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
-                                ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','path','nm_periode')
-                                ->where('r_capaian_skps.status',NULL)
+        $skps = RCapaianSkp::where('r_capaian_skps.status',NULL)
                                 ->where('periode_id',$periode_id)
                                 ->orWhere('r_capaian_skps.status','menunggu')
                                 ->orWhere('r_capaian_skps.status','terkirim')
                                 ->get();
-        $verifieds = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
-                                ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
-                                ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','path','nm_periode')
-                                ->where('r_capaian_skps.status','berhasil')
+        $verifieds = RCapaianSkp::where('r_capaian_skps.status','berhasil')
                                 ->where('periode_id',$periode_id)
                                 ->get();
-
+        $tendiks =RCapaianSkp::where('periode_id',$periode_id)->get();
+        $jumlah = RCapaianSkp::where('r_capaian_skps.status','!=','menunggu')
+                    ->where('periode_id',$periode_id)
+                    ->groupBy('tendik_id')
+                    ->get();
+        $jumlah_tendik = Count(Tendik::all());
+        $jumlah_skp = Count($jumlah);
         $periode_aktif = Periode::where('status','aktif')->select('id','slug')->first();
-
+        if (count((array)$periode_aktif)<1) {
+            $notification = array(
+                'message' => 'Gagal, Harap Aktifkan Periode Remunerasi Terlebih Dahulu!',
+                'alert-type' => 'error'
+            );
+            return \redirect()->back()->with($notification);
+        }
         return view('kepegawaian/skp.index', compact('skps','verifieds','tendiks','jumlah_tendik','jumlah_skp','periode_id','periode_aktif'));
     }
 
