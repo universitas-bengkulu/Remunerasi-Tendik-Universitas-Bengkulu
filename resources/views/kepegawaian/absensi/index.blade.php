@@ -275,6 +275,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{$absensis->links("pagination::bootstrap-4") }}
                 </div>
             </div>
         </div>
