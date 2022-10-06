@@ -232,11 +232,11 @@ class IntegritasController extends Controller
             return redirect()->route('kepegawaian.r_integritas.pajak_pph',[$periode_id])->with(['error'  =>  'Silahkan Kembali dan Generate Total Remunerasi Terlebih Dahulu !!']);
         }
         for ($i=0; $i <count($data) ; $i++) {
-            if (substr($data[$i]->golongan, 0 ,1) == 4) {
+            if (substr($data[$i]->golongan, 0 ,1) == "IV") {
                 RIntegritas::where('id',$data[$i]->id)->update([
                     'pajak_pph' =>  ($data[$i]->total_remun * 15)/100,
                 ]);
-            }elseif (substr($data[$i]->golongan,0,1) == 3) {
+            }elseif (substr($data[$i]->golongan,0,1) == "III") {
                 RIntegritas::where('id',$data[$i]->id)->update([
                     'pajak_pph' =>  ($data[$i]->total_remun * 5)/100,
                 ]);
