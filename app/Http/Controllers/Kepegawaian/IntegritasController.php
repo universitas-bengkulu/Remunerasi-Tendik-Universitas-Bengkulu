@@ -231,7 +231,6 @@ class IntegritasController extends Controller
         if (empty($data[0]->total_remun)) {
             return redirect()->route('kepegawaian.r_integritas.pajak_pph',[$periode_id])->with(['error'  =>  'Silahkan Kembali dan Generate Total Remunerasi Terlebih Dahulu !!']);
         }
-        return $data[0]->golongan;
         for ($i=0; $i <count($data) ; $i++) {
             if (substr($data[$i]->golongan, 0 ,1) == 4) {
                 RIntegritas::where('id',$data[$i]->id)->update([
