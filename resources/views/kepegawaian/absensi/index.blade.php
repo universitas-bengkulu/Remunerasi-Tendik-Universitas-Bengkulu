@@ -164,13 +164,13 @@
                                             {{ csrf_field() }} {{ method_field('PATCH') }}
                                             {{-- <input type="hidden" name="periode_id" value="{{ $absen->periode_id }}"> --}}
                                             <td>
-                                                <input type="number" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
+                                                <input type="text" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
                                             </td>
                                             <td>
-                                                <input type="number" name="potongan_bulan_2" class="form-control" value="{{ $absen->potongan_bulan_2 }}">
+                                                <input type="text" name="potongan_bulan_2" class="form-control" value="{{ $absen->potongan_bulan_2 }}">
                                             </td>
                                             <td>
-                                                <input type="number" name="potongan_bulan_3" class="form-control" value="{{ $absen->potongan_bulan_3 }}">
+                                                <input type="text" name="potongan_bulan_3" class="form-control" value="{{ $absen->potongan_bulan_3 }}">
                                             </td>
                                             <td>
                                                 <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Update</button>
@@ -181,10 +181,10 @@
                                                 {{ csrf_field() }} {{ method_field('PATCH') }}
                                                 {{-- <input type="hidden" name="periode_id" value="{{ $absen->periode_id }}"> --}}
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
+                                                    <input type="text" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_2" class="form-control" value="{{ $absen->potongan_bulan_2 }}">
+                                                    <input type="text" name="potongan_bulan_2" class="form-control" value="{{ $absen->potongan_bulan_2 }}">
                                                 </td>
                                                 <td>
                                                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Update</button>
@@ -195,16 +195,16 @@
                                                 {{ csrf_field() }} {{ method_field('PATCH') }}
                                                 {{-- <input type="hidden" name="periode_id" value="{{ $absen->periode_id }}"> --}}
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
+                                                    <input type="text" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_2" class="form-control" value="{{ $absen->potongan_bulan_2 }}">
+                                                    <input type="text" name="potongan_bulan_2" class="form-control" value="{{ $absen->potongan_bulan_2 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_3" class="form-control" value="{{ $absen->potongan_bulan_3 }}">
+                                                    <input type="text" name="potongan_bulan_3" class="form-control" value="{{ $absen->potongan_bulan_3 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_4" class="form-control" value="{{ $absen->potongan_bulan_4 }}">
+                                                    <input type="text" name="potongan_bulan_4" class="form-control" value="{{ $absen->potongan_bulan_4 }}">
                                                 </td>
                                                 <td>
                                                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Update</button>
@@ -215,19 +215,19 @@
                                                 {{ csrf_field() }} {{ method_field('PATCH') }}
                                                 {{-- <input type="hidden" name="periode_id" value="{{ $absen->periode_id }}"> --}}
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
+                                                    <input type="text" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_2" class="form-control" value="{{ $absen->potongan_bulan_2 }}">
+                                                    <input type="text" name="potongan_bulan_2" class="form-control" value="{{ $absen->potongan_bulan_2 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_3" class="form-control" value="{{ $absen->potongan_bulan_3 }}">
+                                                    <input type="text" name="potongan_bulan_3" class="form-control" value="{{ $absen->potongan_bulan_3 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_4" class="form-control" value="{{ $absen->potongan_bulan_4 }}">
+                                                    <input type="text" name="potongan_bulan_4" class="form-control" value="{{ $absen->potongan_bulan_4 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_5" class="form-control" value="{{ $absen->potongan_bulan_5 }}">
+                                                    <input type="text" name="potongan_bulan_5" class="form-control" value="{{ $absen->potongan_bulan_5 }}">
                                                 </td>
                                                 <td>
                                                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Update</button>
@@ -238,22 +238,22 @@
                                                 {{ csrf_field() }} {{ method_field('PATCH') }}
                                                 {{-- <input type="hidden" name="periode_id" value="{{ $absen->periode_id }}"> --}}
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
+                                                    <input type="text" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_2" class="form-control" value="{{ $absen->potongan_bulan_2 }}">
+                                                    <input type="text" name="potongan_bulan_2" class="form-control" value="{{ $absen->potongan_bulan_2 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_3" class="form-control" value="{{ $absen->potongan_bulan_3 }}">
+                                                    <input type="text" name="potongan_bulan_3" class="form-control" value="{{ $absen->potongan_bulan_3 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_4" class="form-control" value="{{ $absen->potongan_bulan_4 }}">
+                                                    <input type="text" name="potongan_bulan_4" class="form-control" value="{{ $absen->potongan_bulan_4 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_5" class="form-control" value="{{ $absen->potongan_bulan_5 }}">
+                                                    <input type="text" name="potongan_bulan_5" class="form-control" value="{{ $absen->potongan_bulan_5 }}">
                                                 </td>
                                                 <td>
-                                                    <input type="number" name="potongan_bulan_6" class="form-control" value="{{ $absen->potongan_bulan_6 }}">
+                                                    <input type="text" name="potongan_bulan_6" class="form-control" value="{{ $absen->potongan_bulan_6 }}">
                                                 </td>
                                                 <td>
                                                     <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Update</button>
@@ -264,7 +264,7 @@
                                                     {{ csrf_field() }} {{ method_field('PATCH') }}
                                                     {{-- <input type="hidden" name="periode_id" value="{{ $absen->periode_id }}"> --}}
                                                     <td>
-                                                        <input type="number" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
+                                                        <input type="text" name="potongan_bulan_1" class="form-control" value="{{ $absen->potongan_bulan_1 }}">
                                                     </td>
                                                     <td>
                                                         <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-check-circle"></i>&nbsp; Update</button>

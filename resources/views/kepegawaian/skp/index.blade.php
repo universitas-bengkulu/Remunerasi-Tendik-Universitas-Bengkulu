@@ -178,9 +178,9 @@
                                             @php
                                                 $no=1;
                                             @endphp
-                                            @foreach ($verifieds as $skp)
+                                            @foreach ($verifieds as $key=> $skp)
                                                 <tr>
-                                                    <td> {{ $no++ }} </td>
+                                                    <td>{{ $verifieds->firstItem() + $key }}</td>
                                                     <td> {{ $skp->nip }} </td>
                                                     <td> {{ $skp->nm_lengkap }} </td>
                                                     <td>
