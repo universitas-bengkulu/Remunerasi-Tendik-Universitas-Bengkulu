@@ -83,6 +83,13 @@
                                     @endif
                                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
                                 </div>
+                                <form class="form-inline" method="GET">
+                                    <div class="form-group mb-2">
+                                        <label for="filter" class="col-sm-2 col-form-label">Filter</label>
+                                        <input type="text" class="form-control" id="filter" name="filter" placeholder="Nama/Nip..." value="{{$filter}}">
+                                    </div>
+                                    <button type="submit" class="btn btn-default mb-2">Filter</button>
+                                </form>
                                 <div class="col-md-12" style="margin-top:10px;">
                                     <table class="table table-striped table-bordered" id="table" style="width:100%;">
                                         <thead>
@@ -153,6 +160,7 @@
                                     @endif
                                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
                                 </div>
+
                                 <div class="col-md-12" style="margin-top:10px;">
                                     <table class="table table-striped table-bordered" id="table" style="width:100%;">
                                         <thead>

@@ -19,8 +19,25 @@ class CapaianSkpController extends Controller
         $this->middleware(['auth','isKepegawaian']);
     }
 
-    public function index($periode_id){
-        $skps = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
+    public function index(Request $request, $periode_id){
+        $filter = $request->query('filter');
+        $verifieds = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
+                                ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
+                                ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','path','nm_periode')
+                                ->where('r_capaian_skps.status','berhasil')
+                                ->where('periode_id',$periode_id)
+                                ->paginate(15);
+        if (!empty($filter)){
+            $skps = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
+                                ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
+                                ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','path','nm_periode')
+                                ->where('tendiks.nm_lengkap','like','%'.$filter.'%')
+                                ->orWhere('nip','like','%'.$filter.'%')
+                                ->orderBy('tendiks.id','desc')
+                                ->paginate(15);
+        } else
+        {
+            $skps = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
                                 ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
                                 ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','path','nm_periode')
                                 ->where('r_capaian_skps.status',NULL)
@@ -28,12 +45,7 @@ class CapaianSkpController extends Controller
                                 ->orWhere('r_capaian_skps.status','menunggu')
                                 ->orWhere('r_capaian_skps.status','terkirim')
                                 ->paginate(15);
-        $verifieds = RCapaianSkp::join('periodes','periodes.id','r_capaian_skps.periode_id')
-                                ->join('tendiks','tendiks.id','r_capaian_skps.tendik_id')
-                                ->select('r_capaian_skps.id','nip','r_capaian_skps.status','nm_lengkap','nilai_skp','path','nm_periode')
-                                ->where('r_capaian_skps.status','berhasil')
-                                ->where('periode_id',$periode_id)
-                                ->paginate(15);
+        }
         $tendiks =RCapaianSkp::where('periode_id',$periode_id)->get();
         $jumlah = RCapaianSkp::where('r_capaian_skps.status','!=','menunggu')
                     ->where('periode_id',$periode_id)
