@@ -24,7 +24,7 @@ class TendikController extends Controller
         //                 ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','jabatan_id','user_id_absensi','jabatans.nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
         //                 ->orderBy('tendiks.id','desc')
         //                 ->get();
-
+        $units = Unit::all();
         if (!empty($filter)){
             $tendiks = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                         ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
@@ -38,7 +38,7 @@ class TendikController extends Controller
                             ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
                             ->orderBy('tendiks.id', 'desc')->paginate(15);
         }
-        return view('kepegawaian.tendik.index',compact('tendiks','jabatans'));
+        return view('kepegawaian.tendik.index',compact('tendiks','jabatans','units'));
     }
 
     public function post(Request $request){
