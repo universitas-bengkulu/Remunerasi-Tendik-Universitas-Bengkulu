@@ -123,8 +123,6 @@
 @endsection
 @push('scripts')
     <script>
-
-
         function verifikasi(id){
             $('#modalverifikasi').modal('show');
             $('#id_verifikasi').val(id);
