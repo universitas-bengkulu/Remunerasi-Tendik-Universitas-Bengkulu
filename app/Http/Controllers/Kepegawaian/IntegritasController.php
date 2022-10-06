@@ -73,7 +73,7 @@ class IntegritasController extends Controller
                             ->select('r_integritas.id','periode_id','jumlah_bulan','nm_lengkap','remun_30','total_remun_30'
                                         )
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
         $cek = RIntegritas::select('total_remun_30')->where('periode_id',$periode_id)->first();
         if ($cek->total_remun_30 != null) {
@@ -120,7 +120,7 @@ class IntegritasController extends Controller
                             ->select('r_integritas.id','periode_id','jumlah_bulan','nm_lengkap','remun_70','total_remun_70'
                                         )
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
         $cek = RIntegritas::select('total_remun_70')->where('periode_id',$periode_id)->first();
         if ($cek->total_remun_70 != null) {
@@ -166,7 +166,7 @@ class IntegritasController extends Controller
                             ->select('r_integritas.id','periode_id','nm_lengkap','jumlah_bulan','total_remun_30','total_remun_70','total_remun'
                                         )
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
         $cek = RIntegritas::select('total_remun')->where('periode_id',$periode_id)->first();
         if ($cek->total_remun != null) {
@@ -210,7 +210,7 @@ class IntegritasController extends Controller
                                         )
                             ->where('periode_id',$periode_id)
                             ->orderBy('golongan','desc')
-                            ->get();
+                            ->paginate(15);
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
         $cek = RIntegritas::select('pajak_pph')->where('periode_id',$periode_id)->first();
         if ($cek->pajak_pph != null) {
@@ -260,7 +260,7 @@ class IntegritasController extends Controller
                             ->select('r_integritas.id','periode_id','nm_lengkap','laporan_lhkpn_lhkasn','potongan_lhkpn_lhkasn'
                                         )
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
         $cek = RIntegritas::select('potongan_lhkpn_lhkasn')->where('periode_id',$periode_id)->first();
         if ($cek->potongan_lhkpn_lhkasn != null) {
@@ -320,7 +320,7 @@ class IntegritasController extends Controller
                             ->select('r_integritas.id','periode_id','nm_lengkap','sanksi_disiplin','potongan_sanksi_disiplin'
                                         )
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
         $cek = RIntegritas::select('potongan_sanksi_disiplin')->where('periode_id',$periode_id)->first();
         if ($cek->potongan_sanksi_disiplin != null) {
@@ -380,7 +380,7 @@ class IntegritasController extends Controller
                             ->select('r_integritas.id','periode_id','nm_lengkap','potongan_lhkpn_lhkasn','potongan_sanksi_disiplin','integritas_satu_bulan'
                                         )
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
         $cek = RIntegritas::select('integritas_satu_bulan')->where('periode_id',$periode_id)->first();
         if ($cek->integritas_satu_bulan != null) {
@@ -422,7 +422,7 @@ class IntegritasController extends Controller
                             ->select('r_integritas.id','periode_id','nm_lengkap','integritas_satu_bulan','jumlah_bulan','total_integritas'
                                         )
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $periode_aktif = Periode::select('id')->where('id',$periode_id)->first();
         $cek = RIntegritas::select('total_integritas')->where('periode_id',$periode_id)->first();
         if ($cek->total_integritas != null) {

@@ -118,7 +118,7 @@
                             @endphp
                             @foreach ($datas as $data)
                                 <tr>
-                                    <td> {{ $no++ }} </td>
+                                    <td> {{ $datas->firstItem() + $key }} </td>
                                     <td> {{ $data->nm_lengkap }} </td>
                                     <td> {{ $data->jumlah_bulan }} </td>
                                     <td style="text-align:center;">
@@ -131,6 +131,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{$datas->links("pagination::bootstrap-4") }}
                 </div>
             </div>
         </div>
@@ -138,8 +139,6 @@
 @endsection
 @push('scripts')
     <script>
-
-
         function generateTendik(){
             $('#alert-generate').hide(300);
             $('#alert-proses-generate').show(300);
