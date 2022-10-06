@@ -113,9 +113,9 @@
                             @php
                                 $no=1;
                             @endphp
-                            @foreach ($integritas as $inte)
+                            @foreach ($integritas as $key => $inte)
                                 <tr>
-                                    <td> {{ $no++ }} </td>
+                                    <td> {{ $integritas->firstItem() + $key }} </td>
                                     <td> {{ $inte->nm_lengkap }} </td>
                                     <td style="text-align:center;">
                                         @if ($inte->remunerasi == null)
