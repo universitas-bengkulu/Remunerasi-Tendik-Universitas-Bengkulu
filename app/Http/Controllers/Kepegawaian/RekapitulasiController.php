@@ -26,7 +26,7 @@ class RekapitulasiController extends Controller
         $periode_aktif = Periode::where('id',$periode_id)->select('id','nm_periode','slug')->first();
         // $datas = Remunerasi::select('nm_lengkap','nip','pangkat','golongan','kelas_jabatan','nm_jabatan',
         //                             'remunerasi_per_bulan','jumlah_bulan','no_rekening')
-        //                     ->where('periode_id',$periode_aktif->id)        
+        //                     ->where('periode_id',$periode_aktif->id)
         //                     ->get();
         $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
         return view('kepegawaian/rekapitulasi.index',compact('periode_id','periode_aktif','table'));
@@ -96,7 +96,7 @@ class RekapitulasiController extends Controller
             );
             return redirect()->route('kepegawaian.rekapitulasi',[$periode_id])->with($notification);
         }
-        
+
     }
 
     public function dataTendik($periode_id){
@@ -104,7 +104,7 @@ class RekapitulasiController extends Controller
         $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
         $datas = DB::table($table)->select('nm_lengkap','nip','pangkat','golongan','kelas_jabatan','nm_jabatan',
                                     'remunerasi_per_bulan','jumlah_bulan','no_rekening')
-                            ->where('periode_id',$periode_aktif->id)        
+                            ->where('periode_id',$periode_aktif->id)
                             ->get();
         return view('kepegawaian/rekapitulasi.data_tendik',compact('periode_id','periode_aktif','table','datas'));
     }
@@ -112,10 +112,10 @@ class RekapitulasiController extends Controller
     public function generateDataTendik($periode_id){
         $datas = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                         ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','no_rekening','kelas_jabatan','jabatans.nm_jabatan','remunerasi')
-                        ->get();
+                        ->paginate(15);
         $jumlah_bulan = Periode::where('id',$periode_id)->select('jumlah_bulan')->first();
         $array = [];
-        for ($i=0; $i <count($datas) ; $i++) { 
+        for ($i=0; $i <count($datas) ; $i++) {
             $array[]    =   [
                 'periode_id'    =>  $periode_id,
                 'tendik_id'    =>  $datas[$i]->id,
@@ -146,7 +146,7 @@ class RekapitulasiController extends Controller
         $datas = DB::table($table)->select('nm_lengkap','remunerasi_per_bulan','remunerasi_30','remunerasi_70','jumlah_bulan',
                                                         'jumlah_remun_30','jumlah_remun_70','total_remun')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $cek = DB::table($table)->select('remunerasi_30')->first();
         if ($cek->remunerasi_30 != null) {
             $a = "sudah";
@@ -172,7 +172,7 @@ class RekapitulasiController extends Controller
                 'jumlah_remun_70' =>  $data->total_remun_70,
                 'total_remun' =>  $data->total_remun,
             ]);
-            
+
         }
         $notification = array(
             'message' => 'Berhasil, data total remunerasi berhasil digenerate!',
@@ -187,9 +187,9 @@ class RekapitulasiController extends Controller
         $datas = DB::table($table)->select('nm_lengkap','potongan_pph','laporan_lhkpn_lhkasn','sanksi_disiplin',
                                     'nominal_lhkpn_lhkasn','nominal_sanksi_disiplin','potongan_integritas_satu_bulan','total_integritas')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $cek = DB::table($table)->select('potongan_pph')->first();
-        
+
         if ($cek->potongan_pph != null) {
             $a = "sudah";
         }
@@ -215,7 +215,7 @@ class RekapitulasiController extends Controller
                 'potongan_integritas_satu_bulan' =>  $data->integritas_satu_bulan,
                 'total_integritas' =>  $data->total_integritas,
             ]);
-            
+
         }
         $notification = array(
             'message' => 'Berhasil, rubrik integritas berhasil digenerate!',
@@ -230,7 +230,7 @@ class RekapitulasiController extends Controller
         $datas =  DB::table($table)->select('nm_lengkap','nilai_skp','potongan_skp',
                                     'nominal_potongan')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $cek = DB::table($table)->select('nilai_skp')->first();
         if ($cek->nilai_skp != null) {
             $a = "sudah";
@@ -271,7 +271,7 @@ class RekapitulasiController extends Controller
                                     'nominal_absen_bulan_satu','nominal_absen_bulan_dua','nominal_absen_bulan_tiga',
                                     'nominal_absen_bulan_empat','nominal_absen_bulan_lima','nominal_absen_bulan_enam','total_absensi')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $cek = DB::table($table)->select('persen_absen_bulan_satu')->first();
         if ($cek->persen_absen_bulan_satu != null) {
             $a = "sudah";
@@ -316,7 +316,7 @@ class RekapitulasiController extends Controller
         $periode_aktif = Periode::where('id',$periode_id)->select('id','slug','jumlah_bulan')->first();
         $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
         $datas =  DB::table($table)->where('periode_id',$periode_id)
-                            ->get();
+                    ->paginate(15);
         $cek = DB::table($table)->select('total_akhir_remun')->first();
         if ($cek->total_akhir_remun != null) {
             $a = "sudah";
