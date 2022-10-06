@@ -30,7 +30,7 @@ class TendikController extends Controller
                         ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
                         ->where('tendiks.nm_lengkap','like','%'.$filter.'%')
             ->orWhere('nip','like','%'.$filter.'%')
-            ->orderBy('tendiks.id','desc')
+            ->orderBy('kelas_jabatan','desc')
             ->paginate(15);
         } else
         {
