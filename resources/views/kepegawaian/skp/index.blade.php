@@ -133,11 +133,7 @@
                                                         @endif
                                                     </td>
                                                     <td style="text-align:center;">
-                                                        @if ($skp->status == "terkirim")
-                                                            <a onclick="verifikasi({{ $skp->id }})" class="btn btn-primary btn-sm" style="color:white;cursor:pointer;"><i class="fa fa-check-circle"></i></a>
-                                                            @else
-                                                            <button class="btn btn-primary btn-sm disabled" style="color:white;cursor:pointer;"><i class="fa fa-check-circle"></i></button>
-                                                        @endif
+                                                        <a onclick="verifikasi({{ $skp->id }})" class="btn btn-primary btn-sm" style="color:white;cursor:pointer;"><i class="fa fa-check-circle"></i></a>
                                                     </td>
                                                 </tr>
                                             @endforeach
