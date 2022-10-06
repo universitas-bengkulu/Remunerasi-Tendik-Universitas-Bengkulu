@@ -31,12 +31,14 @@ class TendikController extends Controller
                         ->where('tendiks.nm_lengkap','like','%'.$filter.'%')
             ->orWhere('nip','like','%'.$filter.'%')
             ->orderBy('kelas_jabatan','desc')
+            ->orderBy('golongan','desc')
             ->paginate(15);
         } else
         {
             $tendiks = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                             ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
                             ->orderBy('kelas_jabatan','desc')
+                            ->orderBy('golongan','desc')
                             ->paginate(15);
         }
         return view('kepegawaian.tendik.index',compact('tendiks','jabatans','units'));
