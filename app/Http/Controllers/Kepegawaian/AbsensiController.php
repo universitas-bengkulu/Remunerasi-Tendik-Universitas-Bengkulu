@@ -18,9 +18,9 @@ class AbsensiController extends Controller
         $this->middleware(['auth','isKepegawaian']);
     }
 
-    public function index($periode_id){
+    public function index(Request $request,$periode_id){
         $periode_aktif = Periode::select('id','jumlah_bulan','nm_periode')->where('id',$periode_id)->first();
-
+        $filter = $request->query('filter');
         if (!empty($filter)){
             $absensis = RAbsen::join('tendiks','tendiks.id','r_absens.tendik_id')
                             ->select('r_absens.id as id','periode_id','nip','nm_lengkap','potongan_bulan_1','potongan_bulan_2','potongan_bulan_3','potongan_bulan_4','potongan_bulan_5','potongan_bulan_6')
