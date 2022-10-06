@@ -159,33 +159,21 @@ class CapaianSkpController extends Controller
                                 ->groupBy('r_capaian_skps.id')
                                 ->get();
         for ($i=0; $i <count($datas) ; $i++) {
-            if ($datas[$i]->nilai_skp >=85) {
+            if ($datas[$i]->nilai_skp >=76) {
                 RCapaianSkp::where('id',$datas[$i]->id)->update([
                     'potongan_skp'  =>  '0',
                 ]);
-            } elseif ($datas[$i]->nilai_skp >=80 && $datas[$i]->nilai_skp <83) {
+            } elseif ($datas[$i]->nilai_skp >=61 && $datas[$i]->nilai_skp <76) {
                 RCapaianSkp::where('id',$datas[$i]->id)->update([
-                    'potongan_skp'  =>  '10',
+                    'potongan_skp'  =>  '25',
                 ]);
-            } elseif ($datas[$i]->nilai_skp >=75 && $datas[$i]->nilai_skp <80) {
-                RCapaianSkp::where('id',$datas[$i]->id)->update([
-                    'potongan_skp'  =>  '20',
-                ]);
-            } elseif ($datas[$i]->nilai_skp >=70 && $datas[$i]->nilai_skp <75) {
-                RCapaianSkp::where('id',$datas[$i]->id)->update([
-                    'potongan_skp'  =>  '30',
-                ]);
-            } elseif ($datas[$i]->nilai_skp >=65 && $datas[$i]->nilai_skp <70) {
-                RCapaianSkp::where('id',$datas[$i]->id)->update([
-                    'potongan_skp'  =>  '40',
-                ]);
-            } elseif ($datas[$i]->nilai_skp >=1 && $datas[$i]->nilai_skp <65) {
+            } elseif ($datas[$i]->nilai_skp >=51 && $datas[$i]->nilai_skp <61) {
                 RCapaianSkp::where('id',$datas[$i]->id)->update([
                     'potongan_skp'  =>  '50',
                 ]);
-            } elseif($datas[$i]->nilai_skp == 0) {
+            } elseif ($datas[$i]->nilai_skp >=0 && $datas[$i]->nilai_skp <51) {
                 RCapaianSkp::where('id',$datas[$i]->id)->update([
-                    'potongan_skp'  =>  '100',
+                    'potongan_skp'  =>  '75',
                 ]);
             }
         }
@@ -221,7 +209,7 @@ class CapaianSkpController extends Controller
                                 ->get();
         for ($i=0; $i <count($datas) ; $i++) {
             RCapaianSkp::where('id',$datas[$i]->id)->update([
-                'nominal_potongan'  =>  ($datas[$i]->potongan_skp/100) * (($datas[$i]->remunerasi * 40)/100),
+                'nominal_potongan'  =>  ($datas[$i]->potongan_skp/100) * (($datas[$i]->remunerasi * 60)/100),
             ]);
         }
         $notification = array(
