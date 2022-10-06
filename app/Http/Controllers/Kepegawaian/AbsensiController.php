@@ -176,7 +176,7 @@ class AbsensiController extends Controller
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                             ->select('r_absens.id','periode_id','nm_lengkap','potongan_bulan_1','remunerasi','nominal_bulan_1')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $cek = RAbsen::select('nominal_bulan_1')->where('periode_id',$periode_id)->first();
         if ($cek->nominal_bulan_1 != null) {
             $a = "sudah";
@@ -211,7 +211,7 @@ class AbsensiController extends Controller
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                             ->select('r_absens.id','nm_lengkap','potongan_bulan_2','remunerasi','nominal_bulan_2')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $cek = RAbsen::select('nominal_bulan_2')->where('periode_id',$periode_id)->first();
         if ($cek->nominal_bulan_2 != null) {
             $a = "sudah";
@@ -247,7 +247,7 @@ class AbsensiController extends Controller
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                             ->select('r_absens.id','nm_lengkap','potongan_bulan_3','remunerasi','nominal_bulan_3')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $cek = RAbsen::select('nominal_bulan_3')->where('periode_id',$periode_id)->first();
         if ($cek->nominal_bulan_3 != null) {
             $a = "sudah";
@@ -283,7 +283,7 @@ class AbsensiController extends Controller
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                             ->select('r_absens.id','nm_lengkap','potongan_bulan_4','remunerasi','nominal_bulan_4')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $cek = RAbsen::select('nominal_bulan_4')->where('periode_id',$periode_id)->first();
         if ($cek->nominal_bulan_4 != null) {
             $a = "sudah";
@@ -319,7 +319,7 @@ class AbsensiController extends Controller
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                             ->select('r_absens.id','nm_lengkap','potongan_bulan_5','remunerasi','nominal_bulan_5')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $cek = RAbsen::select('nominal_bulan_5')->where('periode_id',$periode_id)->first();
         if ($cek->nominal_bulan_5 != null) {
             $a = "sudah";
@@ -355,7 +355,7 @@ class AbsensiController extends Controller
                             ->leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                             ->select('r_absens.id','nm_lengkap','potongan_bulan_6','remunerasi','nominal_bulan_6')
                             ->where('periode_id',$periode_id)
-                            ->get();
+                            ->paginate(15);
         $cek = RAbsen::select('nominal_bulan_6')->where('periode_id',$periode_id)->first();
         if ($cek->nominal_bulan_6 != null) {
             $a = "sudah";
