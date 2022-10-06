@@ -154,9 +154,9 @@
                             @php
                                 $no=1;
                             @endphp
-                            @foreach ($absensis as $absen)
+                            @foreach ($absensis as $key => $absen)
                                 <tr>
-                                    <td> {{ $no++ }} </td>
+                                    <td> {{ $absensis->firstItem() + $key }} </td>
                                     <td> {{ $absen->nip }} </td>
                                     <td> {{ $absen->nm_lengkap }} </td>
                                     @if ($periode_aktif->jumlah_bulan == "3")

@@ -108,9 +108,9 @@
                                             @php
                                                 $no=1;
                                             @endphp
-                                            @foreach ($skps as $skp)
+                                            @foreach ($skps as $key => $skp)
                                                 <tr>
-                                                    <td> {{ $no++ }} </td>
+                                                    <td> {{ $skps->firstItem() + $key }} </td>
                                                     <td> {{ $skp->nip }} </td>
                                                     <td> {{ $skp->nm_lengkap }} </td>
                                                     <td>
