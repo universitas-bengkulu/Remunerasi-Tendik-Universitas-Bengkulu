@@ -98,6 +98,13 @@
                     @endif
                 </div>
                 <div class="col-md-12">
+                    <form class="form-inline" method="GET">
+                        <div class="form-group mb-2">
+                            <label for="filter" class="col-sm-2 col-form-label">Filter</label>
+                            <input type="text" class="form-control" id="filter" name="filter" placeholder="Nama/Nip..." value="{{$filter}}">
+                        </div>
+                        <button type="submit" class="btn btn-default mb-2">Filter</button>
+                    </form>
                     <table class="table table-striped table-bordered table-hover" id="table" style="width:100%;">
                         <thead>
                             <tr>
