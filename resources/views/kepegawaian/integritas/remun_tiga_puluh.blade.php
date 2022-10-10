@@ -94,11 +94,8 @@
                     @php
                         $periode_id = $periode_aktif->id;
                     @endphp
-                    @if ($a == "sudah")
-                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Remun 30%</button>
-                        @else
+
                         <a href="{{ route('kepegawaian.r_integritas.generate_remun_30',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Remun 30%</a>
-                    @endif
                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Remun 30%</button>
                 </div>
                 <div class="col-md-12">

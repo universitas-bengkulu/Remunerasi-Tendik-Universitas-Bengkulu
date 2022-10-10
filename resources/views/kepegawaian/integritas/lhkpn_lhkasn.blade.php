@@ -92,11 +92,8 @@
                     </nav>
                 </div>
                 <div class="col-md-12">
-                    @if ($a == "sudah")
-                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Potongan LHKPN/LHKASN</button>
-                        @else
+
                         <a href="{{ route('kepegawaian.r_integritas.generate_lhkpn_lhkasn',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp;Generate Potongan LHKPN/LHKASN</a>
-                    @endif
                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Potongan LHKPN/LHKASN</button>
                 </div>
                 <div class="col-md-12">

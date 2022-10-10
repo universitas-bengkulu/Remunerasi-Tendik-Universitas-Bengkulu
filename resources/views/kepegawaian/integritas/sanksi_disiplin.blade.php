@@ -91,11 +91,8 @@
                     </nav>
                 </div>
                 <div class="col-md-12">
-                    @if ($a == "sudah")
-                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Potongan Sanksi Disiplin</button>
-                        @else
+
                         <a href="{{ route('kepegawaian.r_integritas.generate_sanksi_disiplin',[$periode_id]) }}" id="generate" onclick="generateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp;Generate Potongan Sanksi Disiplin</a>
-                    @endif
                     <button class="btn btn-warning btn-sm disabled" id="proses-generate" style="display:none;color:white;cursor:pointer;"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Potongan Sanksi Disiplin</button>
                 </div>
                 <div class="col-md-12">
