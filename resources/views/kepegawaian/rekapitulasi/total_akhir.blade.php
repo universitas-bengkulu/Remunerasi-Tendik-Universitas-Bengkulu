@@ -180,9 +180,9 @@
                             @php
                                 $no=1;
                             @endphp
-                            @foreach ($datas as $key=> $data)
+                            @foreach ($datas as $data)
                                 <tr>
-                                    <td>{{ $datas->firstItem() + $key }}</td>
+                                    <td> {{ $no++ }} </td>
                                     <td> {{ $data->nm_lengkap }} </td>
                                     <td> {{ $data->nip }} </td>
                                     <td> {{ $data->pangkat }} </td>
@@ -268,7 +268,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{$datas->links("pagination::bootstrap-4") }}
+                    {{-- {{$datas->links("pagination::bootstrap-4") }} --}}
                 </div>
             </div>
         </div>
