@@ -106,6 +106,7 @@ class RekapitulasiController extends Controller
                                     'remunerasi_per_bulan','jumlah_bulan','no_rekening')
                             ->where('periode_id',$periode_aktif->id)
                             ->paginate(15);
+                            return $datas;
         return view('kepegawaian/rekapitulasi.data_tendik',compact('periode_id','periode_aktif','table','datas'));
     }
 
