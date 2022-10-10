@@ -195,7 +195,7 @@ class AbsensiController extends Controller
                             ->get();
         for ($i=0; $i <count($datas) ; $i++) {
             RAbsen::where('id',$datas[$i]->id)->where('periode_id',$periode_id)->update([
-                'nominal_bulan_1'   =>  (($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_1)/100),
+                'nominal_bulan_1'   =>  (40/100*(($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_1)/100)),
             ]);
         }
         $notification = array(
@@ -231,7 +231,7 @@ class AbsensiController extends Controller
                             ->get();
         for ($i=0; $i <count($datas) ; $i++) {
             RAbsen::where('id',$datas[$i]->id)->update([
-                'nominal_bulan_2'   =>  ($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_2)/100,
+                'nominal_bulan_2'   =>  (40/100*(($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_2)/100)),
             ]);
         }
         $notification = array(
@@ -267,7 +267,7 @@ class AbsensiController extends Controller
                             ->get();
         for ($i=0; $i <count($datas) ; $i++) {
             RAbsen::where('id',$datas[$i]->id)->update([
-                'nominal_bulan_3'   =>  ($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_3)/100,
+                'nominal_bulan_3'   =>  (40/100*(($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_3)/100)),
             ]);
         }
         $notification = array(
@@ -303,7 +303,7 @@ class AbsensiController extends Controller
                             ->get();
         for ($i=0; $i <count($datas) ; $i++) {
             RAbsen::where('id',$datas[$i]->id)->update([
-                'nominal_bulan_4'   =>  ($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_4)/100,
+                'nominal_bulan_4'   =>  (40/100*(($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_4)/100)),
             ]);
         }
         $notification = array(
@@ -339,7 +339,7 @@ class AbsensiController extends Controller
                             ->get();
         for ($i=0; $i <count($datas) ; $i++) {
             RAbsen::where('id',$datas[$i]->id)->update([
-                'nominal_bulan_5'   =>  ($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_5)/100,
+                'nominal_bulan_5'   =>  (40/100*(($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_5)/100)),
             ]);
         }
         $notification = array(
@@ -375,7 +375,7 @@ class AbsensiController extends Controller
                             ->get();
         for ($i=0; $i <count($datas) ; $i++) {
             RAbsen::where('id',$datas[$i]->id)->update([
-                'nominal_bulan_6'   =>  ($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_6)/100,
+                'nominal_bulan_6'   =>  (40/100*(($datas[$i]->remunerasi * $datas[$i]->potongan_bulan_6)/100)),
             ]);
         }
         $notification = array(
