@@ -88,7 +88,7 @@
                             @php
                                 $no=1;
                             @endphp
-                            @foreach ($datas as $skp)
+                            @foreach ($datas as $key => $skp)
                                 <tr>
                                     <td>{{ $datas->firstItem() + $key }}</td>
                                     <td> {{ $skp->nip }} </td>
