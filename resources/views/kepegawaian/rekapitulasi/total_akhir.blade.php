@@ -189,14 +189,14 @@
                                     <td> {{ $data->golongan }} </td>
                                     <td> {{ $data->kelas_jabatan }} </td>
                                     <td> {{ $data->nm_jabatan }} </td>
-                                    <td> {{ $data->remunerasi_per_bulan }} </td>
-                                    <td> {{ $data->remunerasi_30 }} </td>
-                                    <td> {{ $data->remunerasi_70 }} </td>
+                                    <td> Rp. {{ number_format($data->remunerasi_per_bulan,2) }} </td>
+                                    <td> Rp. {{ number_format($data->remunerasi_30,2) }} </td>
+                                    <td> Rp. {{ number_format($data->remunerasi_70,2) }} </td>
                                     <td> {{ $data->jumlah_bulan }} </td>
-                                    <td> {{ $data->jumlah_remun_30 }} </td>
-                                    <td> {{ $data->jumlah_remun_70 }} </td>
-                                    <td> {{ $data->total_remun }} </td>
-                                    <td> {{ $data->potongan_pph }} </td>
+                                    <td> Rp. {{ number_format($data->jumlah_remun_30,2) }} </td>
+                                    <td> Rp. {{ number_format($data->jumlah_remun_70,2) }} </td>
+                                    <td> Rp. {{ number_format($data->total_remun,2) }} </td>
+                                    <td> Rp. {{ number_format($data->potongan_pph,2) }} </td>
                                     <td> {{ $data->laporan_lhkpn_lhkasn }} </td>
                                     <td> {{ $data->sanksi_disiplin }} </td>
                                     <td> Rp. {{ number_format($data->nominal_lhkpn_lhkasn,2) }} </td>
