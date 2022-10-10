@@ -316,7 +316,7 @@ class RekapitulasiController extends Controller
         $periode_aktif = Periode::where('id',$periode_id)->select('id','slug','jumlah_bulan')->first();
         $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
         $datas =  DB::table($table)->where('periode_id',$periode_id)
-                    ->paginate(15);
+                    ->get();
         $cek = DB::table($table)->select('total_akhir_remun')->first();
         if ($cek->total_akhir_remun != null) {
             $a = "sudah";
