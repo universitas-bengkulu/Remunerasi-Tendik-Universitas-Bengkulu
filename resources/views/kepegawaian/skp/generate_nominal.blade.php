@@ -90,7 +90,7 @@
                             @endphp
                             @foreach ($datas as $skp)
                                 <tr>
-                                    <td> {{ $no++ }} </td>
+                                    <td>{{ $datas->firstItem() + $key }}</td>
                                     <td> {{ $skp->nip }} </td>
                                     <td> {{ $skp->nm_lengkap }} </td>
                                     <td>
