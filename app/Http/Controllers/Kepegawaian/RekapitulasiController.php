@@ -112,7 +112,7 @@ class RekapitulasiController extends Controller
     public function generateDataTendik($periode_id){
         $datas = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
                         ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','no_rekening','kelas_jabatan','jabatans.nm_jabatan','remunerasi')
-                        ->paginate(15);
+                        ->get();
         $jumlah_bulan = Periode::where('id',$periode_id)->select('jumlah_bulan')->first();
         $array = [];
         for ($i=0; $i <count($datas) ; $i++) {
