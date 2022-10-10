@@ -114,7 +114,7 @@
                             @php
                                 $no=1;
                             @endphp
-                            @foreach ($datas as $data)
+                            {{-- @foreach ($datas as $data)
                                 <tr>
                                     <td>{{ $datas->firstItem() + $key }}</td>
                                     <td> {{ $data->nm_lengkap }} </td>
@@ -151,7 +151,7 @@
                                         @endif
                                     </td>
                                 </tr>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
                     {{$datas->links("pagination::bootstrap-4") }}
