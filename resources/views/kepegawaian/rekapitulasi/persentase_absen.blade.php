@@ -163,7 +163,7 @@
                             @endphp
                             @foreach ($datas as $data)
                                 <tr>
-                                    <td> {{ $no++ }} </td>
+                                    <td>{{ $datas->firstItem() + $key }}</td>
                                     <td> {{ $data->nm_lengkap }} </td>
                                     @if ($periode_aktif->jumlah_bulan == 1)
                                         <td>{!! is_null($data->persen_absen_bulan_satu) ? '<span class="badge badge-danger">-</span>' : $data->persen_absen_bulan_satu !!}</td>

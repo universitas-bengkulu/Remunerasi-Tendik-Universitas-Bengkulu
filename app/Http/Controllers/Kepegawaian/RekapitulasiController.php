@@ -105,7 +105,7 @@ class RekapitulasiController extends Controller
         $datas = DB::table($table)->select('nm_lengkap','nip','pangkat','golongan','kelas_jabatan','nm_jabatan',
                                     'remunerasi_per_bulan','jumlah_bulan','no_rekening')
                             ->where('periode_id',$periode_aktif->id)
-                            ->get();
+                            ->paginate(15);
         return view('kepegawaian/rekapitulasi.data_tendik',compact('periode_id','periode_aktif','table','datas'));
     }
 

@@ -112,7 +112,7 @@
                             @endphp
                             @foreach ($datas as $data)
                                 <tr>
-                                    <td> {{ $no++ }} </td>
+                                    <td>{{ $datas->firstItem() + $key }}</td>
                                     <td> {{ $data->nm_lengkap }} </td>
                                     <td>
                                         @if ($data->nilai_skp == null)

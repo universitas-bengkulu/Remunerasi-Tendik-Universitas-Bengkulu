@@ -116,7 +116,7 @@
                             @endphp
                             @foreach ($datas as $data)
                                 <tr>
-                                    <td> {{ $no++ }} </td>
+                                    <td>{{ $datas->firstItem() + $key }}</td>
                                     <td> {{ $data->nm_lengkap }} </td>
                                     <td> {{ $data->nip }} </td>
                                     <td> {{ $data->pangkat }} </td>

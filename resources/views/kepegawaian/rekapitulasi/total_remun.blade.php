@@ -115,7 +115,7 @@
                             @endphp
                             @foreach ($datas as $data)
                                 <tr>
-                                    <td> {{ $no++ }} </td>
+                                    <td>{{ $datas->firstItem() + $key }}</td>
                                     <td> {{ $data->nm_lengkap }} </td>
                                     <td style="text-align:center;">
                                         @if ($data->remunerasi_30 == null)
