@@ -302,7 +302,7 @@ class RekapitulasiController extends Controller
                 'nominal_absen_bulan_empat' =>  $data->nominal_bulan_4 == null ? "0" : $data->nominal_bulan_4,
                 'nominal_absen_bulan_lima' =>  $data->nominal_bulan_5 == null ? "0" : $data->nominal_bulan_5,
                 'nominal_absen_bulan_enam' =>  $data->nominal_bulan_6 == null ? "0" : $data->nominal_bulan_6,
-                'total_absensi' =>  $data->nominal_bulan_1+$data->nominal_bulan2+$data->nominal_bulan_3+$data->nominal_bulan_4+$data->nominal_bulan_5,
+                'total_absensi' =>  $data->nominal_bulan_1+$data->nominal_bulan_2+$data->nominal_bulan_3+$data->nominal_bulan_4+$data->nominal_bulan_5,
             ]);
         }
         $notification = array(
