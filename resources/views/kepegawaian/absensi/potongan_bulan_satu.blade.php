@@ -85,11 +85,7 @@
                     </nav>
                 </div>
                 <div class="col-md-12">
-                    @if ($a == "sudah")
-                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Nominal Potongan Bulan Satu</button>
-                        @else
-                        <a href="{{ route('kepegawaian.r_absensi.generate_potongan_bulan_satu',[$periode_aktif->id]) }}" onclick="geneerateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Nominal Potongan Bulan Satu</a>
-                    @endif
+                    <a href="{{ route('kepegawaian.r_absensi.generate_potongan_bulan_satu',[$periode_aktif->id]) }}" onclick="geneerateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Nominal Potongan Bulan Satu</a>
                 </div>
                 <div class="col-md-12">
                     <table class="table table-striped table-bordered table-hover" id="table" style="width:100%;">
