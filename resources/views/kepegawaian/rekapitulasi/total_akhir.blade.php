@@ -186,56 +186,56 @@
                                     <td> {{ $data->golongan }} </td>
                                     <td> {{ $data->kelas_jabatan }} </td>
                                     <td> {{ $data->nm_jabatan }} </td>
-                                    <td> Rp. {{ number_format(rount($data->remunerasi_per_bulan),2) }} </td>
-                                    <td> Rp. {{ number_format(rount($data->remunerasi_30),2) }} </td>
-                                    <td> Rp. {{ number_format(rount($data->remunerasi_70),2) }} </td>
+                                    <td> Rp. {{ number_format(round($data->remunerasi_per_bulan),2) }} </td>
+                                    <td> Rp. {{ number_format(round($data->remunerasi_30),2) }} </td>
+                                    <td> Rp. {{ number_format(round($data->remunerasi_70),2) }} </td>
                                     <td> {{ $data->jumlah_bulan }} </td>
-                                    <td> Rp. {{ number_format(rount($data->jumlah_remun_30),2) }} </td>
-                                    <td> Rp. {{ number_format(rount($data->jumlah_remun_70),2) }} </td>
-                                    <td> Rp. {{ number_format(rount($data->total_remun),2) }} </td>
-                                    <td> Rp. {{ number_format(rount($data->potongan_pph),2) }} </td>
+                                    <td> Rp. {{ number_format(round($data->jumlah_remun_30),2) }} </td>
+                                    <td> Rp. {{ number_format(round($data->jumlah_remun_70),2) }} </td>
+                                    <td> Rp. {{ number_format(round($data->total_remun),2) }} </td>
+                                    <td> Rp. {{ number_format(round($data->potongan_pph),2) }} </td>
                                     <td> {{ $data->laporan_lhkpn_lhkasn }} </td>
                                     <td> {{ $data->sanksi_disiplin }} </td>
-                                    <td> Rp. {{ number_format(rount($data->nominal_lhkpn_lhkasn),2) }} </td>
-                                    <td> Rp. {{ number_format(rount($data->nominal_sanksi_disiplin),2) }} </td>
+                                    <td> Rp. {{ number_format(round($data->nominal_lhkpn_lhkasn),2) }} </td>
+                                    <td> Rp. {{ number_format(round($data->nominal_sanksi_disiplin),2) }} </td>
                                     <td> {{ $data->potongan_integritas_satu_bulan }} </td>
                                     <td> {{ $data->nilai_skp }} </td>
                                     <td> {{ $data->potongan_skp }} </td>
                                     @if ($periode_aktif->jumlah_bulan == 1)
                                         <td>{{ $data->persen_absen_bulan_satu }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_satu),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_satu),2) }}</td>
                                         @elseif ($periode_aktif->jumlah_bulan == 2)
                                         <td>{{ $data->persen_absen_bulan_satu }}</td>
                                         <td>{{ $data->persen_absen_bulan_dua }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_satu),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_dua),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_satu),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_dua),2) }}</td>
                                         @elseif ($periode_aktif->jumlah_bulan == 3)
                                         <td>{{ $data->persen_absen_bulan_satu }}</td>
                                         <td>{{ $data->persen_absen_bulan_dua }}</td>
                                         <td>{{ $data->persen_absen_bulan_tiga }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_satu),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_dua),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_tiga),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_satu),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_dua),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_tiga),2) }}</td>
                                         @elseif ($periode_aktif->jumlah_bulan == 4)
                                         <td>{{ $data->persen_absen_bulan_satu }}</td>
                                         <td>{{ $data->persen_absen_bulan_dua }}</td>
                                         <td>{{ $data->persen_absen_bulan_tiga }}</td>
                                         <td>{{ $data->persen_absen_bulan_empat }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_satu),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_dua),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_tiga),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_empat),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_satu),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_dua),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_tiga),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_empat),2) }}</td>
                                         @elseif ($periode_aktif->jumlah_bulan == 5)
                                         <td>{{ $data->persen_absen_bulan_satu }}</td>
                                         <td>{{ $data->persen_absen_bulan_dua }}</td>
                                         <td>{{ $data->persen_absen_bulan_tiga }}</td>
                                         <td>{{ $data->persen_absen_bulan_empat }}</td>
                                         <td>{{ $data->persen_absen_bulan_lima }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_satu),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_dua),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_tiga),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_empat),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_lima),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_satu),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_dua),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_tiga),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_empat),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_lima),2) }}</td>
                                         @elseif ($periode_aktif->jumlah_bulan == 6)
                                         <td>{{ $data->persen_absen_bulan_satu }}</td>
                                         <td>{{ $data->persen_absen_bulan_dua }}</td>
@@ -243,21 +243,21 @@
                                         <td>{{ $data->persen_absen_bulan_empat }}</td>
                                         <td>{{ $data->persen_absen_bulan_lima }}</td>
                                         <td>{{ $data->persen_absen_bulan_enam }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_satu),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_dua),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_tiga),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_empat),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_lima),2) }}</td>
-                                        <td>Rp. {{ number_format(rount($data->nominal_absen_bulan_enam),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_satu),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_dua),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_tiga),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_empat),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_lima),2) }}</td>
+                                        <td>Rp. {{ number_format(round($data->nominal_absen_bulan_enam),2) }}</td>
                                     @endif
-                                    <td>Rp. {{ number_format(rount($data->total_absensi),2) }}</td>
-                                    <td>Rp. {{ number_format(rount($data->total_skp),2) }}</td>
-                                    <td>Rp. {{ number_format(rount($data->total_integritas),2) }}</td>
+                                    <td>Rp. {{ number_format(round($data->total_absensi),2) }}</td>
+                                    <td>Rp. {{ number_format(round($data->total_skp),2) }}</td>
+                                    <td>Rp. {{ number_format(round($data->total_integritas),2) }}</td>
                                     <td>
                                         @if ($data->total_akhir_remun == null)
                                             <a style="color: red">Total belum digenerate</a>
                                             @else
-                                            Rp. {{ number_format(rount($data->total_akhir_remun),2) }}
+                                            Rp. {{ number_format(round($data->total_akhir_remun),2) }}
                                         @endif
                                     </td>
                                     <td>{{ $data->no_rekening }}</td>
