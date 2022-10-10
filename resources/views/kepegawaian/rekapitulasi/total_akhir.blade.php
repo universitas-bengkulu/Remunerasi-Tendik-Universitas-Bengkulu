@@ -180,7 +180,7 @@
                             @php
                                 $no=1;
                             @endphp
-                            @foreach ($datas as $data)
+                            @foreach ($datas as $key=> $data)
                                 <tr>
                                     <td>{{ $datas->firstItem() + $key }}</td>
                                     <td> {{ $data->nm_lengkap }} </td>
