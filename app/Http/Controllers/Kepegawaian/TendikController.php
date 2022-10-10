@@ -27,7 +27,7 @@ class TendikController extends Controller
         $units = Unit::all();
         if (!empty($filter)){
             $tendiks = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
-                        ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
+                        ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','nm_jabatan','kelas_jabatan','jenis_kelamin','no_rekening','no_npwp')
                         ->where('tendiks.nm_lengkap','like','%'.$filter.'%')
             ->orWhere('nip','like','%'.$filter.'%')
             ->orderBy('kelas_jabatan','desc')
@@ -36,7 +36,7 @@ class TendikController extends Controller
         } else
         {
             $tendiks = Tendik::leftJoin('jabatans','jabatans.id','tendiks.jabatan_id')
-                            ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','nm_jabatan','jenis_kelamin','no_rekening','no_npwp')
+                            ->select('tendiks.id','nm_lengkap','nip','pangkat','golongan','nm_jabatan','kelas_jabatan','jenis_kelamin','no_rekening','no_npwp')
                             ->orderBy('kelas_jabatan','desc')
                             ->orderBy('golongan','desc')
                             ->paginate(15);
