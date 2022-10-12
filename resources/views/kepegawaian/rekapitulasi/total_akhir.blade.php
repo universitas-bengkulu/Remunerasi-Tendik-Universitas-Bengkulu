@@ -283,7 +283,6 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
                                 <td>Rp. {{ number_format($akhir_absen_1->total) }}</td>
                                 <td>Rp. {{ number_format($akhir_absen_2->total) }}</td>
                                 <td>Rp. {{ number_format($akhir_absen_3->total) }}</td>
@@ -291,6 +290,7 @@
                                 <td>Rp. {{ number_format($akhir_skp->total) }}</td>
                                 <td>Rp. {{ number_format($akhir_integritas->total) }}</td>
                                 <td>Rp.{{ number_format($akhir->total) }}</td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
