@@ -262,10 +262,40 @@
                                     </td>
                                     <td>{{ $data->no_rekening }}</td>
                                 </tr>
-
                             @endforeach
                             <tr>
-                                <td colspan="31"><b>Jumlah</b></td>
+                                <td colspan="7" style="text-align:center;"><b>Jumlah</b></td>
+                                <td>Rp. {{ number_format($akhir_remun->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_r_30->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_r_70->total) }}</td>
+                                <td></td>
+                                <td>Rp. {{ number_format($akhir_30->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_70->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_30_70->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_pph->total) }}</td>
+                                <td></td>
+                                <td></td>
+                                <td>Rp. {{ number_format($akhir_lhkasn->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_sanksi->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_i_1->total) }}</td>
+                                <td></td>
+                                <td>Rp. {{ number_format($akhir_p_skp->total) }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Rp. {{ number_format($akhir_absen_1->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_absen_2->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_absen_3->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_absensi->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_skp->total) }}</td>
+                                <td>Rp. {{ number_format($akhir_integritas->total) }}</td>
+                                <td>Rp.{{ number_format($akhir->total) }}</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                             </tr>

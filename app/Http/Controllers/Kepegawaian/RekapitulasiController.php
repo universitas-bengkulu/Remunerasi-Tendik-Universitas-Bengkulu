@@ -317,8 +317,24 @@ class RekapitulasiController extends Controller
         $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
         $datas =  DB::table($table)->where('periode_id',$periode_id)
                     ->get();
+        $akhir_remun = DB::table($table)->select(DB::raw('sum(remunerasi_per_bulan) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_r_30 = DB::table($table)->select(DB::raw('sum(remunerasi_30) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_r_70 = DB::table($table)->select(DB::raw('sum(remunerasi_70) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_30 = DB::table($table)->select(DB::raw('sum(jumlah_remun_30) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_70 = DB::table($table)->select(DB::raw('sum(jumlah_remun_70) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_30_70 = DB::table($table)->select(DB::raw('sum(total_remun) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_pph = DB::table($table)->select(DB::raw('sum(potongan_pph) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_lhkasn = DB::table($table)->select(DB::raw('sum(nominal_lhkpn_lhkasn) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_sanksi = DB::table($table)->select(DB::raw('sum(nominal_sanksi_disiplin) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_p_skp = DB::table($table)->select(DB::raw('sum(potongan_skp) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_i_1 = DB::table($table)->select(DB::raw('sum(potongan_integritas_satu_bulan) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_integritas = DB::table($table)->select(DB::raw('sum(total_integritas) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_absensi = DB::table($table)->select(DB::raw('sum(total_absensi) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_skp = DB::table($table)->select(DB::raw('sum(total_skp) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_absen_1 = DB::table($table)->select(DB::raw('sum(nominal_absen_bulan_satu) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_absen_2 = DB::table($table)->select(DB::raw('sum(nominal_absen_bulan_dua) as total'))->where('periode_id',$periode_id)->first();
+        $akhir_absen_3 = DB::table($table)->select(DB::raw('sum(nominal_absen_bulan_tiga) as total'))->where('periode_id',$periode_id)->first();
         $akhir = DB::table($table)->select(DB::raw('sum(total_akhir_remun) as total'))->where('periode_id',$periode_id)->first();
-        return round($akhir);
         $cek = DB::table($table)->select('total_akhir_remun')->first();
         if ($cek->total_akhir_remun != null) {
             $a = "sudah";
@@ -326,7 +342,10 @@ class RekapitulasiController extends Controller
         else{
             $a = "belum";
         }
-        return view('kepegawaian/rekapitulasi.total_akhir',[$periode_aktif], compact('datas','periode_aktif','periode_id','a'));
+        return view('kepegawaian/rekapitulasi.total_akhir',[$periode_aktif], compact('datas','akhir','akhir_absen_3','akhir_absen_2',
+        'akhir_absen_1','akhir_skp','akhir_absensi','akhir_integritas','akhir_pph','akhir_30_70','akhir_remun','akhir_lhkasn','akhir_sanksi','akhir_i_1','akhir_p_skp',
+        'akhir_r_30','akhir_r_70','akhir_30','akhir_70',
+        'periode_aktif','periode_id','a'));
     }
 
     public function generateTotalAkhir($periode_id){
