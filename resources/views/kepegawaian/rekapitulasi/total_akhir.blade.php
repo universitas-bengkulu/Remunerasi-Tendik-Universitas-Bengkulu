@@ -265,7 +265,7 @@
 
                             @endforeach
                             <tr>
-                                <td colspan="33"><b>Jumlah</b></td>
+                                <td colspan="31"><b>Jumlah</b></td>
                             </tr>
                         </tbody>
                     </table>
