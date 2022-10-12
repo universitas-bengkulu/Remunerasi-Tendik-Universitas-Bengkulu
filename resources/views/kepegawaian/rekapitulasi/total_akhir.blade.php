@@ -262,6 +262,9 @@
                                     </td>
                                     <td>{{ $data->no_rekening }}</td>
                                 </tr>
+                                <tr>
+                                    <td colspan="33"><b>Jumlah</b></td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>

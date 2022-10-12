@@ -338,7 +338,7 @@ class RekapitulasiController extends Controller
                             ->where('tendik_id',$datas[$i]->id)
                             ->first();
             DB::table($table)->where('tendik_id',$datas[$i]->id)->update([
-                'total_akhir_remun' =>  $data->total_remun - $data->potongan_pph - $data->total_absensi - $data->total_integritas - $data->total_skp ,
+                'total_akhir_remun' =>  round($data->total_remun - $data->potongan_pph - $data->total_absensi - $data->total_integritas - $data->total_skp) ,
             ]);
         }
         $notification = array(
