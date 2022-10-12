@@ -316,7 +316,9 @@ class RekapitulasiController extends Controller
         $periode_aktif = Periode::where('id',$periode_id)->select('id','slug','jumlah_bulan')->first();
         $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
         $datas =  DB::table($table)->where('periode_id',$periode_id)->orderBy('kelas_jabatan','desc')
+                    ->orderBy('golongan','desc')
                     ->get();
+                    return $datas;
         $akhir_remun = DB::table($table)->select(DB::raw('sum(remunerasi_per_bulan) as total'))->where('periode_id',$periode_id)->first();
         $akhir_r_30 = DB::table($table)->select(DB::raw('sum(remunerasi_30) as total'))->where('periode_id',$periode_id)->first();
         $akhir_r_70 = DB::table($table)->select(DB::raw('sum(remunerasi_70) as total'))->where('periode_id',$periode_id)->first();
