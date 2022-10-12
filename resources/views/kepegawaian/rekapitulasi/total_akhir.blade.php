@@ -266,6 +266,8 @@
                             @endforeach
                             <tr>
                                 <td colspan="31"><b>Jumlah</b></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
