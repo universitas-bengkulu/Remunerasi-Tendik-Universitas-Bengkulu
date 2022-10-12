@@ -318,7 +318,6 @@ class RekapitulasiController extends Controller
         $datas =  DB::table($table)->where('periode_id',$periode_id)->orderBy('kelas_jabatan','desc')
                     ->orderBy('golongan','desc')
                     ->get();
-                    return $datas;
         $akhir_remun = DB::table($table)->select(DB::raw('sum(remunerasi_per_bulan) as total'))->where('periode_id',$periode_id)->first();
         $akhir_r_30 = DB::table($table)->select(DB::raw('sum(remunerasi_30) as total'))->where('periode_id',$periode_id)->first();
         $akhir_r_70 = DB::table($table)->select(DB::raw('sum(remunerasi_70) as total'))->where('periode_id',$periode_id)->first();
