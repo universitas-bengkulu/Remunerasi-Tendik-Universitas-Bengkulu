@@ -264,7 +264,13 @@
                                 </tr>
                             @endforeach
                             <tr>
-                                <td colspan="7" style="text-align:center;"><b>Jumlah</b></td>
+                                <td>283</td>
+                                <td style="text-align:center;"><b>Jumlah</b></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                                 <td>Rp. {{ number_format($akhir_remun->total) }}</td>
                                 <td>Rp. {{ number_format($akhir_r_30->total) }}</td>
                                 <td>Rp. {{ number_format($akhir_r_70->total) }}</td>
@@ -290,12 +296,6 @@
                                 <td>Rp. {{ number_format($akhir_skp->total) }}</td>
                                 <td>Rp. {{ number_format($akhir_integritas->total) }}</td>
                                 <td>Rp.{{ number_format($akhir->total) }}</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                             </tr>
