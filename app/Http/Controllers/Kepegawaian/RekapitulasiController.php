@@ -317,6 +317,8 @@ class RekapitulasiController extends Controller
         $table = "rekapitulasi_".str_replace('-', '_', $periode_aktif->slug);
         $datas =  DB::table($table)->where('periode_id',$periode_id)
                     ->get();
+        $akhir = DB::table($table)->select(DB::raw('sum(total_akhir_remun) as total'))->where('periode_id',$periode_id)->first();
+        return $akhir;
         $cek = DB::table($table)->select('total_akhir_remun')->first();
         if ($cek->total_akhir_remun != null) {
             $a = "sudah";
