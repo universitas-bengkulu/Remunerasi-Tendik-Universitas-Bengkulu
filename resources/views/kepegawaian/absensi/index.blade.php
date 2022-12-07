@@ -92,6 +92,7 @@
                 </div>
                 <div class="col-md-12">
                     @if (count($absensis)>0)
+                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-file-excel"></i>&nbsp; Import Excel</button>
                         <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
                         @else
                         <button class="btn btn-primary btn-sm disabled"><i class="fa fa-file-excel"></i>&nbsp; Import Excel</button>
