@@ -94,6 +94,7 @@
                     @if (count($absensis)>0)
                         <button class="btn btn-primary btn-sm disabled"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</button>
                         @else
+                        <button class="btn btn-primary btn-sm disabled"><i class="fa fa-file-excel"></i>&nbsp; Import Excel</button>
                         <a href="{{ route('kepegawaian.r_absensi.generate_tendik',$periode_aktif->id) }}" onclick="geneerateTendik()" class="btn btn-primary btn-sm"><i class="fa fa-cog fa-spin"></i>&nbsp; Generate Data Tendik</a>
                     @endif
                 </div>
